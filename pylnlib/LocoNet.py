@@ -140,7 +140,7 @@ class LocoNet:
     # we should check if the message is valid by testing the checksum, but we
     # trust what comes in over the wire
     opc = ord(opcode)
-    msg = { 'raw' : opcode + data + checksum }
+    msg = { 'raw' : f"{opcode}{data}{checksum}"}
     if opc == 0x83:
       msg['type'] = LocoNet.MSG_POWER_ON
     elif opc == 0x82:
