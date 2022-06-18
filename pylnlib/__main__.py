@@ -17,7 +17,7 @@ def str_state(state):
 def recv(msg):
     print(time.strftime("%H:%M:%S") + " : ", end="")
     if args.raw:
-        print("RECV '" + " ".join("0x{:02x}".format(ord(c)) for c in msg["raw"]) + "'")
+        print(msg["raw"])
     else:
         if msg["type"] == LocoNet.MSG_POWER_ON:
             print("Global power on")
@@ -35,7 +35,6 @@ def recv(msg):
 
 if __name__ == "__main__":
     cmdline = argparse.ArgumentParser()
-    cmdline.add_argument("-c", "--config", help="Use config file")
     cmdline.add_argument(
         "--raw",
         help="Do not decode LocoNet messages, print them in raw format",

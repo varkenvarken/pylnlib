@@ -97,17 +97,17 @@ class LocoNet:
         n = self.com.inWaiting()
         if (n > 0):
           opcode = self.com.read(1)
-          opchi = ord(opcode) >> 5
-          if opchi == 0x4:
+          opchi = opcode >> 5
+          if opchi == 0x4:  # 2 byte message
             data = None
             chksum = self.com.read(1)
-          elif opchi == 0x5:
+          elif opchi == 0x5: # 4 byte message
             data = self.com.read(2)
             chksum = self.com.read(1)
-          elif opchi == 0x6:
+          elif opchi == 0x6: # 6 byte message
             data = self.com.read(4)
             chksum = self.com.read(1)
-          elif opchi == 0x7:
+          elif opchi == 0x7: # n byte message
             n = ord(self.com.read(1))
             data = self.com.read(n - 3)
             chksum = self.com.read(1)
