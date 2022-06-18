@@ -4,7 +4,8 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220618154730
+# Version: 20220618155020
+
 
 class Message:
     def __init__(self, data):
@@ -18,7 +19,7 @@ class Message:
             raise ValueError("checksum error")
 
     def __str__(self):
-        return f"{self.__class__.__name__}({self.opcode=}, {self.length=}, data={map(hex,map(int, self.data))})"
+        return f"{self.__class__.__name__}(opcode={hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
 
     @staticmethod
     def length(opcode, nextbyte):
@@ -54,7 +55,8 @@ class Message:
 
     @staticmethod
     def address(d0, d1):
-        return (d0&0x127) + ((d1&0x15)<<7)
+        return (d0 & 0x7F) + ((d1 & 0x0F) << 7)
+
 
 class Unknown(Message):
     pass
@@ -80,4 +82,3 @@ class SensorState(Message):
 
     def __str__(self):
         return f"{self.__class__.__name__}({self.address=} = {'HI' if self.level else 'LO'} | {self.opcode=}, {self.length=}, data={map(hex,map(int, self.data))})"
-
