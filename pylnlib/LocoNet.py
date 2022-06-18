@@ -97,7 +97,7 @@ class LocoNet:
         n = self.com.inWaiting()
         if (n > 0):
           opcode = self.com.read(1)
-          opchi = opcode >> 5
+          opchi = opcode[0] >> 5
           if opchi == 0x4:  # 2 byte message
             data = None
             chksum = self.com.read(1)
