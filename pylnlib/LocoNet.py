@@ -99,7 +99,7 @@ class LocoNet:
           opcode = self.com.read(1)
           opchi = ord(opcode) >> 5
           if opchi == 0x4:
-            data = ""
+            data = None
             chksum = self.com.read(1)
           elif opchi == 0x5:
             data = self.com.read(2)
@@ -137,21 +137,18 @@ class LocoNet:
   @return Decoded message
   '''
   def decode(self, opcode, data, checksum):
-    # we should check if the message is valid by testing the checksum, but we
-    # trust what comes in over the wire
-    opc = ord(opcode)
-    msg = { 'raw' : f"{opcode}{data}{checksum}"}
-    if opc == 0x83:
+    msg = { 'raw' : f"{opcode=}{data=}{checksum=}"}
+    if opcode == 0x83:
       msg['type'] = LocoNet.MSG_POWER_ON
-    elif opc == 0x82:
+    elif opcode == 0x82:
       msg['type'] = LocoNet.MSG_POWER_OFF
-    elif opc == 0xB0:
+    elif opcode == 0xB0:
       msg['type'] = LocoNet.MSG_SWITCH_STATE
       msg['id'] = 'DECODE ME'
       msg['state'] = 'DECODE ME'
-    elif opc == 0xB2:
-      byte1 = ord(data[0])
-      byte2 = ord(data[1])
+    elif opcode == 0xB2:
+      byte1 = data[0]
+      byte2 = data[1]
       msg['type'] = LocoNet.MSG_SENSOR_STATE
       msg['id'] = ((((byte2 & 0xF) << 8) | byte1) << 1) | ((byte2 >> 5) & 0x1);
       if (byte2 >> 4) & 0x1 == 0x1:
