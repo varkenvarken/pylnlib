@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220618155020
+# Version: 20220618155226
 
 
 class Message:
@@ -81,4 +81,4 @@ class SensorState(Message):
         self.level = bool(data[1] & 0x10)
 
     def __str__(self):
-        return f"{self.__class__.__name__}({self.address=} = {'HI' if self.level else 'LO'} | {self.opcode=}, {self.length=}, data={map(hex,map(int, self.data))})"
+        return f"{self.__class__.__name__}({self.address=} = {'HI' if self.level else 'LO'} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
