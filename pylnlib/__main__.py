@@ -30,7 +30,7 @@ def recv(msg):
                 "Sensor id = " + str(msg["id"]) + ", state = " + str_state(msg["state"])
             )
         else:
-            print("Unknown message")
+            print("Unknown message", msg["raw"])
 
 
 if __name__ == "__main__":
