@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220618154215
+# Version: 20220618154730
 
 class Message:
     def __init__(self, data):
@@ -52,6 +52,9 @@ class Message:
             chksum = chksum ^ (c ^ 0xFF)
         return chksum
 
+    @staticmethod
+    def address(d0, d1):
+        return (d0&0x127) + ((d1&0x15)<<7)
 
 class Unknown(Message):
     pass
