@@ -55,7 +55,7 @@ class Message:
 
     @staticmethod
     def address(d0, d1):
-        return (d0 & 0x7F) + ((d1 & 0x0F) << 7)
+        return (d0 & 0x7F) | ((d1 & 0x0F) << 8) | ((d1 >> 5) & 0x1)
 
 
 class Unknown(Message):
