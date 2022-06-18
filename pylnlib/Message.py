@@ -55,7 +55,7 @@ class Message:
 
     @staticmethod
     def address(d0, d1):
-        return (d0 & 0x7F) | ((d1 & 0x0F) << 8) | ((d1 >> 5) & 0x1)
+        return (d0 & 0x7F) | ((d1 & 0x0F) << 8)  # | ((d1 >> 5) & 0x1)
 
 
 class Unknown(Message):
@@ -78,7 +78,7 @@ class SensorState(Message):
     def __init__(self, data):
         super().__init__(data)
         self.address = Message.address(data[1], data[2])
-        self.level = bool(data[1] & 0x10)
+        self.level = data[1] & 0x30
 
     def __str__(self):
-        return f"{self.__class__.__name__}({self.address=} = {'HI' if self.level else 'LO'} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+        return f"{self.__class__.__name__}({self.address=} = {self.level} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
