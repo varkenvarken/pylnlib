@@ -78,7 +78,7 @@ class SensorState(Message):
     def __init__(self, data):
         super().__init__(data)
         self.address = Message.address(data[1], data[2])
-        self.level = data[1] & 0x30
+        self.level = data[2] & 0x30
 
     def __str__(self):
         return f"{self.__class__.__name__}({self.address=} = {self.level} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
