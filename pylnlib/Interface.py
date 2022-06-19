@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619141420
+# Version: 20220619141659
 
 import signal
 import sys
@@ -16,8 +16,8 @@ import serial
 
 from .Message import Message
 
-class Interface:
 
+class Interface:
     def __init__(self, port, baud=57600):
         signal.signal(signal.SIGTERM, self.on_interrupt)
         signal.signal(signal.SIGINT, self.on_interrupt)
@@ -84,15 +84,19 @@ class Interface:
                     if length == 2:
                         msg = Message.from_data(data)
                     else:
-                        data2 = self.com.read(length - 2)  # this is blocking, might want to change that
-                        msg = Message.from_data(data+data2)
+                        data2 = self.com.read(
+                            length - 2
+                        )  # this is blocking, might want to change that
+                        msg = Message.from_data(data + data2)
                     self.msg_queue.put(msg)
                     self.rd_event.set()
                 else:
                     time.sleep(0.1)
             else:
                 data = self.com.read(2)
-                print(len(data),list(map(hex(data))))
+                print(len(data), list(map(hex, data)))
+                
+
                 if len(data) < 2:
                     raise IOError("captured stream ended prematurely")
                 length = Message.length(data[0], data[1])
@@ -102,10 +106,9 @@ class Interface:
                     data2 = self.com.read(length - 2)
                     if len(data2) < length - 2:
                         raise IOError("captured stream ended prematurely")
-                    msg = Message.from_data(data+data2)
+                    msg = Message.from_data(data + data2)
                 self.msg_queue.put(msg)
                 self.rd_event.set()
-
 
     def send_message(self, msg):
         self.com.write(msg.data)
