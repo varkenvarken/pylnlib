@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619142626
+# Version: 20220619142956
 
 import signal
 import sys
@@ -56,6 +56,7 @@ class Interface:
     def on_receive(self, msg):
         if self.receiver_handler != None:
             for handler in self.receiver_handler:
+                print(f"handler called {handler.__name__}", file=sys.stderr, flush=True)
                 handler(msg)
 
     def run(self):
