@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619160411
+# Version: 20220619160645
 
 
 class Message:
@@ -15,7 +15,7 @@ class Message:
         self.checksum = data[-1]
         if len(data) != self.length:
             raise ValueError("length mismatch")
-        if self.checksum != Message.checksum(data[:-1]):
+        if self.checksum and self.checksum != Message.checksum(data[:-1]):
             raise ValueError("checksum error")
 
     def __str__(self):
