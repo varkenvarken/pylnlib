@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619173353
+# Version: 20220619173635
 
 
 class Message:
@@ -133,8 +133,8 @@ class RequestSlotData(Message):
             super().__init__(data)
             self.updateChecksum()
         else:
-            super().__init__(data)
-            self.slot = int(data[1])
+            super().__init__(slot)
+            self.slot = int(slot[1])
 
     def __str__(self):
         return f"{self.__class__.__name__}(slot = {self.slot} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
