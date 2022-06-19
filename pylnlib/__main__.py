@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619140621
+# Version: 20220619140920
 
 import argparse
 import time
@@ -12,7 +12,7 @@ from multiprocessing import cpu_count
 
 from .Interface import Interface
 
-CAPTUREFILE = " pylnlib.capture"
+CAPTUREFILE = "pylnlib.capture"
 
 
 def logger(msg):
@@ -57,7 +57,7 @@ if __name__ == "__main__":
         ln = Interface(args.port, args.baud)
     ln.receiver_handler.append(logger)
     if args.capture and not args.replay:
-        capturefile = open("pylnlib.capture", "wb", buffering=0)
+        capturefile = open(CAPTUREFILE, "wb", buffering=0)
         ln.receiver_handler.append(dumper(capturefile))
     ln.run()
     if capturefile:
