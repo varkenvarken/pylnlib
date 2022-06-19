@@ -4,13 +4,14 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619142503
+# Version: 20220619160001
 
 import argparse
 import sys
 import time
 
 from .Interface import Interface
+from .Message import FunctionGroup1, RequestSlotData
 
 CAPTUREFILE = "pylnlib.capture"
 
@@ -24,6 +25,15 @@ def dumper(handle):
         handle.write(msg.data)
 
     return dumpmsg
+
+
+def scrollkeeper(output):
+    def scrollkeeper_assistent(msg):
+        if isinstance(msg, FunctionGroup1):
+            slotdatareq = RequestSlotData(msg.slot)
+            print(f"would have sent {slotdatareq}")
+
+    return scrollkeeper_assistent
 
 
 if __name__ == "__main__":
@@ -59,6 +69,7 @@ if __name__ == "__main__":
     if args.capture and not args.replay:
         capturefile = open(CAPTUREFILE, "wb", buffering=0)
         ln.receiver_handler.append(dumper(capturefile))
+    ln.receiver_handler.append(scrollkeeper(ln.send_message))
     ln.run()
     if capturefile:
         capturefile.close()

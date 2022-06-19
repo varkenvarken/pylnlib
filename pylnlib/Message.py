@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619152941
+# Version: 20220619155306
 
 
 class Message:
@@ -20,6 +20,9 @@ class Message:
 
     def __str__(self):
         return f"{self.__class__.__name__}(opcode={hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+
+    def updateChecksum(self):
+        self.checksum = self.data[-1] = Message.checksum(self.data[:-1])
 
     @staticmethod
     def length(opcode, nextbyte):
@@ -81,10 +84,10 @@ class FunctionGroup1(Message):
         self.slot = int(data[1])
         self.dir = bool(data[2] & 0x20)
         self.f0 = bool(data[2] & 0x10)
-        self.f1 = bool(data[2] & 0x8)
-        self.f2 = bool(data[2] & 0x4)
-        self.f3 = bool(data[2] & 0x2)
-        self.f4 = bool(data[2] & 0x1)
+        self.f1 = bool(data[2] & 0x1)
+        self.f2 = bool(data[2] & 0x2)
+        self.f3 = bool(data[2] & 0x4)
+        self.f4 = bool(data[2] & 0x8)
 
     def __str__(self):
         return f"{self.__class__.__name__}({self.slot=} {self.dir=} {self.f0=}  {self.f1=} {self.f2=} {self.f3=} {self.f4=}| op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
@@ -108,3 +111,12 @@ class SensorState(Message):
 
     def __str__(self):
         return f"{self.__class__.__name__}(addr={self.address+1} = {'ON' if self.level else 'OFF'} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+
+class RequestSlotData(Message):
+    def __init__(self, slot):
+        data = bytes[4]
+        data[0] = 0xBB
+        data[1] = slot
+        data[2] = 0
+        super().__init__(data)
+        self.updateChecksum()
