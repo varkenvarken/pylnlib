@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619144850
+# Version: 20220619145819
 
 
 class Message:
@@ -78,11 +78,11 @@ class SwitchState(Message):
     def __init__(self, data):
         super().__init__(data)
         self.address = Message.switchaddress(data[1], data[2])
-        self.state = data[2] & 0x10
-        self.direction = data[2] & 0x20
+        self.closed = bool(data[2] & 0x20)
+        self.thrown = bool(data[2] & 0x10)
 
     def __str__(self):
-        return f"{self.__class__.__name__}({self.address=} = dir({self.direction}) on({self.state}) | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+        return f"{self.__class__.__name__}({self.address=} = {self.closed=} {self.thrown=} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
 
 
 class SensorState(Message):
