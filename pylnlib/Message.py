@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619160645
+# Version: 20220619173353
 
 
 class Message:
@@ -49,6 +49,10 @@ class Message:
             return SwitchState(data)
         elif opcode == 0xB2:
             return SensorState(data)
+        elif opcode == 0xBB:
+            return RequestSlotData(data)
+        elif opcode == 0xE7:
+            return SlotDataReturn(data)
         return Unknown(data)
 
     @staticmethod
@@ -64,6 +68,10 @@ class Message:
 
     @staticmethod
     def switchaddress(d0, d1):
+        return (d0 & 0x7F) | ((d1 & 0x0F) << 7)
+
+    @staticmethod
+    def slotaddress(d0, d1):
         return (d0 & 0x7F) | ((d1 & 0x0F) << 7)
 
 
@@ -117,9 +125,43 @@ class SensorState(Message):
 
 class RequestSlotData(Message):
     def __init__(self, slot):
-        data = bytearray(4)
-        data[0] = 0xBB
-        data[1] = slot
-        data[2] = 0
+        if type(slot) == int:
+            data = bytearray(4)
+            data[0] = 0xBB
+            data[1] = self.slot = slot
+            data[2] = 0
+            super().__init__(data)
+            self.updateChecksum()
+        else:
+            super().__init__(data)
+            self.slot = int(data[1])
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(slot = {self.slot} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+
+
+class SlotDataReturn(Message):
+    def __init__(self, data):
         super().__init__(data)
-        self.updateChecksum()
+        # data[1] is always 0x0e
+        self.slot = int(data[2])
+        self.stat = data[3]
+        self.address = Message.slotaddress(data[4], data[9])
+        self.speed = int(data[5])
+        self.dir = bool(data[6] & 0x20)
+        self.f0 = bool(data[6] & 0x10)
+        self.f1 = bool(data[6] & 0x1)
+        self.f2 = bool(data[6] & 0x2)
+        self.f3 = bool(data[6] & 0x4)
+        self.f4 = bool(data[6] & 0x8)
+        self.f5 = bool(data[10] & 0x1)
+        self.f6 = bool(data[10] & 0x2)
+        self.f7 = bool(data[10] & 0x4)
+        self.f8 = bool(data[10] & 0x8)
+        self.trk = data[7]
+        self.ss2 = data[8]
+        self.id1 = data[11]
+        self.id2 = data[12]
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(slot={self.slot} loc={self.addr} {self.dir=} {self.f0=} {self.f1=} {self.f2=} {self.f3=} {self.f4=}  {self.f5=} {self.f6=} {self.f7=} {self.f8=} {self.trk=} {self.ss2=} {self.id1=} {self.id2=}| op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"

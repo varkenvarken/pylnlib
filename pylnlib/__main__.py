@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619170143
+# Version: 20220619173524
 
 import argparse
 import sys
@@ -31,7 +31,6 @@ def scrollkeeper(output):
     def scrollkeeper_assistent(msg):
         if isinstance(msg, FunctionGroup1):
             slotdatareq = RequestSlotData(msg.slot)
-            print(f"sent {slotdatareq}", flush=True)
             output(slotdatareq)
 
     return scrollkeeper_assistent
@@ -70,7 +69,11 @@ if __name__ == "__main__":
     if args.capture and not args.replay:
         capturefile = open(CAPTUREFILE, "wb", buffering=0)
         ln.receiver_handler.append(dumper(capturefile))
-    ln.receiver_handler.append(scrollkeeper(ln.send_message))
+    ln.receiver_handler.append(
+        scrollkeeper(
+            lambda msg: print("would send", msg) if args.replay else ln.send_message
+        )
+    )
     ln.run()
     if capturefile:
         capturefile.close()
