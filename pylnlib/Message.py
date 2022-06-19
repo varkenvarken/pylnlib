@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619155306
+# Version: 20220619160133
 
 
 class Message:
@@ -114,7 +114,7 @@ class SensorState(Message):
 
 class RequestSlotData(Message):
     def __init__(self, slot):
-        data = bytes[4]
+        data = bytes(4)
         data[0] = 0xBB
         data[1] = slot
         data[2] = 0
