@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619160133
+# Version: 20220619160411
 
 
 class Message:
@@ -78,6 +78,7 @@ class PowerOn(Message):
 class PowerOff(Message):
     pass
 
+
 class FunctionGroup1(Message):
     def __init__(self, data):
         super().__init__(data)
@@ -91,6 +92,7 @@ class FunctionGroup1(Message):
 
     def __str__(self):
         return f"{self.__class__.__name__}({self.slot=} {self.dir=} {self.f0=}  {self.f1=} {self.f2=} {self.f3=} {self.f4=}| op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+
 
 class SwitchState(Message):
     def __init__(self, data):
@@ -112,9 +114,10 @@ class SensorState(Message):
     def __str__(self):
         return f"{self.__class__.__name__}(addr={self.address+1} = {'ON' if self.level else 'OFF'} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
 
+
 class RequestSlotData(Message):
     def __init__(self, slot):
-        data = bytes(4)
+        data = bytearray(4)
         data[0] = 0xBB
         data[1] = slot
         data[2] = 0
