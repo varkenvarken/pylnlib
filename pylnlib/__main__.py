@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619140146
+# Version: 20220619140621
 
 import argparse
 import time
@@ -23,7 +23,7 @@ def dumper(handle):
     def dumpmsg(msg):
         handle.write(msg.data)
 
-    return dumper
+    return dumpmsg
 
 
 if __name__ == "__main__":
