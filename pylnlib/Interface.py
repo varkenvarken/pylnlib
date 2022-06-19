@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619142956
+# Version: 20220619144125
 
 import signal
 import sys
@@ -56,7 +56,6 @@ class Interface:
     def on_receive(self, msg):
         if self.receiver_handler != None:
             for handler in self.receiver_handler:
-                print(f"handler called {handler.__name__}", file=sys.stderr, flush=True)
                 handler(msg)
 
     def run(self):
@@ -66,9 +65,13 @@ class Interface:
             if self.rd_event.wait(1):
                 self.rd_event.clear()
 
-                if not self.msg_queue.empty():
+                while not self.msg_queue.empty():
                     msg = self.msg_queue.get()
                     self.on_receive(msg)
+
+        while not self.msg_queue.empty():
+            msg = self.msg_queue.get()
+            self.on_receive(msg)
 
         self.recv.join()
         self.com.close()
