@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220618155226
+# Version: 20220619130959
 
 
 class Message:
@@ -40,7 +40,7 @@ class Message:
             return PowerOn(data)
         elif opcode == 0x82:
             return PowerOff(data)
-        elif opcode == 0xB0:
+        elif opcode == 0xBd:
             return SwitchState(data)
         elif opcode == 0xB2:
             return SensorState(data)
@@ -54,9 +54,12 @@ class Message:
         return chksum
 
     @staticmethod
-    def address(d0, d1):
-        return (d0 & 0x7F) | ((d1 & 0x0F) << 8)  # | ((d1 >> 5) & 0x1)
+    def sensoraddress(d0, d1):
+        return ((d0 & 0x7F) << 1) | ((d1 & 0x0F) << 8) | ((d1 >> 5) & 0x1)
 
+    @staticmethod
+    def switchaddress(d0, d1):
+        return (d0 & 0x7F) | ((d1 & 0x0F) << 7)
 
 class Unknown(Message):
     pass
@@ -71,14 +74,22 @@ class PowerOff(Message):
 
 
 class SwitchState(Message):
-    pass
+    def __init__(self, data):
+        super().__init__(data)
+        self.address = Message.switchaddress(data[1], data[2])
+        self.state = data[2] & 0x10
+        self.direction = data[2] & 0x20 
+
+    def __str__(self):
+        return f"{self.__class__.__name__}({self.address=} = dir({self.direction}) on({self.state}) | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+
 
 
 class SensorState(Message):
     def __init__(self, data):
         super().__init__(data)
-        self.address = Message.address(data[1], data[2])
-        self.level = data[2] & 0x30
+        self.address = Message.sensoraddress(data[1], data[2])
+        self.level = data[2] & 0x10
 
     def __str__(self):
         return f"{self.__class__.__name__}({self.address=} = {self.level} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"

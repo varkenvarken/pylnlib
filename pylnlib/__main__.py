@@ -4,15 +4,23 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220618154130
+# Version: 20220619133309
 
 import argparse
+from multiprocessing import cpu_count
 import time
 
 from .Interface import Interface
 
-def recv(msg):
+CAPTUREFILE = " pylnlib.capture"
+
+def logger(msg):
     print(time.strftime("%H:%M:%S"), msg)
+
+def dumper(handle):
+    def dumpmsg(msg):
+        handle.write(msg.data)
+    return dumper
 
 if __name__ == "__main__":
     cmdline = argparse.ArgumentParser()
@@ -22,8 +30,25 @@ if __name__ == "__main__":
     cmdline.add_argument(
         "-b", "--baud", help="baudrate of serial port", default=57600, type=int
     )
+    cmdline.add_argument(
+        "-c", "--capture", help=f"capture all traffic to {CAPTUREFILE}", action='store_true'
+    )
+    cmdline.add_argument(
+        "-r", "--replay", help=f"replay all captured traffic from {CAPTUREFILE}", action='store_true'
+    )
     args = cmdline.parse_args()
 
-    ln = Interface(args.port, args.baud)
-    ln.receiver_handler = recv
+    capturefile = None
+    
+    if args.replay:
+        capturefile = open(CAPTUREFILE,"rb")
+        ln = Interface(capturefile)
+    else:
+        ln = Interface(args.port, args.baud)
+    ln.receiver_handler += logger
+    if args.capture and not args.replay:
+        capturefile = open("pylnlib.capture","wb", buffering=0)
+        ln.receiver_handler += dumper(capturefile)
     ln.run()
+    if capturefile:
+        capturefile.close()
