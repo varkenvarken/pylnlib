@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619173635
+# Version: 20220619173732
 
 
 class Message:
@@ -164,4 +164,4 @@ class SlotDataReturn(Message):
         self.id2 = data[12]
 
     def __str__(self):
-        return f"{self.__class__.__name__}(slot={self.slot} loc={self.addr} {self.dir=} {self.f0=} {self.f1=} {self.f2=} {self.f3=} {self.f4=}  {self.f5=} {self.f6=} {self.f7=} {self.f8=} {self.trk=} {self.ss2=} {self.id1=} {self.id2=}| op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+        return f"{self.__class__.__name__}(slot={self.slot} loc={self.address} {self.dir=} {self.f0=} {self.f1=} {self.f2=} {self.f3=} {self.f4=}  {self.f5=} {self.f6=} {self.f7=} {self.f8=} {self.trk=} {self.ss2=} {self.id1=} {self.id2=}| op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
