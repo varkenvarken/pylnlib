@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619142237
+# Version: 20220619142626
 
 import signal
 import sys
@@ -98,17 +98,18 @@ class Interface:
 
                 if len(data) == 0:
                     self.exit = True
-                if len(data) < 2:
+                elif len(data) < 2:
                     raise IOError("captured stream ended prematurely")
-                length = Message.length(data[0], data[1])
-                if length == 2:
-                    msg = Message.from_data(data)
                 else:
-                    data2 = self.com.read(length - 2)
-                    if len(data2) < length - 2:
-                        raise IOError("captured stream ended prematurely")
-                    msg = Message.from_data(data + data2)
-                self.msg_queue.put(msg)
+                    length = Message.length(data[0], data[1])
+                    if length == 2:
+                        msg = Message.from_data(data)
+                    else:
+                        data2 = self.com.read(length - 2)
+                        if len(data2) < length - 2:
+                            raise IOError("captured stream ended prematurely")
+                        msg = Message.from_data(data + data2)
+                    self.msg_queue.put(msg)
                 self.rd_event.set()
 
     def send_message(self, msg):
