@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619160956
+# Version: 20220619170143
 
 import argparse
 import sys
@@ -32,7 +32,7 @@ def scrollkeeper(output):
         if isinstance(msg, FunctionGroup1):
             slotdatareq = RequestSlotData(msg.slot)
             print(f"sent {slotdatareq}", flush=True)
-            output(msg)
+            output(slotdatareq)
 
     return scrollkeeper_assistent
 
