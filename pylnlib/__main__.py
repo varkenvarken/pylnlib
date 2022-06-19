@@ -4,11 +4,11 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619140920
+# Version: 20220619142503
 
 import argparse
+import sys
 import time
-from multiprocessing import cpu_count
 
 from .Interface import Interface
 
@@ -16,7 +16,7 @@ CAPTUREFILE = "pylnlib.capture"
 
 
 def logger(msg):
-    print(time.strftime("%H:%M:%S"), msg)
+    print(time.strftime("%H:%M:%S"), msg, file=sys.stderr, flush=True)
 
 
 def dumper(handle):

@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619142030
+# Version: 20220619142237
 
 import signal
 import sys
@@ -97,7 +97,7 @@ class Interface:
                 # print(len(data), list(map(hex, data)))
 
                 if len(data) == 0:
-                    return
+                    self.exit = True
                 if len(data) < 2:
                     raise IOError("captured stream ended prematurely")
                 length = Message.length(data[0], data[1])
