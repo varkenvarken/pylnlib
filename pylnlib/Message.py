@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619145819
+# Version: 20220619152941
 
 
 class Message:
@@ -40,6 +40,8 @@ class Message:
             return PowerOn(data)
         elif opcode == 0x82:
             return PowerOff(data)
+        elif opcode == 0xA1:
+            return FunctionGroup1(data)
         elif opcode == 0xB0:
             return SwitchState(data)
         elif opcode == 0xB2:
@@ -73,16 +75,29 @@ class PowerOn(Message):
 class PowerOff(Message):
     pass
 
+class FunctionGroup1(Message):
+    def __init__(self, data):
+        super().__init__(data)
+        self.slot = int(data[1])
+        self.dir = bool(data[2] & 0x20)
+        self.f0 = bool(data[2] & 0x10)
+        self.f1 = bool(data[2] & 0x8)
+        self.f2 = bool(data[2] & 0x4)
+        self.f3 = bool(data[2] & 0x2)
+        self.f4 = bool(data[2] & 0x1)
+
+    def __str__(self):
+        return f"{self.__class__.__name__}({self.slot=} {self.dir=} {self.f0=}  {self.f1=} {self.f2=} {self.f3=} {self.f4=}| op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
 
 class SwitchState(Message):
     def __init__(self, data):
         super().__init__(data)
         self.address = Message.switchaddress(data[1], data[2])
-        self.closed = bool(data[2] & 0x20)
-        self.thrown = bool(data[2] & 0x10)
+        self.thrown = bool(data[2] & 0x20)
+        self.engage = bool(data[2] & 0x10)
 
     def __str__(self):
-        return f"{self.__class__.__name__}({self.address=} = {self.closed=} {self.thrown=} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+        return f"{self.__class__.__name__}(addr={self.address+1} = {self.thrown=} {self.engage=} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
 
 
 class SensorState(Message):
@@ -92,4 +107,4 @@ class SensorState(Message):
         self.level = bool(data[2] & 0x10)
 
     def __str__(self):
-        return f"{self.__class__.__name__}({self.address=} = {'ON' if self.level else 'OFF'} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+        return f"{self.__class__.__name__}(addr={self.address+1} = {'ON' if self.level else 'OFF'} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
