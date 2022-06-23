@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619144125
+# Version: 20220621134214
 
 import signal
 import sys
@@ -24,14 +24,18 @@ class Interface:
 
         self.exit = False
 
-        self.recv = threading.Thread(name="recv", target=self.receiver_thread)
-        self.recv.setDaemon(True)
+        self.inputThread = threading.Thread(name="receiver", target=self.receiver_thread)
+        self.inputThread.setDaemon(True)
 
         self.receiver_handler = []
 
         self.rd_event = threading.Event()
 
-        self.msg_queue = Queue()
+        self.inputqueue = Queue()
+
+        self.outputThread = threading.Thread(name="sender", target=self.sender_thread)
+        self.outputThread.setDaemon(True)
+        self.outputqueue = Queue()
 
         self.input = "com"
         if type(port) == str:
@@ -59,21 +63,25 @@ class Interface:
                 handler(msg)
 
     def run(self):
-        self.recv.start()
+        self.inputThread.start()
+        self.outputThread.start()
+
         # main loop that pulls messages from msg_queue
         while not self.exit:
             if self.rd_event.wait(1):
                 self.rd_event.clear()
 
-                while not self.msg_queue.empty():
-                    msg = self.msg_queue.get()
+                while not self.inputqueue.empty():
+                    msg = self.inputqueue.get()
                     self.on_receive(msg)
 
-        while not self.msg_queue.empty():
-            msg = self.msg_queue.get()
+        while not self.inputqueue.empty():
+            msg = self.inputqueue.get()
             self.on_receive(msg)
 
-        self.recv.join()
+        self.inputThread.join()
+        self.outputThread.join()
+
         self.com.close()
 
         print("Done...", file=sys.stderr)
@@ -92,7 +100,7 @@ class Interface:
                             length - 2
                         )  # this is blocking, might want to change that
                         msg = Message.from_data(data + data2)
-                    self.msg_queue.put(msg)
+                    self.inputqueue.put(msg)
                     self.rd_event.set()
                 else:
                     time.sleep(0.1)
@@ -113,8 +121,19 @@ class Interface:
                         if len(data2) < length - 2:
                             raise IOError("captured stream ended prematurely")
                         msg = Message.from_data(data + data2)
-                    self.msg_queue.put(msg)
+                    self.inputqueue.put(msg)
                 self.rd_event.set()
 
-    def send_message(self, msg):
-        self.com.write(msg.data)
+    def sender_thread(self):
+        while not self.exit:
+            if not self.outputqueue.empty():
+                msg = self.outputqueue.get()
+                if self.input == "com":
+                    self.com.write(msg.data)
+                else:  # on replay we simply shunt back the output message
+                    self.inputqueue.put(msg)
+                    self.rd_event.set()
+                time.sleep(0.25)
+    
+    def sendMessage(self, msg):
+        self.outputqueue.put(msg)

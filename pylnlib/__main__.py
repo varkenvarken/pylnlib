@@ -4,14 +4,16 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220619173524
+# Version: 20220622154153
 
 import argparse
 import sys
 import time
+from threading import Thread
+from time import sleep
 
 from .Interface import Interface
-from .Message import FunctionGroup1, RequestSlotData
+from .Scrollkeeper import Scrollkeeper
 
 CAPTUREFILE = "pylnlib.capture"
 
@@ -21,19 +23,23 @@ def logger(msg):
 
 
 def dumper(handle):
+    """
+    return a function that writes raw message data to a file.
+    """
+
     def dumpmsg(msg):
         handle.write(msg.data)
 
     return dumpmsg
 
 
-def scrollkeeper(output):
-    def scrollkeeper_assistent(msg):
-        if isinstance(msg, FunctionGroup1):
-            slotdatareq = RequestSlotData(msg.slot)
-            output(slotdatareq)
+def reporter(scrollkeeper, interval=30):
+    def dump():
+        while True:
+            print(scrollkeeper)
+            sleep(interval)
 
-    return scrollkeeper_assistent
+    return dump
 
 
 if __name__ == "__main__":
@@ -43,6 +49,13 @@ if __name__ == "__main__":
     )
     cmdline.add_argument(
         "-b", "--baud", help="baudrate of serial port", default=57600, type=int
+    )
+    cmdline.add_argument(
+        "-i",
+        "--reportinterval",
+        help="interval between scrollkeeper reports",
+        default=30,
+        type=float,
     )
     cmdline.add_argument(
         "-c",
@@ -56,24 +69,49 @@ if __name__ == "__main__":
         help=f"replay all captured traffic from {CAPTUREFILE}",
         action="store_true",
     )
+    cmdline.add_argument(
+        "-f",
+        "--capturefile",
+        help="name of capture file",
+        default=CAPTUREFILE,
+        type=str,
+    )
+
     args = cmdline.parse_args()
 
+    # create an interface, possibly pointing to a file with previously captured input
     capturefile = None
-
     if args.replay:
-        capturefile = open(CAPTUREFILE, "rb")
-        ln = Interface(capturefile)
+        capturefile = open(args.capturefile, "rb")
+        interface = Interface(capturefile)
     else:
-        ln = Interface(args.port, args.baud)
-    ln.receiver_handler.append(logger)
+        interface = Interface(args.port, args.baud)
+
+    # always add the logger handler
+    interface.receiver_handler.append(logger)
+
+    # open a file to write raw captured bytes to
     if args.capture and not args.replay:
-        capturefile = open(CAPTUREFILE, "wb", buffering=0)
-        ln.receiver_handler.append(dumper(capturefile))
-    ln.receiver_handler.append(
-        scrollkeeper(
-            lambda msg: print("would send", msg) if args.replay else ln.send_message
-        )
-    )
-    ln.run()
+        capturefile = open(args.capturefile, "wb", buffering=0)
+        interface.receiver_handler.append(dumper(capturefile))
+
+    # create a Scrollkeeper instance and let it process messages
+    scrollkeeper = Scrollkeeper(interface)
+    interface.receiver_handler.append(scrollkeeper.messageListener)
+
+    Thread(
+        target=reporter(scrollkeeper, args.reportinterval),
+        name="scrollkeeper dump",
+        daemon=True,
+    ).start()  # no need to join a daemon thread later
+
+    interface.run()
+
     if capturefile:
         capturefile.close()
+
+    if args.replay:
+        print(
+            f"waiting {args.reportinterval + 2} seconds so the final scrollkeeper report will be produced."
+        )
+        sleep(args.reportinterval + 2)
