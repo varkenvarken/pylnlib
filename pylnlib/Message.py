@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220623130025
+# Version: 20220623191058
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -13,6 +13,11 @@
 
 
 class Message:
+    """
+    represents a LocoNet message.
+
+    several subclasses are provided to implemented actual messages.
+    """
     OPC_GPON = 0x83
     OPC_GPOFF = 0x82
 
@@ -36,6 +41,16 @@ class Message:
     OPC_WR_SL_DATA = 0xEF  # not implemented
 
     def __init__(self, data):
+        """
+        Initialize a message from a byte array.
+
+        The 'opcode' (message type) is determined from byte 0,
+        The length of the data (incl. the checksum) is determined by bits in the first byte and the second byte (if it is a variable byte message)
+        The checksum is the last byte in the data. If the last byte in the data is 0, no check is done, so you can create a message from scratch and calculate the checksum later.
+
+        If the length of the byte array does not match the encoded length, a ValueError is raised.
+        If the calculated checksum doesn match the last byte of the byte array, a ValueError is raised (unless the last data byte is 0)
+        """
         self.opcode = data[0]
         self.length = Message.length(data[0], data[1])
         self.data = data
@@ -46,16 +61,29 @@ class Message:
             raise ValueError("checksum error")
 
     def hexdata(self):
+        """
+        Return the message data as a list of numbers formatted as hexadecimals with 2 digits and without 0x prefix.
+        """
         return list(f"{v:02x}" for v in map(int, self.data))
 
     def __str__(self):
         return f"{self.__class__.__name__}(opcode={hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
 
     def updateChecksum(self):
+        """
+        Calculate the checksum of the data and store it in the last byte.
+        """
         self.checksum = self.data[-1] = Message.checksum(self.data[:-1])
 
     @staticmethod
     def length(opcode, nextbyte):
+        """
+        Determine the length of a LocoNet message based on its opcode and next byte.
+
+        The next byte holds the total number of bytes in the message if the opcode indicates this is a variable length message.
+
+        The length is inclusive the opcode and the final checksum.
+        """
         d6d5 = (opcode >> 5) & 3
         if d6d5 == 0:
             return 2
@@ -68,6 +96,11 @@ class Message:
 
     @staticmethod
     def from_data(data):
+        """
+        A factory method that returns a specific subclass of a Message based on the opcode, or an instance of Unknown.
+
+        TODO: not all possible opcodes/message types are implemented yet.
+        """
         opcode = data[0]
         if opcode == 0x83:
             return PowerOn(data)
@@ -93,6 +126,13 @@ class Message:
 
     @staticmethod
     def checksum(msg):
+        """
+        Calculate the checksum over the data of a message.
+
+        The checksum is calculate over all data bytes except the last one (which will be the checksum).
+
+        This method does NOT overwrite the checksum byte.
+        """
         chksum = 0
         for c in msg:
             chksum = chksum ^ (c ^ 0xFF)
@@ -100,18 +140,36 @@ class Message:
 
     @staticmethod
     def sensoraddress(d0, d1):
+        """
+        Return a sensor address from the data.
+        
+        Sensors start from zero (but may typically displayed with an added offset of 1).
+        """
         return ((d0 & 0x7F) << 1) | ((d1 & 0x0F) << 8) | ((d1 >> 5) & 0x1)
 
     @staticmethod
     def switchaddress(d0, d1):
-        return (d0 & 0x7F) | ((d1 & 0x0F) << 7)
+        """
+        Return a switch address from the data.
+        
+        Switches start from zero (but may typically displayed with an added offset of 1).
+        """
+        return ((d0 & 0x7F) << 1) | ((d1 & 0x0F) << 8) | ((d1 >> 5) & 0x1)
 
     @staticmethod
     def slotaddress(d0, d1):
-        return (d0 & 0x7F) | ((d1 & 0x0F) << 7)
+        """
+        Return a slot address from the data.
+        
+        Sensors start from zero (but slot 0 is special, as are several others >= 0x70).
+        """
+        return ((d0 & 0x7F) << 1) | ((d1 & 0x0F) << 8) | ((d1 >> 5) & 0x1)
 
 
 class Unknown(Message):
+    """
+    An Unknown message simply hold the data bytes.
+    """
     pass
 
 
