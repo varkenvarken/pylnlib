@@ -26,6 +26,8 @@ The `Scrollkeeper` class is designed to keep track of the layout status. It does
 
 Status reply messages are used to update information about the item, just like commands. However if a command (like throwing a switch or changing the contents of a slot to for example change a locomotive's speed) references an unknow item, the `Scrollkeeper` instance will send an appropriate status request message. The reply to this message will then be processed as normal.
 
+For any item it receieves information about (a sensor, switch, or slot) it creates or updates a suitable object in one of the collections it manages.
+
 The `Scrollkeeper` class also offers method to provide information about the status of the items it keeps updated and to forward an outgoing `Message` to an `Interface`.
 
 ## The Script class
