@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220621134214
+# Version: 20220626122609
 
 import signal
 import sys
@@ -24,7 +24,9 @@ class Interface:
 
         self.exit = False
 
-        self.inputThread = threading.Thread(name="receiver", target=self.receiver_thread)
+        self.inputThread = threading.Thread(
+            name="receiver", target=self.receiver_thread
+        )
         self.inputThread.setDaemon(True)
 
         self.receiver_handler = []
@@ -62,7 +64,7 @@ class Interface:
             for handler in self.receiver_handler:
                 handler(msg)
 
-    def run(self):
+    def run(self, delay=0):
         self.inputThread.start()
         self.outputThread.start()
 
@@ -72,10 +74,12 @@ class Interface:
                 self.rd_event.clear()
 
                 while not self.inputqueue.empty():
+                    time.sleep(delay)
                     msg = self.inputqueue.get()
                     self.on_receive(msg)
 
         while not self.inputqueue.empty():
+            time.sleep(delay)
             msg = self.inputqueue.get()
             self.on_receive(msg)
 
@@ -85,6 +89,9 @@ class Interface:
         self.com.close()
 
         print("Done...", file=sys.stderr)
+
+    def run_in_background(self, delay):
+        threading.Thread(name="interface", target=self.run, daemon=True, args=(delay,)).start()
 
     def receiver_thread(self):
         while not self.exit:
@@ -134,6 +141,6 @@ class Interface:
                     self.inputqueue.put(msg)
                     self.rd_event.set()
                 time.sleep(0.25)
-    
+
     def sendMessage(self, msg):
         self.outputqueue.put(msg)

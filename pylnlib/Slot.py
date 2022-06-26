@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220623124629
+# Version: 20220625152449
 
 
 class Slot:
@@ -26,6 +26,10 @@ class Slot:
         f6=None,
         f7=None,
         f8=None,
+        f9=None,
+        f10=None,
+        f11=None,
+        f12=None,
         trk=None,
         ss2=None,
         id1=None,
@@ -45,6 +49,10 @@ class Slot:
         self.f6 = f6
         self.f7 = f7
         self.f8 = f8
+        self.f9 = f9
+        self.f10 = f10
+        self.f11 = f11
+        self.f12 = f12
         self.trk = trk
         self.ss2 = ss2
         self.id1 = id1
@@ -52,6 +60,6 @@ class Slot:
 
     def __str__(self):
         ff = " ".join(
-            f"f{f}:" + ("ON" if getattr(self, f"f{f}") else "OFF") for f in range(9)
+            f"f{f}:" + ("ON" if getattr(self, f"f{f}") else "OFF") for f in range(13)
         )
         return f"Slot({self.id:2d}): loc={self.address}, dir={'BACKWARD' if self.dir else 'FORWARD'}, speed={self.speed}/{Slot.speedsteps[self.status&0x7]}, [{ff}]"

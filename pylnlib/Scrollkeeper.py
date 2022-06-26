@@ -4,18 +4,22 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220623125227
+# Version: 20220626134054
 
 from datetime import datetime
 from time import sleep
+from threading import Lock
 
 from .Message import (
     FunctionGroup1,
+    FunctionGroup2,
+    FunctionGroupSound,
     RequestLocAddress,
     RequestSlotData,
     RequestSwitchState,
     SensorState,
     SlotDataReturn,
+    SlotSpeed,
     SwitchState,
 )
 from .Sensor import Sensor
@@ -24,11 +28,15 @@ from .Switch import Switch
 
 
 class Scrollkeeper:
-    def __init__(self, interface):
+    def __init__(self, interface, slottrace=False):
         self.interface = interface
+        self.slottrace = slottrace
         self.slots = {}
+        self.slotlock = Lock()
         self.switches = {}
+        self.switchlock = Lock()
         self.sensors = {}
+        self.sensorlock = Lock()
 
     def messageListener(self, msg):
         """
@@ -71,6 +79,36 @@ class Scrollkeeper:
                     f3=msg.f3,
                     f4=msg.f4,
                 )
+        elif isinstance(msg, FunctionGroupSound):
+            if msg.slot not in self.slots:
+                self.sendMessage(RequestSlotData(msg.slot))
+            else:
+                self.updateSlot(
+                    msg.slot,
+                    f5=msg.f5,
+                    f6=msg.f6,
+                    f7=msg.f7,
+                    f8=msg.f8,
+                )
+        elif isinstance(msg, FunctionGroup2):
+            if msg.slot not in self.slots:
+                self.sendMessage(RequestSlotData(msg.slot))
+            else:
+                self.updateSlot(
+                    msg.slot,
+                    f9=msg.f9,
+                    f10=msg.f10,
+                    f11=msg.f11,
+                    f12=msg.f12,
+                )
+        elif isinstance(msg, SlotSpeed):
+            if msg.slot not in self.slots:
+                self.sendMessage(RequestSlotData(msg.slot))
+            else:
+                self.updateSlot(
+                    msg.slot,
+                    speed=msg.speed,
+                )
         elif isinstance(msg, SensorState):
             self.updateSensor(msg.address, msg.level)
         elif isinstance(msg, SwitchState):
@@ -92,70 +130,87 @@ class Scrollkeeper:
         f6=None,
         f7=None,
         f8=None,
+        f9=None,
+        f10=None,
+        f11=None,
+        f12=None,
         trk=None,
         ss2=None,
         id1=None,
         id2=None,
     ):
-        if id not in self.slots:
-            self.slots[id] = Slot(id)
+        with self.slotlock:
+            if id not in self.slots:
+                self.slots[id] = Slot(id)
 
-        slot = self.slots[id]
-        slot.slot = id
-        if dir is not None:
-            slot.dir = dir
-        if speed is not None:
-            slot.speed = speed
-        if status is not None:
-            slot.status = status
-        if address is not None:
-            slot.address = address
-        if f0 is not None:
-            slot.f0 = f0
-        if f1 is not None:
-            slot.f1 = f1
-        if f2 is not None:
-            slot.f2 = f2
-        if f3 is not None:
-            slot.f3 = f3
-        if f4 is not None:
-            slot.f4 = f4
-        if f5 is not None:
-            slot.f5 = f5
-        if f6 is not None:
-            slot.f6 = f6
-        if f7 is not None:
-            slot.f7 = f7
-        if f8 is not None:
-            slot.f8 = f8
-        if trk is not None:
-            slot.trk = trk
-        if ss2 is not None:
-            slot.ss2 = ss2
-        if id1 is not None:
-            slot.id1 = id1
-        if id2 is not None:
-            slot.id2 = id2
+            slot = self.slots[id]
+            slot.slot = id
+            if dir is not None:
+                slot.dir = dir
+            if speed is not None:
+                slot.speed = speed
+            if status is not None:
+                slot.status = status
+            if address is not None:
+                slot.address = address
+            if f0 is not None:
+                slot.f0 = f0
+            if f1 is not None:
+                slot.f1 = f1
+            if f2 is not None:
+                slot.f2 = f2
+            if f3 is not None:
+                slot.f3 = f3
+            if f4 is not None:
+                slot.f4 = f4
+            if f5 is not None:
+                slot.f5 = f5
+            if f6 is not None:
+                slot.f6 = f6
+            if f7 is not None:
+                slot.f7 = f7
+            if f8 is not None:
+                slot.f8 = f8
+            if f9 is not None:
+                slot.f9 = f9
+            if f10 is not None:
+                slot.f10 = f10
+            if f11 is not None:
+                slot.f11 = f11
+            if f8 is not None:
+                slot.f12 = f12
+            if trk is not None:
+                slot.trk = trk
+            if ss2 is not None:
+                slot.ss2 = ss2
+            if id1 is not None:
+                slot.id1 = id1
+            if id2 is not None:
+                slot.id2 = id2
+            if self.slottrace:
+                print(self)
 
     def updateSensor(self, address, level=None):
-        if address not in self.sensors:
-            self.sensors[address] = Sensor(address)
-        if level is not None:
-            self.sensors[address].level = level
+        with self.sensorlock:
+            if address not in self.sensors:
+                self.sensors[address] = Sensor(address)
+            if level is not None:
+                self.sensors[address].level = level
 
     def updateSwitch(self, address, thrown=None, engage=None):
-        if address not in self.switches:
-            self.switches[address] = Switch(address)
-        if thrown is not None:
-            self.switches[address].thrown = thrown
-        if engage is not None:
-            self.switches[address].engage = engage
+        with self.switchlock:
+            if address not in self.switches:
+                self.switches[address] = Switch(address)
+            if thrown is not None:
+                self.switches[address].thrown = thrown
+            if engage is not None:
+                self.switches[address].engage = engage
 
     def getSlot(self, address):
         """
         Return the slot id associated with the loc address.
 
-        If there is no slot known for this loc, request slot data and acquire slot if not in use.
+        If there is no slot known for this loc, request slot data.
         """
         for slot in self.slots:
             if slot.address == address:
@@ -177,7 +232,7 @@ class Scrollkeeper:
             raise TypeError("Switch id must be an int")
         if id not in self.switches:
             self.sendMessage(RequestSwitchState(id))
-            if self.waitUntilSwitchKnown(id):
+            if not self.waitUntilSwitchKnown(id):
                 raise ValueError("Switch id {id} unknown")
         return self.switches[id].thrown
 
@@ -185,7 +240,7 @@ class Scrollkeeper:
         """
         Return the state of the sensor.
 
-        TODO if the sensor is unknown, request the status
+        if the sensor is unknown, request the status.
         """
         if type(id) != int:
             raise TypeError("Sensor id must be an int")
@@ -193,8 +248,8 @@ class Scrollkeeper:
             self.sendMessage(
                 SensorState(id)
             )  # request for sensor state is same a sensor state report
-            if self.waitUntilSensorKnown(id):
-                raise ValueError("Sensor id {id} unknown")
+            if not self.waitUntilSensorKnown(id):
+                raise ValueError(f"Sensor id {id} unknown")
         return self.sensors[id].level
 
     def sendMessage(self, message):

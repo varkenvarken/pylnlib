@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220622154153
+# Version: 20220625151911
 
 import argparse
 import sys
@@ -76,6 +76,12 @@ if __name__ == "__main__":
         default=CAPTUREFILE,
         type=str,
     )
+    cmdline.add_argument(
+        "-s",
+        "--slottrace",
+        help=f"show scrollkeeper report after every slot update",
+        action="store_true",
+    )
 
     args = cmdline.parse_args()
 
@@ -96,7 +102,7 @@ if __name__ == "__main__":
         interface.receiver_handler.append(dumper(capturefile))
 
     # create a Scrollkeeper instance and let it process messages
-    scrollkeeper = Scrollkeeper(interface)
+    scrollkeeper = Scrollkeeper(interface, slottrace=args.slottrace)
     interface.receiver_handler.append(scrollkeeper.messageListener)
 
     Thread(

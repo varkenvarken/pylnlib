@@ -4,13 +4,14 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220623191058
+# Version: 20220626131535
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
 # See also: https://www.digitrax.com/static/apps/cms/media/documents/loconet/loconetpersonaledition.pdf
 # See also: https://wiki.rocrail.net/doku.php?id=loconet:ln-pe-en
 
+from datetime import time
 
 class Message:
     """
@@ -18,12 +19,14 @@ class Message:
 
     several subclasses are provided to implemented actual messages.
     """
+
     OPC_GPON = 0x83
     OPC_GPOFF = 0x82
 
-    OPC_LOCO_SPD = 0xA0  # not implemented
+    OPC_LOCO_SPD = 0xA0
     OPC_LOCO_DIRF = 0xA1
-    OPC_LOCO_SND = 0xA2  # not implemented
+    OPC_LOCO_SND = 0xA2
+    OPC_LOCO_F2 = 0xA3  # not defined in locnet specs, but implemented nevertheless
     OPC_SW_REQ = 0xB0
     OPC_SW_REP = 0xB1  # not implemented
     OPC_INPUT_REP = 0xB2
@@ -106,8 +109,14 @@ class Message:
             return PowerOn(data)
         elif opcode == 0x82:
             return PowerOff(data)
-        elif opcode == 0xA1:
+        elif opcode == Message.OPC_LOCO_SPD:
+            return SlotSpeed(data)
+        elif opcode == Message.OPC_LOCO_DIRF:
             return FunctionGroup1(data)
+        elif opcode == Message.OPC_LOCO_SND:
+            return FunctionGroupSound(data)
+        elif opcode == Message.OPC_LOCO_F2:
+            return FunctionGroup2(data)
         elif opcode == 0xB0:
             return SwitchState(data)
         elif opcode == 0xB2:
@@ -142,7 +151,7 @@ class Message:
     def sensoraddress(d0, d1):
         """
         Return a sensor address from the data.
-        
+
         Sensors start from zero (but may typically displayed with an added offset of 1).
         """
         return ((d0 & 0x7F) << 1) | ((d1 & 0x0F) << 8) | ((d1 >> 5) & 0x1)
@@ -151,7 +160,7 @@ class Message:
     def switchaddress(d0, d1):
         """
         Return a switch address from the data.
-        
+
         Switches start from zero (but may typically displayed with an added offset of 1).
         """
         return ((d0 & 0x7F) << 1) | ((d1 & 0x0F) << 8) | ((d1 >> 5) & 0x1)
@@ -160,16 +169,17 @@ class Message:
     def slotaddress(d0, d1):
         """
         Return a slot address from the data.
-        
-        Sensors start from zero (but slot 0 is special, as are several others >= 0x70).
+
+        Slots start from zero (but slot 0 is special, as are several others >= 0x70).
         """
-        return ((d0 & 0x7F) << 1) | ((d1 & 0x0F) << 8) | ((d1 >> 5) & 0x1)
+        return (d0 & 0x7F) | ((d1 & 0x0F) << 8)
 
 
 class Unknown(Message):
     """
     An Unknown message simply hold the data bytes.
     """
+
     pass
 
 
@@ -193,7 +203,31 @@ class FunctionGroup1(Message):
         self.f4 = bool(data[2] & 0x8)
 
     def __str__(self):
-        return f"{self.__class__.__name__}({self.slot=} {self.dir=} {self.f0=}  {self.f1=} {self.f2=} {self.f3=} {self.f4=}| op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+        return f"{self.__class__.__name__}(slot = {self.slot} dir: {self.dir} f0: {self.f0}  f1: {self.f1} f2: {self.f2} f3: {self.f3} f4: {self.f4} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+
+class FunctionGroupSound(Message):
+    def __init__(self, data):
+        super().__init__(data)
+        self.slot = int(data[1])
+        self.f5 = bool(data[2] & 0x1)
+        self.f6 = bool(data[2] & 0x2)
+        self.f7 = bool(data[2] & 0x4)
+        self.f8 = bool(data[2] & 0x8)
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(slot = {self.slot} f5: {self.f5}  f6: {self.f6} f7: {self.f7} f8: {self.f8} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+
+class FunctionGroup2(Message):
+    def __init__(self, data):
+        super().__init__(data)
+        self.slot = int(data[1])
+        self.f9 = bool(data[2] & 0x1)
+        self.f10 = bool(data[2] & 0x2)
+        self.f11 = bool(data[2] & 0x4)
+        self.f12 = bool(data[2] & 0x8)
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(slot = {self.slot} f9: {self.f9}  f10: {self.f10} f11: {self.f11} f12: {self.f12} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
 
 
 class SwitchState(Message):
@@ -295,7 +329,17 @@ class SlotDataReturn(Message):
         self.id2 = data[12]
 
     def __str__(self):
-        return f"{self.__class__.__name__}(slot={self.slot} loc={self.address} {self.status=} {self.dir=} {self.speed= }{self.f0=} {self.f1=} {self.f2=} {self.f3=} {self.f4=}  {self.f5=} {self.f6=} {self.f7=} {self.f8=} {self.trk=} {self.ss2=} {self.id1=} {self.id2=}| op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
+        return f"{self.__class__.__name__}(slot={self.slot} loc={self.address} status: {self.status} dir: {self.dir} speed: {self.speed} f0: {self.f0} f1: {self.f1} f2: {self.f2} f3: {self.f3} f4: {self.f4}  f5: {self.f5} f6: {self.f6} f7: {self.f7} f8: {self.f8} trk: {self.trk} ss2: {self.ss2} id1: {self.id1} id2: {self.id2} | op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
+
+
+class SlotSpeed(Message):
+    def __init__(self, data):
+        super().__init__(data)
+        self.slot = int(data[1])
+        self.speed = data[2]
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(slot={self.slot} speed: {self.speed} | op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
 
 
 class RequestLocAddress(Message):
@@ -314,3 +358,18 @@ class RequestLocAddress(Message):
 
     def __str__(self):
         return f"{self.__class__.__name__}(address = {self.address} | op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
+
+class CaptureTimeStamp(Message):
+    def __init__(self, t):
+        if isinstance(t, time):
+            data = bytearray(6)
+            data[0] = 0xC0
+            data[1] = t.hour
+            data[2] = t.minute
+            data[3] = t.second
+            data[4] = t.microsecond // 10000
+            super().__init__(data)
+            self.updateChecksum()
+        else:
+            super().__init__(t)
+            self.datetime = time(hour=t[1], minute=t[2], second=t[3], microsecond=t[4]*10000)

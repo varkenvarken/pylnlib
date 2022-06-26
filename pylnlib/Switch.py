@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220622153133
+# Version: 20220625152422
 
 class Switch:
     switchstates = {None, 'CLOSED', 'THROWN'}
@@ -16,4 +16,4 @@ class Switch:
         self.engage = None
 
     def __str__(self):
-        return f"Sensor(address={self.address+1}, level={'THROWN' if self.thrown else 'CLOSED'}"
+        return f"Switch(address={self.address+1}, level={'THROWN' if self.thrown else 'CLOSED'})"
