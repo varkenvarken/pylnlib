@@ -4,14 +4,14 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220626155843
+# Version: 20220626160837
 
 import signal
 import sys
 import threading
-from time import sleep
 from datetime import datetime
 from queue import Queue
+from time import sleep
 
 import serial
 
@@ -69,6 +69,7 @@ class Interface:
                 handler(msg)
 
     def processTimeStamp(self, msg):
+        print(msg)
         if self.time is not None:
             sleep(timeDiff(self.time, msg.time))
         self.time = msg.time
@@ -175,7 +176,7 @@ def timeDiff(a, b):
     T = datetime.today()
     A = datetime.combine(T, a)
     B = datetime.combine(T, b)
-    s = ((B - A).total_seconds())
+    s = (B - A).total_seconds()
     if s < 0:
         s = 24 * 3600 - s
     return s
