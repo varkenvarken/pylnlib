@@ -59,3 +59,11 @@ The `Sensor` and `Switch` objects are fairly simple and represent on/off and thr
 The `Slot` object is a little more complicated as it carries much more information. It represents a slot on the active LocoNet 'stack'. In the LocoNet model you do not address locomotives directly but instead a collection of slots is kept that contains the current information about locomotives. The command station uses this information the repeatedly send DCC messages to the track.
 
 One of the pieces of information in a slot is the decoder address of the locomotiv. Other information that is kept is the diection, speed and the state of the first 9 decoder functions. The `Slot` class extends this by also storing the state of decoder functions 10 and up.
+
+# dependencies
+- Python 3.8
+- pyserial
+
+# installation
+<todo>
+  
