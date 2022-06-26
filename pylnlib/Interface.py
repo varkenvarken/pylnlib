@@ -4,21 +4,25 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220626122609
+# Version: 20220626155843
 
 import signal
 import sys
 import threading
-import time
+from time import sleep
+from datetime import datetime
 from queue import Queue
 
 import serial
 
-from .Message import Message
+from .Message import CaptureTimeStamp, Message
 
 
 class Interface:
     def __init__(self, port, baud=57600):
+
+        self.time = None
+
         signal.signal(signal.SIGTERM, self.on_interrupt)
         signal.signal(signal.SIGINT, self.on_interrupt)
 
@@ -64,7 +68,15 @@ class Interface:
             for handler in self.receiver_handler:
                 handler(msg)
 
+    def processTimeStamp(self, msg):
+        if self.time is not None:
+            sleep(timeDiff(self.time, msg.time))
+        self.time = msg.time
+
     def run(self, delay=0):
+
+        self.time = None
+
         self.inputThread.start()
         self.outputThread.start()
 
@@ -74,14 +86,20 @@ class Interface:
                 self.rd_event.clear()
 
                 while not self.inputqueue.empty():
-                    time.sleep(delay)
+                    sleep(delay)
                     msg = self.inputqueue.get()
-                    self.on_receive(msg)
+                    if isinstance(msg, CaptureTimeStamp):
+                        self.processTimeStamp(msg)
+                    else:
+                        self.on_receive(msg)
 
         while not self.inputqueue.empty():
-            time.sleep(delay)
+            sleep(delay)
             msg = self.inputqueue.get()
-            self.on_receive(msg)
+            if isinstance(msg, CaptureTimeStamp):
+                self.processTimeStamp(msg)
+            else:
+                self.on_receive(msg)
 
         self.inputThread.join()
         self.outputThread.join()
@@ -91,7 +109,9 @@ class Interface:
         print("Done...", file=sys.stderr)
 
     def run_in_background(self, delay):
-        threading.Thread(name="interface", target=self.run, daemon=True, args=(delay,)).start()
+        threading.Thread(
+            name="interface", target=self.run, daemon=True, args=(delay,)
+        ).start()
 
     def receiver_thread(self):
         while not self.exit:
@@ -110,7 +130,7 @@ class Interface:
                     self.inputqueue.put(msg)
                     self.rd_event.set()
                 else:
-                    time.sleep(0.1)
+                    sleep(0.1)
             else:
                 data = self.com.read(2)
                 # print(len(data), list(map(hex, data)))
@@ -140,7 +160,22 @@ class Interface:
                 else:  # on replay we simply shunt back the output message
                     self.inputqueue.put(msg)
                     self.rd_event.set()
-                time.sleep(0.25)
+                sleep(0.25)
 
     def sendMessage(self, msg):
         self.outputqueue.put(msg)
+
+
+def timeDiff(a, b):
+    """
+    return the total number of seconds between  a and b.
+
+    b MUST be later than a, so the difference between a = 23:55:49 and b = 00:05:49 will be correctly reported as 10 minutes.
+    """
+    T = datetime.today()
+    A = datetime.combine(T, a)
+    B = datetime.combine(T, b)
+    s = ((B - A).total_seconds())
+    if s < 0:
+        s = 24 * 3600 - s
+    return s

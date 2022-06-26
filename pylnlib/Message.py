@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220626131535
+# Version: 20220626153151
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -368,8 +368,9 @@ class CaptureTimeStamp(Message):
             data[2] = t.minute
             data[3] = t.second
             data[4] = t.microsecond // 10000
+            self.time = t
             super().__init__(data)
             self.updateChecksum()
         else:
             super().__init__(t)
-            self.datetime = time(hour=t[1], minute=t[2], second=t[3], microsecond=t[4]*10000)
+            self.time = time(hour=t[1], minute=t[2], second=t[3], microsecond=t[4]*10000)
