@@ -79,3 +79,7 @@ python -m pylnlib --help
 
 The scripts directory also contains sample programs that use the library and automate some activities.
 
+# capture and replay
+
+[capture_and_replay.md](docs/capture_and_replay.md)
+
