@@ -81,5 +81,7 @@ The scripts directory also contains sample programs that use the library and aut
 
 # capture and replay
 
-[capture_and_replay.md](docs/capture_and_replay.md)
+The `pylnlib` library can also capture raw LocoNet bytes and store it for later replay in a file.
+
+This can be really helpful when developing scripts. More details can be found here [capture_and_replay.md](docs/capture_and_replay.md)
 
