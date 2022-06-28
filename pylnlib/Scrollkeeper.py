@@ -26,7 +26,7 @@ from .Message import (
 from .Sensor import Sensor
 from .Slot import Slot
 from .Switch import Switch
-
+from .Throttle import Throttle
 
 class Scrollkeeper:
     def __init__(self, interface, slottrace=False):
@@ -185,12 +185,12 @@ class Scrollkeeper:
         """
         for slot in self.slots:
             if slot.address == address:
-                return address
+                return slot
         self.sendMessage(RequestLocAddress(address))
         if self.waitUntilLocAddressKnown(address):
             for slot in self.slots:
                 if slot.address == address:
-                    return address
+                    return slot
         raise ValueError(f"Loc address {address} unknown")
 
     def getSwitchState(self, id):
@@ -256,6 +256,14 @@ class Scrollkeeper:
                 return False
         return True
 
+    def acquireSlot(self, slot):
+        pass #TODO null move
+    
+    def getThrottle(self, locaddress):
+        slot = self.getSlot(locaddress)
+        self.acquireSlot(slot)
+        return Throttle(self)
+    
     def __str__(self):
         newline = "\n"
         tab = "\t"
