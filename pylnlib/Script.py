@@ -25,3 +25,15 @@ class Script:
                 return True
             sleep(0.1)
         return False
+     # waitForSwitch(switchaddress, state, timeout=60)
+     # setSwitch(switchaddress, state, timeout=60)
+     # acquireLocomotive(locaddress, timeout=60)
+     # setSpeed(locaddress, direction, speed:float, timeout=60)
+     # setFunction(locaddress, function, state, duration=0, timeout=60)
+     # powerOff
+     # powerOn
+     # aliases:
+     # lightOn
+     # soundOn
+     # whistle
+        
