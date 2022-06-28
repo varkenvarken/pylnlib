@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220626153151
+# Version: 20220628165757
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -12,6 +12,7 @@
 # See also: https://wiki.rocrail.net/doku.php?id=loconet:ln-pe-en
 
 from datetime import time
+
 
 class Message:
     """
@@ -40,6 +41,7 @@ class Message:
     OPC_SW_STATE = 0xBC
     OPC_SW_ACK = 0xBD  # not implemented
     OPC_LOCO_ADR = 0xBF
+    OPC_LOCO_F3 = 0xD4  # not defined in locnet specs, but implemented nevertheless (seen on Roco WLAN maus)
     OPC_SL_RD_DATA = 0xE7
     OPC_WR_SL_DATA = 0xEF  # not implemented
 
@@ -117,6 +119,8 @@ class Message:
             return FunctionGroupSound(data)
         elif opcode == Message.OPC_LOCO_F2:
             return FunctionGroup2(data)
+        elif opcode == 0xD4:
+            return FunctionGroup3(data)
         elif opcode == 0xB0:
             return SwitchState(data)
         elif opcode == 0xB2:
@@ -127,6 +131,8 @@ class Message:
             return RequestSlotData(data)
         elif opcode == 0xBC:
             return RequestSwitchState(data)
+        elif opcode == 0xC0:
+            return CaptureTimeStamp(data)
         elif opcode == 0xBF:
             return RequestLocAddress(data)
         elif opcode == 0xE7:
@@ -205,6 +211,7 @@ class FunctionGroup1(Message):
     def __str__(self):
         return f"{self.__class__.__name__}(slot = {self.slot} dir: {self.dir} f0: {self.f0}  f1: {self.f1} f2: {self.f2} f3: {self.f3} f4: {self.f4} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
 
+
 class FunctionGroupSound(Message):
     def __init__(self, data):
         super().__init__(data)
@@ -217,6 +224,7 @@ class FunctionGroupSound(Message):
     def __str__(self):
         return f"{self.__class__.__name__}(slot = {self.slot} f5: {self.f5}  f6: {self.f6} f7: {self.f7} f8: {self.f8} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
 
+
 class FunctionGroup2(Message):
     def __init__(self, data):
         super().__init__(data)
@@ -228,6 +236,44 @@ class FunctionGroup2(Message):
 
     def __str__(self):
         return f"{self.__class__.__name__}(slot = {self.slot} f9: {self.f9}  f10: {self.f10} f11: {self.f11} f12: {self.f12} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+
+
+class FunctionGroup3(Message):
+    def __init__(self, data):
+        super().__init__(data)
+        # data[1] is always 0x20
+        self.slot = int(data[2])
+        self.fiegroup = data[3]
+        if self.fiegroup == 0x08:
+            self.f13 = bool(data[4] & 0x1)
+            self.f14 = bool(data[4] & 0x2)
+            self.f15 = bool(data[4] & 0x4)
+            self.f16 = bool(data[4] & 0x8)
+            self.f17 = bool(data[4] & 0x10)
+            self.f18 = bool(data[4] & 0x20)
+            self.f19 = bool(data[4] & 0x40)
+        elif self.fiegroup == 0x09:
+            self.f21 = bool(data[4] & 0x1)
+            self.f22 = bool(data[4] & 0x2)
+            self.f23 = bool(data[4] & 0x4)
+            self.f24 = bool(data[4] & 0x8)
+            self.f25 = bool(data[4] & 0x10)
+            self.f26 = bool(data[4] & 0x20)
+            self.f27 = bool(data[4] & 0x40)
+        elif self.fiegroup == 0x05:
+            self.f12 = bool(data[4] & 0x10)
+            self.f20 = bool(data[4] & 0x20)
+            self.f28 = bool(data[4] & 0x40)
+
+    def __str__(self):
+        if self.fiegroup == 0x05:
+            return f"{self.__class__.__name__}(slot = {self.slot} f12: {self.f12}  f20: {self.f20} f28: {self.f28} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+        elif self.fiegroup == 0x08:
+            return f"{self.__class__.__name__}(slot = {self.slot} f13: {self.f13}  f14: {self.f14} f15: {self.f15} f16: {self.f16} f17: {self.f17} f18: {self.f18} f19: {self.f19} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+        elif self.fiegroup == 0x09:
+            return f"{self.__class__.__name__}(slot = {self.slot} f21: {self.f21}  f22: {self.f22} f23: {self.f23} f24: {self.f24} f25: {self.f25} f26: {self.f26} f27: {self.f27} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+        else:
+            return f"{self.__class__.__name__}(slot = {self.slot} fiegroup: {self.fiegroup} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
 
 
 class SwitchState(Message):
@@ -359,6 +405,7 @@ class RequestLocAddress(Message):
     def __str__(self):
         return f"{self.__class__.__name__}(address = {self.address} | op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
 
+
 class CaptureTimeStamp(Message):
     def __init__(self, t):
         if isinstance(t, time):
@@ -373,4 +420,6 @@ class CaptureTimeStamp(Message):
             self.updateChecksum()
         else:
             super().__init__(t)
-            self.time = time(hour=t[1], minute=t[2], second=t[3], microsecond=t[4]*10000)
+            self.time = time(
+                hour=t[1], minute=t[2], second=t[3], microsecond=t[4] * 10000
+            )

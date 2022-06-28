@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220626154703
+# Version: 20220626165913
 
 import argparse
 import sys
@@ -36,8 +36,8 @@ class Args:
         cmdline.add_argument(
             "-i",
             "--reportinterval",
-            help="interval between scrollkeeper reports",
-            default=30,
+            help="interval between scrollkeeper reports, or 0 to suppress",
+            default=0,
             type=float,
         )
         cmdline.add_argument(
@@ -62,6 +62,12 @@ class Args:
             "-r",
             "--replay",
             help=f"replay all captured traffic from {CAPTUREFILE}",
+            action="store_true",
+        )
+        cmdline.add_argument(
+            "-F",
+            "--fast",
+            help=f"ignore timestamps when in replay",
             action="store_true",
         )
         cmdline.add_argument(
@@ -118,7 +124,7 @@ def createInterface(args):
     capturefile = None
     if args.replay:
         capturefile = open(args.capturefile, "rb")
-        interface = Interface(capturefile)
+        interface = Interface(capturefile, fast=args.fast)
     else:
         interface = Interface(args.port, args.baud)
     if args.log:

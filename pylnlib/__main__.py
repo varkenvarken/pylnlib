@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220626161519
+# Version: 20220626170320
 
 import argparse
 import sys
@@ -26,15 +26,16 @@ if __name__ == "__main__":
     # create a Scrollkeeper instance and let it process messages
     scrollkeeper = createScrollkeeper(interface, args)
 
-    Thread(
-        target=reporter(scrollkeeper, args.reportinterval),
-        name="scrollkeeper dump",
-        daemon=True,
-    ).start()  # no need to join a daemon thread later
+    if args.reportinterval > 0:
+        Thread(
+            target=reporter(scrollkeeper, args.reportinterval),
+            name="scrollkeeper dump",
+            daemon=True,
+        ).start()  # no need to join a daemon thread later
 
     interface.run()
 
-    if args.replay:
+    if args.replay and args.reportinterval > 0:
         print(
             f"waiting {args.reportinterval + 2} seconds so the final scrollkeeper report will be produced."
         )

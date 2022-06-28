@@ -4,15 +4,16 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220626134054
+# Version: 20220628165634
 
 from datetime import datetime
-from time import sleep
 from threading import Lock
+from time import sleep
 
 from .Message import (
     FunctionGroup1,
     FunctionGroup2,
+    FunctionGroup3,
     FunctionGroupSound,
     RequestLocAddress,
     RequestSlotData,
@@ -101,6 +102,34 @@ class Scrollkeeper:
                     f11=msg.f11,
                     f12=msg.f12,
                 )
+        elif isinstance(msg, FunctionGroup3):
+            if msg.slot not in self.slots:
+                self.sendMessage(RequestSlotData(msg.slot))
+            else:
+                if msg.fiegroup == 0x5:
+                    self.updateSlot(msg.slot, f12=msg.f12, f20=msg.f20, f28=msg.f28)
+                elif msg.fiegroup == 0x8:
+                    self.updateSlot(
+                        msg.slot,
+                        f13=msg.f13,
+                        f14=msg.f14,
+                        f15=msg.f15,
+                        f16=msg.f16,
+                        f17=msg.f17,
+                        f18=msg.f18,
+                        f19=msg.f19,
+                    )
+                elif msg.fiegroup == 0x9:
+                    self.updateSlot(
+                        msg.slot,
+                        f21=msg.f21,
+                        f22=msg.f22,
+                        f23=msg.f23,
+                        f24=msg.f24,
+                        f25=msg.f25,
+                        f26=msg.f26,
+                        f27=msg.f27,
+                    )
         elif isinstance(msg, SlotSpeed):
             if msg.slot not in self.slots:
                 self.sendMessage(RequestSlotData(msg.slot))
@@ -114,79 +143,17 @@ class Scrollkeeper:
         elif isinstance(msg, SwitchState):
             self.updateSwitch(msg.address, msg.thrown, msg.engage)
 
-    def updateSlot(
-        self,
-        id,
-        dir=None,
-        speed=None,
-        status=None,
-        address=None,
-        f0=None,
-        f1=None,
-        f2=None,
-        f3=None,
-        f4=None,
-        f5=None,
-        f6=None,
-        f7=None,
-        f8=None,
-        f9=None,
-        f10=None,
-        f11=None,
-        f12=None,
-        trk=None,
-        ss2=None,
-        id1=None,
-        id2=None,
-    ):
+    def updateSlot(self, id, **kwargs):
         with self.slotlock:
             if id not in self.slots:
                 self.slots[id] = Slot(id)
 
             slot = self.slots[id]
             slot.slot = id
-            if dir is not None:
-                slot.dir = dir
-            if speed is not None:
-                slot.speed = speed
-            if status is not None:
-                slot.status = status
-            if address is not None:
-                slot.address = address
-            if f0 is not None:
-                slot.f0 = f0
-            if f1 is not None:
-                slot.f1 = f1
-            if f2 is not None:
-                slot.f2 = f2
-            if f3 is not None:
-                slot.f3 = f3
-            if f4 is not None:
-                slot.f4 = f4
-            if f5 is not None:
-                slot.f5 = f5
-            if f6 is not None:
-                slot.f6 = f6
-            if f7 is not None:
-                slot.f7 = f7
-            if f8 is not None:
-                slot.f8 = f8
-            if f9 is not None:
-                slot.f9 = f9
-            if f10 is not None:
-                slot.f10 = f10
-            if f11 is not None:
-                slot.f11 = f11
-            if f8 is not None:
-                slot.f12 = f12
-            if trk is not None:
-                slot.trk = trk
-            if ss2 is not None:
-                slot.ss2 = ss2
-            if id1 is not None:
-                slot.id1 = id1
-            if id2 is not None:
-                slot.id2 = id2
+
+            for attr, val in kwargs.items():
+                if dir is not None:
+                    setattr(self, attr, val)
             if self.slottrace:
                 print(self)
 
@@ -196,6 +163,8 @@ class Scrollkeeper:
                 self.sensors[address] = Sensor(address)
             if level is not None:
                 self.sensors[address].level = level
+            if self.slottrace:
+                print(self)
 
     def updateSwitch(self, address, thrown=None, engage=None):
         with self.switchlock:
@@ -205,6 +174,8 @@ class Scrollkeeper:
                 self.switches[address].thrown = thrown
             if engage is not None:
                 self.switches[address].engage = engage
+            if self.slottrace:
+                print(self)
 
     def getSlot(self, address):
         """
@@ -288,7 +259,7 @@ class Scrollkeeper:
     def __str__(self):
         newline = "\n"
         tab = "\t"
-        return f"""
+        return f"""\033[2J\033[H
 Scrollkeeper [{datetime.now():%H:%M:%S}]
 
 Slots:

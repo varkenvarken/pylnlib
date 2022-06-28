@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220626160837
+# Version: 20220626170449
 
 import signal
 import sys
@@ -19,14 +19,16 @@ from .Message import CaptureTimeStamp, Message
 
 
 class Interface:
-    def __init__(self, port, baud=57600):
+    def __init__(self, port, baud=57600, fast=False):
 
         self.time = None
+        self.fast = fast
 
         signal.signal(signal.SIGTERM, self.on_interrupt)
         signal.signal(signal.SIGINT, self.on_interrupt)
 
         self.exit = False
+        self.capture_finished = False
 
         self.inputThread = threading.Thread(
             name="receiver", target=self.receiver_thread
@@ -69,8 +71,7 @@ class Interface:
                 handler(msg)
 
     def processTimeStamp(self, msg):
-        print(msg)
-        if self.time is not None:
+        if not self.fast and self.time is not None:
             sleep(timeDiff(self.time, msg.time))
         self.time = msg.time
 
@@ -87,20 +88,13 @@ class Interface:
                 self.rd_event.clear()
 
                 while not self.inputqueue.empty():
-                    sleep(delay)
+                    if delay > 0:
+                        sleep(delay)
                     msg = self.inputqueue.get()
                     if isinstance(msg, CaptureTimeStamp):
                         self.processTimeStamp(msg)
                     else:
                         self.on_receive(msg)
-
-        while not self.inputqueue.empty():
-            sleep(delay)
-            msg = self.inputqueue.get()
-            if isinstance(msg, CaptureTimeStamp):
-                self.processTimeStamp(msg)
-            else:
-                self.on_receive(msg)
 
         self.inputThread.join()
         self.outputThread.join()
@@ -132,12 +126,10 @@ class Interface:
                     self.rd_event.set()
                 else:
                     sleep(0.1)
-            else:
+            elif not self.capture_finished:
                 data = self.com.read(2)
-                # print(len(data), list(map(hex, data)))
-
                 if len(data) == 0:
-                    self.exit = True
+                    self.capture_finished = True
                 elif len(data) < 2:
                     raise IOError("captured stream ended prematurely")
                 else:
@@ -150,7 +142,7 @@ class Interface:
                             raise IOError("captured stream ended prematurely")
                         msg = Message.from_data(data + data2)
                     self.inputqueue.put(msg)
-                self.rd_event.set()
+                    self.rd_event.set()
 
     def sender_thread(self):
         while not self.exit:
