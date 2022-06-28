@@ -1,10 +1,23 @@
 # pylnlib
 A python library to monitor LocoNet traffic on a usb/serial bus.
 
-# intro
-I am automating my layout with several Digikeijs components (DR5000, DR4024, DR4088) and I want to be able to script part of the running operation.
+# table of contents
+- [intro](#intro)
+- [goals](#goals)
+- [architecture](#architecture)
+  - [Message and Interface classes](#message-and-interface-classes)
+  - [The Scrollkeeper class](the-scrollkeeper-class)
+  - [The Script class](#the-script-class)
+  - [The Sensor, Switch and Slot classes](the-sensor,-switch-and-slot-classes)
+- [dependencies](#dependencies)
+- [installation](#installation)
+- [example programs](#example-programs)
+- [capture and replay](#capture-and-replay)
 
-Now JMRI works fine and even allows for Python scripting, but I find it a bit top heavy on a RaspberryPi 3B+ and also, although this may be a matter of taste, the Python bindings are not very pythonic nor very logical IMHO.
+# intro
+I am automating my layout with several [Digikeijs](https://www.digikeijs.com) components ([DR5000](https://www.digikeijs.com/en/digital-model-railway-accessories/command-stations.html), [DR4024](https://www.digikeijs.com/en/dr4024-4-channel-servodecoder-with-4-additional-switching-outputs.html), [DR4088CS](https://www.digikeijs.com/en/dr4088cs-16-channel-feedback-module-s88n.html)) and I want to be able to script part of the running operation.
+
+Now [JMRI](https://github.com/JMRI/JMRI) works fine and even allows for Python scripting, but I find it a bit top heavy on a RaspberryPi 3B+ and also, although this may be a matter of taste, the Python bindings are not very pythonic nor very logical IMHO.
 
 Still, a lot of effort went into JMRI and otherwise it is a fine piece of software, but writing my own LocoNet Python library from scratch is not only a nice personal learning experience, but also might allow me to move some of it to microcontrollers with micro Python.
 
@@ -62,7 +75,7 @@ One of the pieces of information in a slot is the decoder address of the locomot
 
 # dependencies
 - Python 3.8
-- pyserial
+- [pyserial](https://github.com/pyserial/pyserial)
 
 # installation
 TODO
