@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220628165634
+# Version: 20220629200355
 
 from datetime import datetime
 from threading import Lock
@@ -17,6 +17,7 @@ from .Message import (
     FunctionGroupSound,
     RequestLocAddress,
     RequestSlotData,
+    RequestSwitchFunction,
     RequestSwitchState,
     SensorState,
     SlotDataReturn,
@@ -27,6 +28,7 @@ from .Sensor import Sensor
 from .Slot import Slot
 from .Switch import Switch
 from .Throttle import Throttle
+
 
 class Scrollkeeper:
     def __init__(self, interface, slottrace=False):
@@ -141,6 +143,8 @@ class Scrollkeeper:
         elif isinstance(msg, SensorState):
             self.updateSensor(msg.address, msg.level)
         elif isinstance(msg, SwitchState):
+            self.updateSwitch(msg.address, msg.thrown, msg.engage)
+        elif isinstance(msg, RequestSwitchFunction):
             self.updateSwitch(msg.address, msg.thrown, msg.engage)
 
     def updateSlot(self, id, **kwargs):
@@ -257,13 +261,13 @@ class Scrollkeeper:
         return True
 
     def acquireSlot(self, slot):
-        pass #TODO null move
-    
+        pass  # TODO null move
+
     def getThrottle(self, locaddress):
         slot = self.getSlot(locaddress)
         self.acquireSlot(slot)
         return Throttle(self)
-    
+
     def __str__(self):
         newline = "\n"
         tab = "\t"

@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220626170449
+# Version: 20220629202609
 
 import signal
 import sys
@@ -19,10 +19,11 @@ from .Message import CaptureTimeStamp, Message
 
 
 class Interface:
-    def __init__(self, port, baud=57600, fast=False):
+    def __init__(self, port, baud=57600, fast=False, dummy=False):
 
         self.time = None
         self.fast = fast
+        self.dummy = dummy
 
         signal.signal(signal.SIGTERM, self.on_interrupt)
         signal.signal(signal.SIGINT, self.on_interrupt)
@@ -47,17 +48,18 @@ class Interface:
 
         self.input = "com"
         if type(port) == str:
-            try:
-                # 8 bits, 1 stop bit, 1 start bit
-                self.com = serial.Serial(
-                    port=port,
-                    baudrate=baud,
-                    stopbits=serial.STOPBITS_ONE,
-                    bytesize=serial.EIGHTBITS,
-                    timeout=None,
-                )
-            except serial.SerialException as e:
-                exit(e)
+            if not dummy:
+                try:
+                    # 8 bits, 1 stop bit, 1 start bit
+                    self.com = serial.Serial(
+                        port=port,
+                        baudrate=baud,
+                        stopbits=serial.STOPBITS_ONE,
+                        bytesize=serial.EIGHTBITS,
+                        timeout=None,
+                    )
+                except serial.SerialException as e:
+                    exit(e)
         else:
             self.input = "file"
             self.com = port
@@ -110,7 +112,9 @@ class Interface:
 
     def receiver_thread(self):
         while not self.exit:
-            if self.input == "com":
+            if self.dummy:
+                sleep(0.1)
+            elif self.input == "com":
                 n = self.com.inWaiting()
                 if n > 1:  # all messages are at least 2 bytes
                     data = self.com.read(2)
@@ -148,9 +152,9 @@ class Interface:
         while not self.exit:
             if not self.outputqueue.empty():
                 msg = self.outputqueue.get()
-                if self.input == "com":
+                if self.input == "com" and not self.dummy:
                     self.com.write(msg.data)
-                else:  # on replay we simply shunt back the output message
+                else:  # on replay or dummy output we simply shunt back the output message
                     self.inputqueue.put(msg)
                     self.rd_event.set()
                 sleep(0.25)

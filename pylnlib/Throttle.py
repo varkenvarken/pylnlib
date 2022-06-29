@@ -4,6 +4,6 @@ class Throttle:
         self.locaddress = locaddress
         
     def forward(self):
-        slot = scrollkeeper.getSlot(self.locoaddress)
+        slot = self.scrollkeeper.getSlot(self.locoaddress)
         slot.dir = False
         self.scrollkeeper.sendMessage(slot.slotWriteMessage())

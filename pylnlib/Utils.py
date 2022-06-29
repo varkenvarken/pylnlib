@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220626165913
+# Version: 20220629202056
 
 import argparse
 import sys
@@ -44,6 +44,12 @@ class Args:
             "-c",
             "--capture",
             help=f"capture all traffic to {CAPTUREFILE}",
+            action="store_true",
+        )
+        cmdline.add_argument(
+            "-d",
+            "--dummy",
+            help=f"do not write to serial device",
             action="store_true",
         )
         cmdline.add_argument(
@@ -126,7 +132,7 @@ def createInterface(args):
         capturefile = open(args.capturefile, "rb")
         interface = Interface(capturefile, fast=args.fast)
     else:
-        interface = Interface(args.port, args.baud)
+        interface = Interface(args.port, args.baud, dummy=args.dummy)
     if args.log:
         interface.receiver_handler.append(logger)
     # open a file to write raw captured bytes to

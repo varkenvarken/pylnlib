@@ -4,12 +4,12 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220625153535
+# Version: 20220629202744
 
 from time import sleep, time
 
 from .Scrollkeeper import Scrollkeeper
-
+from .Message import RequestSwitchFunction
 class Script:
     def __init__(self, scrollkeeper:Scrollkeeper):
         self.scrollkeeper = scrollkeeper
@@ -26,7 +26,15 @@ class Script:
             sleep(0.1)
         return False
      # waitForSwitch(switchaddress, state, timeout=60)
-     # setSwitch(switchaddress, state, timeout=60)
+
+    def setSwitch(self, address, thrown):
+        msg1 = RequestSwitchFunction(address, thrown, True)
+        msg2 = RequestSwitchFunction(address, thrown, False)
+        self.scrollkeeper.sendMessage(msg1)
+        sleep(1.5)
+        self.scrollkeeper.sendMessage(msg2)
+        
+
      # acquireLocomotive(locaddress, timeout=60)
      # setSpeed(locaddress, direction, speed:float, timeout=60)
      # setFunction(locaddress, function, state, duration=0, timeout=60)

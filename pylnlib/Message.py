@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220628165757
+# Version: 20220629195805
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -122,6 +122,8 @@ class Message:
         elif opcode == 0xD4:
             return FunctionGroup3(data)
         elif opcode == 0xB0:
+            return RequestSwitchFunction(data)
+        elif opcode == 0xB1:
             return SwitchState(data)
         elif opcode == 0xB2:
             return SensorState(data)
@@ -169,7 +171,7 @@ class Message:
 
         Switches start from zero (but may typically displayed with an added offset of 1).
         """
-        return ((d0 & 0x7F) << 1) | ((d1 & 0x0F) << 8) | ((d1 >> 5) & 0x1)
+        return (d0 & 0x7F) | ((d1 & 0x0F) << 7)
 
     @staticmethod
     def slotaddress(d0, d1):
@@ -274,6 +276,32 @@ class FunctionGroup3(Message):
             return f"{self.__class__.__name__}(slot = {self.slot} f21: {self.f21}  f22: {self.f22} f23: {self.f23} f24: {self.f24} f25: {self.f25} f26: {self.f26} f27: {self.f27} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
         else:
             return f"{self.__class__.__name__}(slot = {self.slot} fiegroup: {self.fiegroup} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
+
+
+class RequestSwitchFunction(Message):
+    def __init__(self, data, thrown=None, engage=None):
+        if type(data) == int:
+            self.address = data
+            data = bytearray(4)
+            self.opcode = data[0] = Message.OPC_SW_REP
+            self.thrown = thrown
+            self.engage = engage
+            data[1] = self.address & 0x7F
+            data[2] = self.address >> 7
+            if self.thrown:
+                data[2] |= 0x20
+            if self.engage:
+                data[2] |= 0x10
+            super().__init__(data)
+            self.updateChecksum()
+        else:
+            super().__init__(data)
+            self.address = Message.switchaddress(data[1], data[2])
+            self.thrown = bool(data[2] & 0x20)
+            self.engage = bool(data[2] & 0x10)
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(addr={self.address+1:2d} = {self.thrown=} {self.engage=} | op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
 
 
 class SwitchState(Message):
