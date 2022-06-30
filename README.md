@@ -7,7 +7,7 @@ A python library to monitor LocoNet traffic on a usb/serial bus.
 - [architecture](#architecture)
   - [Message and Interface classes](#message-and-interface-classes)
   - [The Scrollkeeper class](the-scrollkeeper-class)
-  - [The Script class](#the-script-class)
+  - [The Script and Throttle classes](#the-script-and-throttle-classes)
   - [The Sensor, Switch and Slot classes](the-sensor,-switch-and-slot-classes)
 - [dependencies](#dependencies)
 - [installation](#installation)
