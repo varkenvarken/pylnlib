@@ -63,9 +63,9 @@ The `Script` class is used to automate operations on a layout.
 
 It holds a reference to a `Scrollkeeper` instance and provides methods to change locomotive speed, direction and functions, throw swithces as well as wait for a sensor to change to a certain state.
 
-The Throttle class is a utility class that encapsulates control of a single locomotive
+The `Throttle` class is a utility class that encapsulates control of a single locomotive
 
-It is instantiated by calling a factory function in the Script class. Instantiation will also reserve a slot for the locomotive if this present yet and establish control by issueing a null move on that slot.
+It is instantiated by calling a factory function in the `Script` class. Instantiation will also reserve a slot for the locomotive if this is not present yet and establish control by issueing a null move on that slot.
 
 ## The Sensor, Switch and Slot classes
 
