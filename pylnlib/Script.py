@@ -10,6 +10,8 @@ from time import sleep, time
 
 from .Scrollkeeper import Scrollkeeper
 from .Message import RequestSwitchFunction
+from .Throttle import Throttle
+
 class Script:
     def __init__(self, scrollkeeper:Scrollkeeper):
         self.scrollkeeper = scrollkeeper
@@ -35,8 +37,8 @@ class Script:
         self.scrollkeeper.sendMessage(msg2)
         
     def getThrottle(self, locaddress):
-        slotid = self.acquireLocomotive(locaddress)
-        return Throttle(slotid, self)
+        self.acquireLocomotive(locaddress)
+        return Throttle(self.scrollkeeper, locaddress)
     
      # acquireLocomotive(locaddress, timeout=60)
      # setSpeed(locaddress, direction, speed:float, timeout=60)
