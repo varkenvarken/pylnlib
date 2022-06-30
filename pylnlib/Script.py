@@ -34,7 +34,10 @@ class Script:
         sleep(1.5)
         self.scrollkeeper.sendMessage(msg2)
         
-
+    def getThrottle(self, locaddress):
+        slotid = self.acquireLocomotive(locaddress)
+        return Throttle(slotid, self)
+    
      # acquireLocomotive(locaddress, timeout=60)
      # setSpeed(locaddress, direction, speed:float, timeout=60)
      # setFunction(locaddress, function, state, duration=0, timeout=60)
