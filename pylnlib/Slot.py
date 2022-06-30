@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220625152449
+# Version: 20220629205541
 
 
 class Slot:
@@ -62,4 +62,17 @@ class Slot:
         ff = " ".join(
             f"f{f}:" + ("ON" if getattr(self, f"f{f}") else "OFF") for f in range(13)
         )
-        return f"Slot({self.id:2d}): loc={self.address}, dir={'BACKWARD' if self.dir else 'FORWARD'}, speed={self.speed}/{Slot.speedsteps[self.status&0x7]}, [{ff}]"
+        return f"Slot({self.id:2d}): loc={self.address}, dir={'REVERSE' if self.dir else 'FORWARD'}, speed={self.speed}/{Slot.speedsteps[self.status&0x7]}, [{ff}]"
+
+    def getSpeed(self):
+        if self.speed < 2:
+            return self.speed  # either 0 or 1 for inertial stop and emergency stop respectively
+        return self.speed/Slot.speedsteps[self.status&0x7] 
+    
+    def setSpeed(self, speed=0.0, stop=False, emergency=False):
+        if stop:
+            self.speed = 0
+        elif emergency:
+            self.speed = 1
+        else:
+            self.speed = 2+int(speed * Slot.speedsteps[self.status&0x7]-2) if speed > 0.0 else 0
