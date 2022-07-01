@@ -13,7 +13,7 @@ A python library to monitor LocoNet traffic on a usb/serial bus.
 - [installation](#installation)
 - [example programs](#example-programs)
 - [capture and replay](#capture-and-replay)
-
+- [reference](#reference)
 # intro
 I am automating my layout with several [Digikeijs](https://www.digikeijs.com) components ([DR5000](https://www.digikeijs.com/en/digital-model-railway-accessories/command-stations.html), [DR4024](https://www.digikeijs.com/en/dr4024-4-channel-servodecoder-with-4-additional-switching-outputs.html), [DR4088CS](https://www.digikeijs.com/en/dr4088cs-16-channel-feedback-module-s88n.html)) and I want to be able to script part of the running operation.
 
@@ -102,3 +102,9 @@ The `pylnlib` library can also capture raw LocoNet bytes and store it for later 
 
 This can be really helpful when developing scripts. More details can be found here [capture_and_replay.md](docs/capture_and_replay.md)
 
+# reference
+
+- [LocoNet personal edition](https://www.digitrax.com/support/loconet/loconetpersonaledition.pdf) [Pdf]
+- [A better formatted version of the above](https://wiki.rocrail.net/doku.php?id=loconet:ln-pe-en)
+- [DCC wiki on the electrical side of LocoNet](https://www.digitrax.com/support/loconet/loconetpersonaledition.pdf)
+- [JMRI's constant defintions that include the Ühlenbrock extended opcodes](https://github.com/JMRI/JMRI/blob/master/java/src/jmri/jmrix/loconet/LnConstants.java)
