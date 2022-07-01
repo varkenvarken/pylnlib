@@ -82,19 +82,23 @@ One of the pieces of information in a slot is the decoder address of the locomot
 - [pyserial](https://github.com/pyserial/pyserial)
 
 # installation
-TODO
+
+```bash
+pip install pylnlib
+```
 
 # example programs
 A simple monitor program can be run directly
 ```bash
 python –m pylnlib
 ```
-this program can also capture and store the network data to a file and replay this file. For more optionsntype
+
+This program can also capture and store the network data to a file and replay this file. For more options type
 ```bash
 python -m pylnlib --help
 ```
 
-The scripts directory also contains sample programs that use the library and automate some activities.
+The [scripts directory](https://github.com/varkenvarken/pylnlib/tree/master/scripts) also contains sample programs that use the library and automate some activities.
 
 # capture and replay
 
