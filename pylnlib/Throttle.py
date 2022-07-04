@@ -27,9 +27,15 @@ class Throttle:
         
     def lights(self, on=True, duration=0):
         slot = self.scrollkeeper.getSlot(self.locoaddress)
-        slot.function(0, on, duration)
-        
-     def whistle(self, on=True, duration=0.5):
+        msg, imsg = slot.function(0, on, duration)
+        self.scrollkeeper.sendMessage(msg)
+        if duration > 0:
+            timer(lambda: self.scrollkeeper.sendMessage(imsg), duration)
+     
+    def whistle(self, on=True, duration=0.5):
         slot = self.scrollkeeper.getSlot(self.locoaddress)
-        slot.function(1, on, duration)
- 
+        msg, imsg = slot.function(1, on, duration)
+        self.scrollkeeper.sendMessage(msg)
+        if duration > 0:
+            timer(lambda: self.scrollkeeper.sendMessage(imsg), duration)
+
