@@ -76,3 +76,13 @@ class Slot:
             self.speed = 1
         else:
             self.speed = 2+int(speed * Slot.speedsteps[self.status&0x7]-2) if speed > 0.0 else 0
+            
+     def function(self, fie, state, duration):
+        # functions 0-8 are stored in the slot, others are just put on the wire
+        if fie<9:
+            pass # create a suitable write slot nesage
+        else:
+            pass # create a suitable funtion message
+        if duration > 0.0:
+            imsg, _ = self.function(fie, not state, 0)
+        return msg, imsg
