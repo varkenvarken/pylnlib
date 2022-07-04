@@ -13,12 +13,23 @@ class Throttle:
         self.scrollkeeper = scrollkeeper
         self.locaddress = locaddress
         
-    def forward(self):
+    def forward(self, speed=0):
         slot = self.scrollkeeper.getSlot(self.locoaddress)
         slot.dir = False
+        slot.setSpeed(speed)
         self.scrollkeeper.sendMessage(slot.slotWriteMessage())
 
-    def reverse(self):
+    def reverse(self, speed=0):
         slot = self.scrollkeeper.getSlot(self.locoaddress)
         slot.dir = True
+        slot.setSpeed(speed)
         self.scrollkeeper.sendMessage(slot.slotWriteMessage())
+        
+    def lights(self, on=True, duration=0):
+        slot = self.scrollkeeper.getSlot(self.locoaddress)
+        slot.function(0, on, duration)
+        
+     def whistle(self, on=True, duration=0.5):
+        slot = self.scrollkeeper.getSlot(self.locoaddress)
+        slot.function(1, on, duration)
+ 
