@@ -6,6 +6,7 @@
 #
 # Version: 20220629205541
 
+from .Message import WriteSlotData
 
 class Slot:
     speedsteps = {0: 28, 1: 28, 2: 14, 3: 128, 4: 28, 7: 128}
@@ -76,11 +77,17 @@ class Slot:
             self.speed = 1
         else:
             self.speed = 2+int(speed * Slot.speedsteps[self.status&0x7]-2) if speed > 0.0 else 0
-            
+     
+     def slotWriteMessage(self):
+         return WriteSlotData(self)
+    
      def function(self, fie, state, duration):
-        # functions 0-8 are stored in the slot, others are just put on the wire
+        # functions 0-8 are communicated in a slot write message,
+        # others are just put on the wire as function messages,
+        # but locally we keep all function info in the slot
+        setattr(self, f"f{fie}", state
         if fie<9:
-            pass # create a suitable write slot nesage
+            msg = self.slotWriteMessage() # create a suitable write slot nesage
         else:
             pass # create a suitable funtion message
         if duration > 0.0:
