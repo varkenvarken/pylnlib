@@ -5,6 +5,9 @@
 # License: GPL 3, see file LICENSE
 #
 # Version: 20220629204333
+
+from threading import Timer
+
 class Throttle:
     """
     A class to control a single locomotive.
@@ -30,12 +33,12 @@ class Throttle:
         msg, imsg = slot.function(0, on, duration)
         self.scrollkeeper.sendMessage(msg)
         if duration > 0:
-            timer(lambda: self.scrollkeeper.sendMessage(imsg), duration)
+            Timer(duration, self.scrollkeeper.sendMessage, args=[imsg]).start()
      
     def whistle(self, on=True, duration=0.5):
         slot = self.scrollkeeper.getSlot(self.locoaddress)
         msg, imsg = slot.function(1, on, duration)
         self.scrollkeeper.sendMessage(msg)
         if duration > 0:
-            timer(lambda: self.scrollkeeper.sendMessage(imsg), duration)
+            Timer(duration, self.scrollkeeper.sendMessage, args=[imsg]).start()
 
