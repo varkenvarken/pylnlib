@@ -139,6 +139,8 @@ class Message:
             return RequestLocAddress(data)
         elif opcode == 0xE7:
             return SlotDataReturn(data)
+        elif opcode == 0xEF:
+            return WriteSlotData(data)
         return Unknown(data)
 
     @staticmethod
@@ -180,7 +182,7 @@ class Message:
 
         Slots start from zero (but slot 0 is special, as are several others >= 0x70).
         """
-        return (d0 & 0x7F) | ((d1 & 0x0F) << 8)
+        return (d0 & 0x7F) | ((d1 & 0x0F) << 7)
 
 
 class Unknown(Message):
@@ -405,6 +407,24 @@ class SlotDataReturn(Message):
     def __str__(self):
         return f"{self.__class__.__name__}(slot={self.slot} loc={self.address} status: {self.status} dir: {self.dir} speed: {self.speed} f0: {self.f0} f1: {self.f1} f2: {self.f2} f3: {self.f3} f4: {self.f4}  f5: {self.f5} f6: {self.f6} f7: {self.f7} f8: {self.f8} trk: {self.trk} ss2: {self.ss2} id1: {self.id1} id2: {self.id2} | op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
 
+class WriteSlotData(SlotDataReturn):
+    def __init__(self, slot):
+        if isinstanceof(slot, bytes) or isinstanceof(slot, bytearray):
+            super().__init__(data)
+        else:
+            data = bytearray(14)
+            data[0] = 0xEF
+            data[1] = 0x0E
+            data[2] = slot.slot
+            dara[3] = slot.status
+            data[4] = slot.address & 0x7F
+            data[9] = slot.address >> 7
+            data[5] = slot.speed
+            dara[6] = 0
+            data[6] += 0x20 if slot.dir else 0
+            ...
+            Message.__init__(self,data)  # cannot skip the chain with super()
+            self.updateChecksum()
 
 class SlotSpeed(Message):
     def __init__(self, data):
