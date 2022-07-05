@@ -4,9 +4,17 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220629205541
+# Version: 20220705171937
 
-from .Message import WriteSlotData
+from .Message import (
+    FunctionGroup1,
+    FunctionGroup2,
+    FunctionGroup3,
+    FunctionGroupSound,
+    SlotSpeed,
+    WriteSlotData,
+)
+
 
 class Slot:
     speedsteps = {0: 28, 1: 28, 2: 14, 3: 128, 4: 28, 7: 128}
@@ -67,29 +75,63 @@ class Slot:
 
     def getSpeed(self):
         if self.speed < 2:
-            return self.speed  # either 0 or 1 for inertial stop and emergency stop respectively
-        return self.speed/Slot.speedsteps[self.status&0x7] 
-    
+            return (
+                self.speed
+            )  # either 0 or 1 for inertial stop and emergency stop respectively
+        return (self.speed - 2) / Slot.speedsteps[self.status & 0x7]
+
     def setSpeed(self, speed=0.0, stop=False, emergency=False):
-        if stop:
+        if stop or speed <= 0.0:
             self.speed = 0
         elif emergency:
             self.speed = 1
         else:
-            self.speed = 2+int(speed * Slot.speedsteps[self.status&0x7]-2) if speed > 0.0 else 0
-     
-     def slotWriteMessage(self):
-         return WriteSlotData(self)
-    
-     def function(self, fie, state, duration):
-        # functions 0-8 are communicated in a slot write message,
-        # others are just put on the wire as function messages,
+            self.speed = (
+                2 + int(speed * Slot.speedsteps[self.status & 0x7] - 2)
+                if speed > 0.0
+                else 0
+            )
+
+    def slotWriteMessage(self):
+        return WriteSlotData(self)
+
+    def dirMessage(self):
+        return FunctionGroup1(
+            slot=self.id,
+            dir=self.dir,
+            f0=self.f0,
+            f1=self.f1,
+            f2=self.f2,
+            f3=self.f3,
+            f4=self.f4,
+        )
+
+    def speedMessage(self):
+        return SlotSpeed(slot=self.id, speed=self.speed)
+
+    def function(self, fie, state, duration):
+        # functions are communicated as function messages,
         # but locally we keep all function info in the slot
-        setattr(self, f"f{fie}", state
-        if fie<9:
-            msg = self.slotWriteMessage() # create a suitable write slot nesage
+        setattr(self, f"f{fie}", state)
+        if fie <= 4:
+            msg = FunctionGroup1(
+                slot=self.id,
+                dir=self.dir,
+                f0=self.f0,
+                f1=self.f1,
+                f2=self.f2,
+                f3=self.f3,
+                f4=self.f4,
+            )
+        elif fie <= 8:
+            msg = FunctionGroupSound(
+                slot=self.id, f5=self.f5, f6=self.f6, f7=self.f7, f8=self.f8
+            )
         else:
-            pass # create a suitable funtion message
+            raise NotImplementedError(
+                f"function not implemented for f{fie}"
+            )  # TODO create a suitable funtion message
+        imsg = None
         if duration > 0.0:
             imsg, _ = self.function(fie, not state, 0)
         return msg, imsg

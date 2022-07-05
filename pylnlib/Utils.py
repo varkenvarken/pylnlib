@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220629202056
+# Version: 20220705170738
 
 import argparse
 import sys
@@ -146,4 +146,5 @@ def createInterface(args):
 def createScrollkeeper(interface, args):
     scrollkeeper = Scrollkeeper(interface, slottrace=args.slottrace)
     interface.receiver_handler.append(scrollkeeper.messageListener)
+    scrollkeeper.dummy = args.dummy
     return scrollkeeper

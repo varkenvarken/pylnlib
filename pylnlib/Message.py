@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220629195805
+# Version: 20220705171822
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -43,7 +43,7 @@ class Message:
     OPC_LOCO_ADR = 0xBF
     OPC_LOCO_F3 = 0xD4  # not defined in locnet specs, but implemented nevertheless (seen on Roco WLAN maus)
     OPC_SL_RD_DATA = 0xE7
-    OPC_WR_SL_DATA = 0xEF  # not implemented
+    OPC_WR_SL_DATA = 0xEF
 
     def __init__(self, data):
         """
@@ -129,6 +129,8 @@ class Message:
             return SensorState(data)
         elif opcode == 0xB4:
             return LongAcknowledge(data)
+        elif opcode == 0xBA:
+            return MoveSlots(data)
         elif opcode == 0xBB:
             return RequestSlotData(data)
         elif opcode == 0xBC:
@@ -202,28 +204,84 @@ class PowerOff(Message):
 
 
 class FunctionGroup1(Message):
-    def __init__(self, data):
-        super().__init__(data)
-        self.slot = int(data[1])
-        self.dir = bool(data[2] & 0x20)
-        self.f0 = bool(data[2] & 0x10)
-        self.f1 = bool(data[2] & 0x1)
-        self.f2 = bool(data[2] & 0x2)
-        self.f3 = bool(data[2] & 0x4)
-        self.f4 = bool(data[2] & 0x8)
+    def __init__(
+        self,
+        data=None,
+        slot=None,
+        dir=None,
+        f0=None,
+        f1=None,
+        f2=None,
+        f3=None,
+        f4=None,
+    ):
+        if data is None:
+            self.slot = slot
+            self.dir = dir
+            self.f0 = f0
+            self.f1 = f1
+            self.f2 = f2
+            self.f3 = f3
+            self.f4 = f4
+            data = bytearray(4)
+            data[0] = 0xA1
+            data[1] = self.slot
+            data[2] = 0
+            data[2] += 0x20 if self.dir else 0
+            data[2] += 0x10 if self.f0 else 0
+            data[2] += 0x1 if self.f1 else 0
+            data[2] += 0x2 if self.f2 else 0
+            data[2] += 0x4 if self.f3 else 0
+            data[2] += 0x8 if self.f4 else 0
+            super().__init__(data)
+            self.updateChecksum()
+        else:
+            if dir is not None or f0 is not None:
+                raise ValueError(
+                    "slot and speed arguments cannot be combined with data argument"
+                )
+            super().__init__(data)
+            self.slot = int(data[1])
+            self.dir = bool(data[2] & 0x20)
+            self.f0 = bool(data[2] & 0x10)
+            self.f1 = bool(data[2] & 0x1)
+            self.f2 = bool(data[2] & 0x2)
+            self.f3 = bool(data[2] & 0x4)
+            self.f4 = bool(data[2] & 0x8)
 
     def __str__(self):
         return f"{self.__class__.__name__}(slot = {self.slot} dir: {self.dir} f0: {self.f0}  f1: {self.f1} f2: {self.f2} f3: {self.f3} f4: {self.f4} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
 
 
 class FunctionGroupSound(Message):
-    def __init__(self, data):
-        super().__init__(data)
-        self.slot = int(data[1])
-        self.f5 = bool(data[2] & 0x1)
-        self.f6 = bool(data[2] & 0x2)
-        self.f7 = bool(data[2] & 0x4)
-        self.f8 = bool(data[2] & 0x8)
+    def __init__(self, data=None, slot=None, f5=None, f6=None, f7=None, f8=None):
+        if data is None:
+            self.slot = slot
+            self.f5 = f5
+            self.f6 = f6
+            self.f7 = f7
+            self.f8 = f8
+            data = bytearray(4)
+            data[0] = 0xA2
+            data[1] = self.slot
+            data[2] = 0
+            data[2] += 0x1 if self.f5 else 0
+            data[2] += 0x2 if self.f6 else 0
+            data[2] += 0x4 if self.f7 else 0
+            data[2] += 0x8 if self.f8 else 0
+            super().__init__(data)
+            self.updateChecksum()
+        else:
+            if slot is not None or f5 is not None:
+                raise ValueError(
+                    "slot and function arguments cannot be combined with data argument"
+                )
+            super().__init__(data)
+            self.slot = int(data[1])
+            self.f5 = bool(data[2] & 0x1)
+            self.f6 = bool(data[2] & 0x2)
+            self.f7 = bool(data[2] & 0x4)
+            self.f8 = bool(data[2] & 0x8)
 
     def __str__(self):
         return f"{self.__class__.__name__}(slot = {self.slot} f5: {self.f5}  f6: {self.f6} f7: {self.f7} f8: {self.f8} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
@@ -407,30 +465,59 @@ class SlotDataReturn(Message):
     def __str__(self):
         return f"{self.__class__.__name__}(slot={self.slot} loc={self.address} status: {self.status} dir: {self.dir} speed: {self.speed} f0: {self.f0} f1: {self.f1} f2: {self.f2} f3: {self.f3} f4: {self.f4}  f5: {self.f5} f6: {self.f6} f7: {self.f7} f8: {self.f8} trk: {self.trk} ss2: {self.ss2} id1: {self.id1} id2: {self.id2} | op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
 
+
 class WriteSlotData(SlotDataReturn):
     def __init__(self, slot):
-        if isinstanceof(slot, bytes) or isinstanceof(slot, bytearray):
+        if isinstance(slot, bytes) or isinstance(slot, bytearray):
             super().__init__(data)
         else:
             data = bytearray(14)
             data[0] = 0xEF
             data[1] = 0x0E
             data[2] = slot.slot
-            dara[3] = slot.status
+            data[3] = slot.status
             data[4] = slot.address & 0x7F
             data[9] = slot.address >> 7
             data[5] = slot.speed
-            dara[6] = 0
+            data[6] = 0
             data[6] += 0x20 if slot.dir else 0
-            ...
-            Message.__init__(self,data)  # cannot skip the chain with super()
+            data[6] += 0x10 if slot.f0 else 0
+            data[6] += 0x1 if slot.f1 else 0
+            data[6] += 0x2 if slot.f2 else 0
+            data[6] += 0x4 if slot.f3 else 0
+            data[6] += 0x8 if slot.f4 else 0
+            data[7] = self.trk
+            data[8] = self.ss2
+            data[10] = 0
+            data[10] += 0x1 if slot.f5 else 0
+            data[10] += 0x2 if slot.f6 else 0
+            data[10] += 0x4 if slot.f7 else 0
+            data[10] += 0x8 if slot.f8 else 0
+            data[11] = self.id1
+            data[12] = self.id2
+            Message.__init__(self, data)  # cannot skip the chain with super()
             self.updateChecksum()
 
+
 class SlotSpeed(Message):
-    def __init__(self, data):
-        super().__init__(data)
-        self.slot = int(data[1])
-        self.speed = data[2]
+    def __init__(self, data=None, slot=None, speed=None):
+        if data is None:
+            self.slot = slot
+            self.speed = speed
+            data = bytearray(4)
+            data[0] = 0xA0
+            data[1] = slot
+            data[2] = speed
+            super().__init__(data)
+            self.updateChecksum()
+        else:
+            if slot is not None or speed is not None:
+                raise ValueError(
+                    "slot and speed arguments cannot be combined with data argument"
+                )
+            self.slot = int(data[1])
+            self.speed = data[2]
+            super().__init__(data)
 
     def __str__(self):
         return f"{self.__class__.__name__}(slot={self.slot} speed: {self.speed} | op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
@@ -452,6 +539,28 @@ class RequestLocAddress(Message):
 
     def __str__(self):
         return f"{self.__class__.__name__}(address = {self.address} | op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
+
+
+class MoveSlots(Message):
+    def __init__(self, data=None, src=None, dst=None):
+        if data is None:
+            self.src = src
+            self.dst = dst
+            data = bytearray(4)
+            data[0] = 0xBA
+            data[1] = self.src
+            data[2] = self.dst
+            super().__init__(data)
+            self.updateChecksum()
+        else:
+            if src is not None or dst is not None:
+                raise ValueError("slot arguments cannot be combined with data argument")
+            super().__init__(data)
+            self.src = int(data[1])
+            self.dst = int(data[2])
+
+    def __str__(self):
+        return f"{self.__class__.__name__}(src = {self.src} dst = {self.dst}| op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
 
 
 class CaptureTimeStamp(Message):

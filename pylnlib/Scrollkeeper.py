@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220629200355
+# Version: 20220705170815
 
 from datetime import datetime
 from threading import Lock
@@ -15,6 +15,7 @@ from .Message import (
     FunctionGroup2,
     FunctionGroup3,
     FunctionGroupSound,
+    MoveSlots,
     RequestLocAddress,
     RequestSlotData,
     RequestSwitchFunction,
@@ -40,6 +41,7 @@ class Scrollkeeper:
         self.switchlock = Lock()
         self.sensors = {}
         self.sensorlock = Lock()
+        self.dummy = False
 
     def messageListener(self, msg):
         """
@@ -190,6 +192,8 @@ class Scrollkeeper:
         for slot in self.slots:
             if slot.address == address:
                 return slot
+        if self.dummy:
+            return Slot(id=100, dir=0, speed=0, status=0, address=address)
         self.sendMessage(RequestLocAddress(address))
         if self.waitUntilLocAddressKnown(address):
             for slot in self.slots:
@@ -261,12 +265,13 @@ class Scrollkeeper:
         return True
 
     def acquireSlot(self, slot):
-        pass  # TODO null move
+        self.sendMessage(MoveSlots(src=slot.id, dst=slot.id))
+        # TODO: ? should we wait for slot data ?
 
     def getThrottle(self, locaddress):
         slot = self.getSlot(locaddress)
         self.acquireSlot(slot)
-        return Throttle(self)
+        return Throttle(self, locaddress)
 
     def __str__(self):
         newline = "\n"
