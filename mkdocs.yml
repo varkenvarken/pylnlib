@@ -1,11 +1,20 @@
 site_name: Pylnlib
 site_description: Documentation for the pylnlib library.
+site_url: https://varkenvarken.github.io/pylnlib/
 site_dir: docs
+repo_url: https://github.com/varkenvarken/pylnlib
+repo_name: pylnlib
 
 docs_dir: documentation
 
 theme:
-    name: 'mkdocs'
+    name: 'material'
+    palette:
+      primary: purple
+    font:
+      text: 'Gentium Basic'
+    logo: assets/logo.svg
+    favicon: assets/favicon.png
 
 nav:
   - Home: 'README.md'
@@ -21,3 +30,6 @@ markdown_extensions:
       ignore_all: false
       prefer_docstring: true
       template_folder: null
+
+extra_css:
+  - stylesheets/extra.css

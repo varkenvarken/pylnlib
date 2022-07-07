@@ -4,6 +4,8 @@
 python -m pip install mkdocs
 # the jetblack-markdown extension to mkdocs converts docstrings to markdown
 python -m pip install jetblack-markdown
+# the material theme for mkdocs
+python -m pip install mkdocs-material
 
 # goto the top level project directory
 cd pylnlib
