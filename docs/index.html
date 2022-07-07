@@ -1,5 +1,316 @@
-<html>
-  <body>
-    gggggggggg
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Documentation for the pylnlib library.">
+        
+        
+        <link rel="shortcut icon" href="img/favicon.ico">
+        <title>Pylnlib</title>
+        <link href="css/bootstrap.min.css" rel="stylesheet">
+        <link href="css/font-awesome.min.css" rel="stylesheet">
+        <link href="css/base.css" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/styles/github.min.css">
+
+        <script src="js/jquery-1.10.2.min.js" defer></script>
+        <script src="js/bootstrap.min.js" defer></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.5.0/highlight.min.js"></script>
+        <script>hljs.initHighlightingOnLoad();</script> 
+    </head>
+
+    <body class="homepage">
+        <div class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <div class="container">
+                <a class="navbar-brand" href=".">Pylnlib</a>
+                <!-- Expander button -->
+                <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbar-collapse">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <!-- Expanded navigation -->
+                <div id="navbar-collapse" class="navbar-collapse collapse">
+                        <!-- Main navigation -->
+                        <ul class="nav navbar-nav">
+                            <li class="navitem active">
+                                <a href="." class="nav-link">Home</a>
+                            </li>
+                            <li class="navitem">
+                                <a href="API/pylnlib/" class="nav-link">Pylnlib</a>
+                            </li>
+                        </ul>
+
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a href="#" class="nav-link" data-toggle="modal" data-target="#mkdocs_search_modal">
+                                <i class="fa fa-search"></i> Search
+                            </a>
+                        </li>
+                            <li class="nav-item">
+                                <a rel="prev" class="nav-link disabled">
+                                    <i class="fa fa-arrow-left"></i> Previous
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a rel="next" href="API/pylnlib/" class="nav-link">
+                                    Next <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="container">
+            <div class="row">
+                    <div class="col-md-3"><div class="navbar-light navbar-expand-md bs-sidebar hidden-print affix" role="complementary">
+    <div class="navbar-header">
+        <button type="button" class="navbar-toggler collapsed" data-toggle="collapse" data-target="#toc-collapse" title="Table of Contents">
+            <span class="fa fa-angle-down"></span>
+        </button>
+    </div>
+
+    
+    <div id="toc-collapse" class="navbar-collapse collapse card bg-secondary">
+        <ul class="nav flex-column">
+            
+            <li class="nav-item" data-level="1"><a href="#pylnlib" class="nav-link">pylnlib</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#table-of-contents" class="nav-link">table of contents</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#intro" class="nav-link">intro</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#goals" class="nav-link">goals</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#non-goals-and-scope" class="nav-link">non goals and scope</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#architecture" class="nav-link">architecture</a>
+              <ul class="nav flex-column">
+            <li class="nav-item" data-level="2"><a href="#message-and-interface-classes" class="nav-link">Message and Interface classes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#the-scrollkeeper-class" class="nav-link">The Scrollkeeper class</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#the-script-and-throttle-classes" class="nav-link">The Script and Throttle classes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            <li class="nav-item" data-level="2"><a href="#the-sensor-switch-and-slot-classes" class="nav-link">The Sensor, Switch and Slot classes</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#dependencies" class="nav-link">dependencies</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#installation" class="nav-link">installation</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#example-programs" class="nav-link">example programs</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#capture-and-replay" class="nav-link">capture and replay</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+            
+            <li class="nav-item" data-level="1"><a href="#reference" class="nav-link">reference</a>
+              <ul class="nav flex-column">
+              </ul>
+            </li>
+        </ul>
+    </div>
+</div></div>
+                    <div class="col-md-9" role="main">
+
+<h1 id="pylnlib">pylnlib</h1>
+<p>A python library to monitor LocoNet traffic on a usb/serial bus.</p>
+<h1 id="table-of-contents">table of contents</h1>
+<ul>
+<li><a href="#intro">intro</a></li>
+<li><a href="#goals">goals</a></li>
+<li><a href="#architecture">architecture</a></li>
+<li><a href="#message-and-interface-classes">Message and Interface classes</a></li>
+<li><a href="the-scrollkeeper-class">The Scrollkeeper class</a></li>
+<li><a href="#the-script-and-throttle-classes">The Script and Throttle classes</a></li>
+<li><a href="the-sensor,-switch-and-slot-classes">The Sensor, Switch and Slot classes</a></li>
+<li><a href="#dependencies">dependencies</a></li>
+<li><a href="#installation">installation</a></li>
+<li><a href="#example-programs">example programs</a></li>
+<li><a href="#capture-and-replay">capture and replay</a></li>
+<li><a href="#reference">reference</a></li>
+</ul>
+<h1 id="intro">intro</h1>
+<p>I am automating my layout with several <a href="https://www.digikeijs.com">Digikeijs</a> components (<a href="https://www.digikeijs.com/en/digital-model-railway-accessories/command-stations.html">DR5000</a>, <a href="https://www.digikeijs.com/en/dr4024-4-channel-servodecoder-with-4-additional-switching-outputs.html">DR4024</a>, <a href="https://www.digikeijs.com/en/dr4088cs-16-channel-feedback-module-s88n.html">DR4088CS</a>) and I want to be able to script part of the running operation.</p>
+<p>Now <a href="https://github.com/JMRI/JMRI">JMRI</a> works fine and even allows for Python scripting, but I find it a bit top heavy on a RaspberryPi 3B+ and also, although this may be a matter of taste, the Python bindings are not very pythonic nor very logical IMHO.</p>
+<p>Still, a lot of effort went into JMRI and otherwise it is a fine piece of software, but writing my own LocoNet Python library from scratch is not only a nice personal learning experience, but also might allow me to move some of it to microcontrollers with micro Python.</p>
+<h1 id="goals">goals</h1>
+<p>The functional goals for <code>pylnlib</code> are
+- be able to monitor all traffic on the usb loconet buffer interface of the DR5000
+  this includes some extensions like the extended function messages (opcodes a3 and d4) generated by many throttles.
+  to this end classes are provided that represent most messages as well as an <code>UnknownMessage</code> class for messages we do not recognize yet, or are not interested in (like those for CV programming for example)
+- be able to control switches and locomotives
+  generate messages to change the state of a switch and to change the speed, diection and decoder function of a locomotive.
+ - provide a <code>Script</code> object that simplifies the automated operation of switches and locomotives.</p>
+<h2 id="non-goals-and-scope">non goals and scope</h2>
+<p>There are currently no plans to implement any CV programming options nor do we aim for completeness in controlling locomotives. For example, no functionality is provided to control 'consists'.</p>
+<h1 id="architecture">architecture</h1>
+<p>Pylnlib is designed around the <code>Message</code> and <code>Interface</code> classes.</p>
+<h2 id="message-and-interface-classes">Message and Interface classes</h2>
+<p><code>Message</code> is subclassed for every implemented LocoNet message (a.k.a. opcode) and <code>Interface</code> communicates over a pyserial interface with the command station. <code>Interface</code> converts incoming raw bytes to (subclasses of) <code>Message</code> instances and converts outgoing <code>Message</code> instance to raw bytes.</p>
+<p><code>Interface</code> is thread safe and manages all input and output through two queues.</p>
+<p>Other class instances, like the <code>Scrollkeeper</code>, can register a callback with an instance of an <code>Interface</code> that will be called for every incoming message.</p>
+<p><img alt="Class diagram and architecture overview" src="drawings/pylnlib.drawio.svg" /></p>
+<h2 id="the-scrollkeeper-class">The Scrollkeeper class</h2>
+<p>The <code>Scrollkeeper</code> class is designed to keep track of the layout status. It does this by registering a callback function with an instance of <code>Interface</code> and look at every incoming <code>Message</code> for changes in the status of sensors, switches and slots.</p>
+<p>Status reply messages are used to update information about the item, just like commands. However if a command (like throwing a switch or changing the contents of a slot to change a locomotive's speed) references an unknown item, the <code>Scrollkeeper</code> instance will send an appropriate status request message. The reply to this message will then be processed as normal.</p>
+<p>For any item it receieves information about (a sensor, switch, or slot) it creates or updates a suitable object in one of the collections it manages.</p>
+<p>The <code>Scrollkeeper</code> class also offers methods to provide information about the status of the items it keeps updated and to forward an outgoing <code>Message</code> to an <code>Interface</code>.</p>
+<p>The <code>Scrollkeeper</code> class is also thread safe, so a single instance could provide information to multiple instances od a <code>Script</code>. Thread safety is maintained by locks on the collections of slots, switches and sensors.</p>
+<h2 id="the-script-and-throttle-classes">The Script and Throttle classes</h2>
+<p>The <code>Script</code> class is used to automate operations on a layout.</p>
+<p>It holds a reference to a <code>Scrollkeeper</code> instance and provides methods to change locomotive speed, direction and functions, throw swithces as well as wait for a sensor to change to a certain state.</p>
+<p>The <code>Throttle</code> class is a utility class that encapsulates control of a single locomotive</p>
+<p>It is instantiated by calling a factory function in the <code>Script</code> class. Instantiation will also reserve a slot for the locomotive if this is not present yet and establish control by issueing a null move on that slot.</p>
+<h2 id="the-sensor-switch-and-slot-classes">The Sensor, Switch and Slot classes</h2>
+<p>The <code>Scrollkeeper</code> class maintains several colections of objects that represent the state of an automated object.</p>
+<p>The <code>Sensor</code> and <code>Switch</code> objects are fairly simple and represent on/off and thrown/closed states respectively.</p>
+<p>The <code>Slot</code> object is a little more complicated as it carries much more information. It represents a slot on the active LocoNet 'stack'. In the LocoNet model you do not address locomotives directly but instead a collection of slots is kept that contains the current information about locomotives. The command station uses this information the repeatedly send DCC messages to the track.</p>
+<p>One of the pieces of information in a slot is the decoder address of the locomotiv. Other information that is kept is the diection, speed and the state of the first 9 decoder functions. The <code>Slot</code> class extends this by also storing the state of decoder functions 10 and up.</p>
+<h1 id="dependencies">dependencies</h1>
+<ul>
+<li>Python 3.8</li>
+<li><a href="https://github.com/pyserial/pyserial">pyserial</a></li>
+</ul>
+<h1 id="installation">installation</h1>
+<div class="codehilite"><pre><span></span><code>pip install pylnlib
+</code></pre></div>
+
+<h1 id="example-programs">example programs</h1>
+<p>A simple monitor program can be run directly</p>
+<div class="codehilite"><pre><span></span><code>python –m pylnlib
+</code></pre></div>
+
+<p>This program can also capture and store the network data to a file and replay this file. For more options type</p>
+<div class="codehilite"><pre><span></span><code>python -m pylnlib --help
+</code></pre></div>
+
+<p>The <a href="https://github.com/varkenvarken/pylnlib/tree/master/scripts">scripts directory</a> also contains sample programs that use the library and automate some activities.</p>
+<h1 id="capture-and-replay">capture and replay</h1>
+<p>The <code>pylnlib</code> library can also capture raw LocoNet bytes and store it for later replay in a file.</p>
+<p>This can be really helpful when developing scripts. More details can be found here <a href="capture_and_replay/">capture_and_replay.md</a></p>
+<h1 id="reference">reference</h1>
+<ul>
+<li><a href="https://www.digitrax.com/support/loconet/loconetpersonaledition.pdf">LocoNet personal edition</a> [Pdf]</li>
+<li><a href="https://wiki.rocrail.net/doku.php?id=loconet:ln-pe-en">A better formatted version of the above</a></li>
+<li><a href="https://www.digitrax.com/support/loconet/loconetpersonaledition.pdf">DCC wiki on the electrical side of LocoNet</a></li>
+<li><a href="https://github.com/JMRI/JMRI/blob/master/java/src/jmri/jmrix/loconet/LnConstants.java">JMRI's constant defintions that include the Ühlenbrock extended opcodes</a></li>
+</ul></div>
+            </div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            <p>Documentation built with <a href="https://www.mkdocs.org/">MkDocs</a>.</p>
+        </footer>
+        <script>
+            var base_url = ".",
+                shortcuts = {"help": 191, "next": 78, "previous": 80, "search": 83};
+        </script>
+        <script src="js/base.js" defer></script>
+        <script src="search/main.js" defer></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="searchModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="searchModalLabel">Search</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+                <p>From here you can search these documents. Enter your search terms below.</p>
+                <form>
+                    <div class="form-group">
+                        <input type="search" class="form-control" placeholder="Search..." id="mkdocs-search-query" title="Type search term here">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results" data-no-results-text="No results found"></div>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div><div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+
     </body>
-  </html>
+</html>
+
+<!--
+MkDocs version : 1.3.0
+Build Date UTC : 2022-07-07 08:57:01.075821+00:00
+-->

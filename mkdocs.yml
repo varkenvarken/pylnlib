@@ -1,0 +1,23 @@
+site_name: Pylnlib
+site_description: Documentation for the pylnlib library.
+site_dir: docs
+
+docs_dir: documentation
+
+theme:
+    name: 'mkdocs'
+
+nav:
+  - Home: 'README.md'
+  - Pylnlib: 'API/pylnlib.md'
+
+markdown_extensions:
+  - admonition
+  - codehilite
+  - jetblack_markdown.autodoc:
+      class_from_init: true
+      ignore_dunder: true
+      ignore_private: true
+      ignore_all: false
+      prefer_docstring: true
+      template_folder: null
