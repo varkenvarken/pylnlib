@@ -4,6 +4,9 @@ site_url: https://varkenvarken.github.io/pylnlib/
 site_dir: docs
 repo_url: https://github.com/varkenvarken/pylnlib
 repo_name: pylnlib
+edit_uri: ""
+
+copyright: Copyright &copy; 2022 Michel Anders (varkenvarken)
 
 docs_dir: documentation
 
@@ -20,7 +23,9 @@ nav:
   - Home: 'README.md'
   - Pylnlib: 'API/pylnlib.md'
 
+
 markdown_extensions:
+  - search
   - admonition
   - codehilite
   - jetblack_markdown.autodoc:
