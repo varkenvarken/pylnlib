@@ -1,9 +1,0 @@
-@font-face {
-    font-family: 'Amaranth';
-    src: url('font/amaranth-v11-latin-regular.woff') format('woff'),
-        url('font/amaranth-v11-latin-regular.woff2') format('woff2');
-}
-
-.md-typeset h1 {
-    font-family: "Amaranth";
-}
