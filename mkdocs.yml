@@ -25,7 +25,6 @@ nav:
 
 
 markdown_extensions:
-  - search
   - admonition
   - codehilite
   - jetblack_markdown.autodoc:
