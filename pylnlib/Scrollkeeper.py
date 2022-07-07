@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220705170815
+# Version: 20220707164000
 
 from datetime import datetime
 from threading import Lock
@@ -33,6 +33,16 @@ from .Throttle import Throttle
 
 class Scrollkeeper:
     def __init__(self, interface, slottrace=False):
+        """
+        A Scrollkeeper instance keeps track of the state of slots, sensors and switches.
+
+        A Scrollkeeper instance uses information sent to its messageListener method to keep track of changes to slots, sensors and switches.
+        If it receives messages for which it does not have a Slot, Sensor or Switch instance, it will send requests to get this information.
+
+        Args:
+            interface (Interface): used to send a message if no information on a particular item is present.
+            slottrace (bool, optional): log every internal update to the console. Defaults to False.
+        """
         self.interface = interface
         self.slottrace = slottrace
         self.slots = {}
@@ -43,11 +53,14 @@ class Scrollkeeper:
         self.sensorlock = Lock()
         self.dummy = False
 
-    def messageListener(self, msg):
+    def messageListener(self, msg) -> None:
         """
         Handles incoming messages and updates internal state.
 
         If information refering an unknown slot comes in, it will issue a slot status request.
+
+        Args:
+            msg (Message): An instance of a (subclass of a) Message.
         """
         if isinstance(msg, SlotDataReturn):
 
@@ -149,7 +162,15 @@ class Scrollkeeper:
         elif isinstance(msg, RequestSwitchFunction):
             self.updateSwitch(msg.address, msg.thrown, msg.engage)
 
-    def updateSlot(self, id, **kwargs):
+    def updateSlot(self, id, **kwargs) -> None:
+        """
+        Update attributes of a slot.
+
+        The method is thread safe.
+
+        Args:
+            id (int): The slot id.
+        """
         with self.slotlock:
             if id not in self.slots:
                 self.slots[id] = Slot(id)
@@ -163,7 +184,16 @@ class Scrollkeeper:
             if self.slottrace:
                 print(self)
 
-    def updateSensor(self, address, level=None):
+    def updateSensor(self, address, level=None) -> None:
+        """
+        Update the attributes of a sensor.
+
+        The method is thread safe.
+
+        Args:
+            address (int): The address of the sensor. This is zero based.
+            level (bool, optional): Either True (on) or False (off). Defaults to None.
+        """
         with self.sensorlock:
             if address not in self.sensors:
                 self.sensors[address] = Sensor(address)
@@ -173,6 +203,16 @@ class Scrollkeeper:
                 print(self)
 
     def updateSwitch(self, address, thrown=None, engage=None):
+        """
+        update the status of a switch.
+
+        The method is thread safe.
+
+        Args:
+            address (int): The address of the switch. This is zero based.
+            thrown (bool, optional): direction of the switch. True (thrown, aka Open) or False (closed). Defaults to None.
+            engage (bool, optional): whether the servo is engaged. Defaults to None.
+        """
         with self.switchlock:
             if address not in self.switches:
                 self.switches[address] = Switch(address)
@@ -188,6 +228,15 @@ class Scrollkeeper:
         Return the slot id associated with the loc address.
 
         If there is no slot known for this loc, request slot data.
+
+        Args:
+            address (int): loc address
+
+        Raises:
+            ValueError: if no slot data is available for this loc address
+
+        Returns:
+            Slot: The Slot instance associated with this loc address.
         """
         for slot in self.slots:
             if slot.address == address:
