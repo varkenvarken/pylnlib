@@ -1,3 +1,6 @@
+![Docs generated](https://github.com/varkenvarken/pylnlib/actions/workflows/pages.yml/badge.svg)
+
+
 # pylnlib
 A python library to monitor LocoNet traffic on a usb/serial bus.
 
