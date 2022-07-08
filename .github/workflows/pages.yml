@@ -13,5 +13,5 @@ jobs:
         with:
           python-version: 3.x
       - run: pip install mkdocs-material
-      - run: pip install jetblack-markdown
+      - run: pip install mkapi
       - run: PYTHONPATH=`pwd` mkdocs gh-deploy --force
