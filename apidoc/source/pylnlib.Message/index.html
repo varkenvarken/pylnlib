@@ -1,0 +1,1047 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation for the pylnlib library.">
+      
+      
+      
+        <link rel="canonical" href="https://varkenvarken.github.io/pylnlib/apidoc/source/pylnlib.Message/">
+      
+      <link rel="icon" href="../../../assets/favicon.png">
+      <meta name="generator" content="mkdocs-1.3.0, mkdocs-material-8.3.9">
+    
+    
+      
+        <title>pylnlib.Message - Pylnlib</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../../assets/stylesheets/main.1d29e8d0.min.css">
+      
+        
+        <link rel="stylesheet" href="../../../assets/stylesheets/palette.cbb835fc.min.css">
+        
+          
+          
+          <meta name="theme-color" content="#ab47bd">
+        
+      
+      
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Gentium+Basic:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Gentium Basic";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/all.css">
+    
+      <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.8.1/css/v4-shims.css">
+    
+      <link rel="stylesheet" href="../../../css/mkapi-common.css">
+    
+      <link rel="stylesheet" href="../../../stylesheets/extra.css">
+    
+    <script>__md_scope=new URL("../../..",location),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="" data-md-color-primary="purple" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#pylnlibmessage" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../../.." title="Pylnlib" class="md-header__button md-logo" aria-label="Pylnlib" data-md-component="logo">
+      
+  <img src="../../../assets/logo.svg" alt="logo">
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Pylnlib
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              pylnlib.Message
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/varkenvarken/pylnlib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pylnlib
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../../.." title="Pylnlib" class="md-nav__button md-logo" aria-label="Pylnlib" data-md-component="logo">
+      
+  <img src="../../../assets/logo.svg" alt="logo">
+
+    </a>
+    Pylnlib
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/varkenvarken/pylnlib" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 6.1.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2022 Fonticons, Inc.--><path d="M439.55 236.05 244 40.45a28.87 28.87 0 0 0-40.81 0l-40.66 40.63 51.52 51.52c27.06-9.14 52.68 16.77 43.39 43.68l49.66 49.66c34.23-11.8 61.18 31 35.47 56.69-26.49 26.49-70.21-2.87-56-37.34L240.22 199v121.85c25.3 12.54 22.26 41.85 9.08 55a34.34 34.34 0 0 1-48.55 0c-17.57-17.6-11.07-46.91 11.25-56v-123c-20.8-8.51-24.6-30.74-18.64-45L142.57 101 8.45 235.14a28.86 28.86 0 0 0 0 40.81l195.61 195.6a28.86 28.86 0 0 0 40.8 0l194.69-194.69a28.86 28.86 0 0 0 0-40.81z"/></svg>
+  </div>
+  <div class="md-source__repository">
+    pylnlib
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../.." class="md-nav__link">
+        Home
+      </a>
+    </li>
+  
+
+    
+      
+      
+      
+
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2" type="checkbox" id="__nav_2" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2">
+          API
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="API" data-md-level="1">
+        <label class="md-nav__title" for="__nav_2">
+          <span class="md-nav__icon md-icon"></span>
+          API
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+      
+        <input class="md-nav__toggle md-toggle" data-md-toggle="__nav_2_1" type="checkbox" id="__nav_2_1" >
+      
+      
+      
+      
+        <label class="md-nav__link" for="__nav_2_1">
+          pylnlib
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <nav class="md-nav" aria-label="pylnlib" data-md-level="2">
+        <label class="md-nav__title" for="__nav_2_1">
+          <span class="md-nav__icon md-icon"></span>
+          pylnlib
+        </label>
+        <ul class="md-nav__list" data-md-scrollfix>
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pylnlib/" class="md-nav__link">
+        pylnlib
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pylnlib.Interface/" class="md-nav__link">
+        pylnlib.Interface
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pylnlib.Scrollkeeper/" class="md-nav__link">
+        pylnlib.Scrollkeeper
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pylnlib.Throttle/" class="md-nav__link">
+        pylnlib.Throttle
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pylnlib.Utils/" class="md-nav__link">
+        pylnlib.Utils
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../pylnlib.Message/" class="md-nav__link">
+        pylnlib.Message
+      </a>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+            
+          
+        </ul>
+      </nav>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          <div class="md-content" data-md-component="content">
+            <article class="md-content__inner md-typeset">
+              
+                
+
+
+<div class="mkapi-node">
+<h1 id="" class="mkapi-object mkapi-object-code plain">
+<span class="mkapi-object-kind mkapi-object-kind-code">SOURCE CODE</span>
+<span class="mkapi-object-prefix">pylnlib.</span><span class="mkapi-object-name">Message</span>
+<span id="pylnlib.Message"></span><a class="mkapi-docs-link" href="../../pylnlib.Message">DOCS</a>
+</h1>
+
+<div class="mkapi-code">
+<div class="codehilite"><pre><span></span><code><span class="c1"># pylnlib : a package to communicate with a model railroad controller using the LocoNet® protocol</span>
+<span class="c1">#</span>
+<span class="c1"># (c) 2022 Michel Anders (varkenvarken)</span>
+<span class="c1">#</span>
+<span class="c1"># License: GPL 3, see file LICENSE</span>
+<span class="c1">#</span>
+<span class="c1"># Version: 20220705171822</span>
+
+<span class="c1"># Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION</span>
+<span class="c1"># Which is © Digitrax Inc.</span>
+<span class="c1"># See also: https://www.digitrax.com/static/apps/cms/media/documents/loconet/loconetpersonaledition.pdf</span>
+<span class="c1"># See also: https://wiki.rocrail.net/doku.php?id=loconet:ln-pe-en</span>
+
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">time</span>
+
+
+<span class="k">class</span> <span class="nc">Message</span><span class="p">:</span><span id="pylnlib.Message.Message"></span><a class="mkapi-docs-link" title="pylnlib.Message.Message" href="../../pylnlib.Message/#pylnlib.Message.Message">DOCS</a>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    represents a LocoNet message.</span>
+
+<span class="sd">    several subclasses are provided to implemented actual messages.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">OPC_GPON</span> <span class="o">=</span> <span class="mh">0x83</span>
+    <span class="n">OPC_GPOFF</span> <span class="o">=</span> <span class="mh">0x82</span>
+
+    <span class="n">OPC_LOCO_SPD</span> <span class="o">=</span> <span class="mh">0xA0</span>
+    <span class="n">OPC_LOCO_DIRF</span> <span class="o">=</span> <span class="mh">0xA1</span>
+    <span class="n">OPC_LOCO_SND</span> <span class="o">=</span> <span class="mh">0xA2</span>
+    <span class="n">OPC_LOCO_F2</span> <span class="o">=</span> <span class="mh">0xA3</span>  <span class="c1"># not defined in locnet specs, but implemented nevertheless</span>
+    <span class="n">OPC_SW_REQ</span> <span class="o">=</span> <span class="mh">0xB0</span>
+    <span class="n">OPC_SW_REP</span> <span class="o">=</span> <span class="mh">0xB1</span>  <span class="c1"># not implemented</span>
+    <span class="n">OPC_INPUT_REP</span> <span class="o">=</span> <span class="mh">0xB2</span>
+    <span class="n">OPC_LONG_ACK</span> <span class="o">=</span> <span class="mh">0xB4</span>
+    <span class="n">OPC_SLOT_STAT1</span> <span class="o">=</span> <span class="mh">0xB5</span>  <span class="c1"># not implemented</span>
+    <span class="n">OPC_CONSIST_FUNC</span> <span class="o">=</span> <span class="mh">0xB6</span>  <span class="c1"># not implemented</span>
+    <span class="n">OPC_UNLINK_SLOTS</span> <span class="o">=</span> <span class="mh">0xB8</span>  <span class="c1"># not implemented</span>
+    <span class="n">OPC_LINK_SLOTS</span> <span class="o">=</span> <span class="mh">0xB9</span>  <span class="c1"># not implemented</span>
+    <span class="n">OPC_MOVE_SLOTS</span> <span class="o">=</span> <span class="mh">0xBA</span>  <span class="c1"># not implemented</span>
+    <span class="n">OPC_RQ_SL_DATA</span> <span class="o">=</span> <span class="mh">0xBB</span>
+    <span class="n">OPC_SW_STATE</span> <span class="o">=</span> <span class="mh">0xBC</span>
+    <span class="n">OPC_SW_ACK</span> <span class="o">=</span> <span class="mh">0xBD</span>  <span class="c1"># not implemented</span>
+    <span class="n">OPC_LOCO_ADR</span> <span class="o">=</span> <span class="mh">0xBF</span>
+    <span class="n">OPC_LOCO_F3</span> <span class="o">=</span> <span class="mh">0xD4</span>  <span class="c1"># not defined in locnet specs, but implemented nevertheless (seen on Roco WLAN maus)</span>
+    <span class="n">OPC_SL_RD_DATA</span> <span class="o">=</span> <span class="mh">0xE7</span>
+    <span class="n">OPC_WR_SL_DATA</span> <span class="o">=</span> <span class="mh">0xEF</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a message from a byte array.</span>
+
+<span class="sd">        The &#39;opcode&#39; (message type) is determined from byte 0,</span>
+<span class="sd">        The length of the data (incl. the checksum) is determined by bits in the first byte and the second byte (if it is a variable byte message)</span>
+<span class="sd">        The checksum is the last byte in the data. If the last byte in the data is 0, no check is done, so you can create a message from scratch and calculate the checksum later.</span>
+
+<span class="sd">        If the length of the byte array does not match the encoded length, a ValueError is raised.</span>
+<span class="sd">        If the calculated checksum doesn match the last byte of the byte array, a ValueError is raised (unless the last data byte is 0)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opcode</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">length</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">length</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="n">data</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;length mismatch&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="o">!=</span> <span class="n">Message</span><span class="o">.</span><span class="n">checksum</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;checksum error&quot;</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">hexdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><span id="pylnlib.Message.Message.hexdata"></span><a class="mkapi-docs-link" title="pylnlib.Message.Message.hexdata" href="../../pylnlib.Message/#pylnlib.Message.Message.hexdata">DOCS</a>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return the message data as a list of numbers formatted as hexadecimals with 2 digits and without 0x prefix.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">list</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">v</span><span class="si">:</span><span class="s2">02x</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">for</span> <span class="n">v</span> <span class="ow">in</span> <span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(opcode=</span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+    <span class="k">def</span> <span class="nf">updateChecksum</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><span id="pylnlib.Message.Message.updateChecksum"></span><a class="mkapi-docs-link" title="pylnlib.Message.Message.updateChecksum" href="../../pylnlib.Message/#pylnlib.Message.Message.updateChecksum">DOCS</a>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the checksum of the data and store it in the last byte.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">checksum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="nd">@staticmethod</span><span id="pylnlib.Message.Message.length"></span><a class="mkapi-docs-link" title="pylnlib.Message.Message.length" href="../../pylnlib.Message/#pylnlib.Message.Message.length">DOCS</a>
+    <span class="k">def</span> <span class="nf">length</span><span class="p">(</span><span class="n">opcode</span><span class="p">,</span> <span class="n">nextbyte</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Determine the length of a LocoNet message based on its opcode and next byte.</span>
+
+<span class="sd">        The next byte holds the total number of bytes in the message if the opcode indicates this is a variable length message.</span>
+
+<span class="sd">        The length is inclusive the opcode and the final checksum.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">d6d5</span> <span class="o">=</span> <span class="p">(</span><span class="n">opcode</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mi">3</span>
+        <span class="k">if</span> <span class="n">d6d5</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">2</span>
+        <span class="k">elif</span> <span class="n">d6d5</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">4</span>
+        <span class="k">elif</span> <span class="n">d6d5</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="mi">6</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="n">nextbyte</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span><span id="pylnlib.Message.Message.from_data"></span><a class="mkapi-docs-link" title="pylnlib.Message.Message.from_data" href="../../pylnlib.Message/#pylnlib.Message.Message.from_data">DOCS</a>
+    <span class="k">def</span> <span class="nf">from_data</span><span class="p">(</span><span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        A factory method that returns a specific subclass of a Message based on the opcode, or an instance of Unknown.</span>
+
+<span class="sd">        TODO: not all possible opcodes/message types are implemented yet.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">opcode</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0x83</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">PowerOn</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0x82</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">PowerOff</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="n">Message</span><span class="o">.</span><span class="n">OPC_LOCO_SPD</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SlotSpeed</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="n">Message</span><span class="o">.</span><span class="n">OPC_LOCO_DIRF</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">FunctionGroup1</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="n">Message</span><span class="o">.</span><span class="n">OPC_LOCO_SND</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">FunctionGroupSound</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="n">Message</span><span class="o">.</span><span class="n">OPC_LOCO_F2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">FunctionGroup2</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xD4</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">FunctionGroup3</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xB0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">RequestSwitchFunction</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xB1</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SwitchState</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xB2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SensorState</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xB4</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">LongAcknowledge</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xBA</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">MoveSlots</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xBB</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">RequestSlotData</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xBC</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">RequestSwitchState</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xC0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">CaptureTimeStamp</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xBF</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">RequestLocAddress</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xE7</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">SlotDataReturn</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">opcode</span> <span class="o">==</span> <span class="mh">0xEF</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">WriteSlotData</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Unknown</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span><span id="pylnlib.Message.Message.checksum"></span><a class="mkapi-docs-link" title="pylnlib.Message.Message.checksum" href="../../pylnlib.Message/#pylnlib.Message.Message.checksum">DOCS</a>
+    <span class="k">def</span> <span class="nf">checksum</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate the checksum over the data of a message.</span>
+
+<span class="sd">        The checksum is calculate over all data bytes except the last one (which will be the checksum).</span>
+
+<span class="sd">        This method does NOT overwrite the checksum byte.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">chksum</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">c</span> <span class="ow">in</span> <span class="n">msg</span><span class="p">:</span>
+            <span class="n">chksum</span> <span class="o">=</span> <span class="n">chksum</span> <span class="o">^</span> <span class="p">(</span><span class="n">c</span> <span class="o">^</span> <span class="mh">0xFF</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">chksum</span>
+
+    <span class="nd">@staticmethod</span><span id="pylnlib.Message.Message.sensoraddress"></span><a class="mkapi-docs-link" title="pylnlib.Message.Message.sensoraddress" href="../../pylnlib.Message/#pylnlib.Message.Message.sensoraddress">DOCS</a>
+    <span class="k">def</span> <span class="nf">sensoraddress</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a sensor address from the data.</span>
+
+<span class="sd">        Sensors start from zero (but may typically displayed with an added offset of 1).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">((</span><span class="n">d0</span> <span class="o">&amp;</span> <span class="mh">0x7F</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">|</span> <span class="p">((</span><span class="n">d1</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="p">((</span><span class="n">d1</span> <span class="o">&gt;&gt;</span> <span class="mi">5</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span><span id="pylnlib.Message.Message.switchaddress"></span><a class="mkapi-docs-link" title="pylnlib.Message.Message.switchaddress" href="../../pylnlib.Message/#pylnlib.Message.Message.switchaddress">DOCS</a>
+    <span class="k">def</span> <span class="nf">switchaddress</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a switch address from the data.</span>
+
+<span class="sd">        Switches start from zero (but may typically displayed with an added offset of 1).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">d0</span> <span class="o">&amp;</span> <span class="mh">0x7F</span><span class="p">)</span> <span class="o">|</span> <span class="p">((</span><span class="n">d1</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">)</span>
+
+    <span class="nd">@staticmethod</span><span id="pylnlib.Message.Message.slotaddress"></span><a class="mkapi-docs-link" title="pylnlib.Message.Message.slotaddress" href="../../pylnlib.Message/#pylnlib.Message.Message.slotaddress">DOCS</a>
+    <span class="k">def</span> <span class="nf">slotaddress</span><span class="p">(</span><span class="n">d0</span><span class="p">,</span> <span class="n">d1</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Return a slot address from the data.</span>
+
+<span class="sd">        Slots start from zero (but slot 0 is special, as are several others &gt;= 0x70).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">d0</span> <span class="o">&amp;</span> <span class="mh">0x7F</span><span class="p">)</span> <span class="o">|</span> <span class="p">((</span><span class="n">d1</span> <span class="o">&amp;</span> <span class="mh">0x0F</span><span class="p">)</span> <span class="o">&lt;&lt;</span> <span class="mi">7</span><span class="p">)</span>
+
+
+<span class="k">class</span> <span class="nc">Unknown</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.Unknown"></span><a class="mkapi-docs-link" title="pylnlib.Message.Unknown" href="../../pylnlib.Message/#pylnlib.Message.Unknown">DOCS</a>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    An Unknown message simply hold the data bytes.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">PowerOn</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.PowerOn"></span><a class="mkapi-docs-link" title="pylnlib.Message.PowerOn" href="../../pylnlib.Message/#pylnlib.Message.PowerOn">DOCS</a>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">PowerOff</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.PowerOff"></span><a class="mkapi-docs-link" title="pylnlib.Message.PowerOff" href="../../pylnlib.Message/#pylnlib.Message.PowerOff">DOCS</a>
+    <span class="k">pass</span>
+
+
+<span class="k">class</span> <span class="nc">FunctionGroup1</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.FunctionGroup1"></span><a class="mkapi-docs-link" title="pylnlib.Message.FunctionGroup1" href="../../pylnlib.Message/#pylnlib.Message.FunctionGroup1">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="nb">dir</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">f0</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">f1</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">f2</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">f3</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">f4</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">slot</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="nb">dir</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f0</span> <span class="o">=</span> <span class="n">f0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f1</span> <span class="o">=</span> <span class="n">f1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f2</span> <span class="o">=</span> <span class="n">f2</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f3</span> <span class="o">=</span> <span class="n">f3</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f4</span> <span class="o">=</span> <span class="n">f4</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xA1</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x20</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x10</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f0</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f1</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x2</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f2</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x4</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f3</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x8</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f4</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">f0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;slot and speed arguments cannot be combined with data argument&quot;</span>
+                <span class="p">)</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f0</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f1</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f2</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f3</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f4</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(slot = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="si">}</span><span class="s2"> dir: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="si">}</span><span class="s2"> f0: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f0</span><span class="si">}</span><span class="s2">  f1: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f1</span><span class="si">}</span><span class="s2"> f2: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f2</span><span class="si">}</span><span class="s2"> f3: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f3</span><span class="si">}</span><span class="s2"> f4: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f4</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">FunctionGroupSound</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.FunctionGroupSound"></span><a class="mkapi-docs-link" title="pylnlib.Message.FunctionGroupSound" href="../../pylnlib.Message/#pylnlib.Message.FunctionGroupSound">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f5</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f6</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f7</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f8</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">slot</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f5</span> <span class="o">=</span> <span class="n">f5</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f6</span> <span class="o">=</span> <span class="n">f6</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f7</span> <span class="o">=</span> <span class="n">f7</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f8</span> <span class="o">=</span> <span class="n">f8</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xA2</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f5</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x2</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f6</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x4</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f7</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x8</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f8</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">slot</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">f5</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;slot and function arguments cannot be combined with data argument&quot;</span>
+                <span class="p">)</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f5</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f6</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f7</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f8</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(slot = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="si">}</span><span class="s2"> f5: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f5</span><span class="si">}</span><span class="s2">  f6: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f6</span><span class="si">}</span><span class="s2"> f7: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f7</span><span class="si">}</span><span class="s2"> f8: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f8</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">FunctionGroup2</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.FunctionGroup2"></span><a class="mkapi-docs-link" title="pylnlib.Message.FunctionGroup2" href="../../pylnlib.Message/#pylnlib.Message.FunctionGroup2">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f9</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f10</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f11</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f12</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(slot = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="si">}</span><span class="s2"> f9: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f9</span><span class="si">}</span><span class="s2">  f10: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f10</span><span class="si">}</span><span class="s2"> f11: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f11</span><span class="si">}</span><span class="s2"> f12: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f12</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">FunctionGroup3</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.FunctionGroup3"></span><a class="mkapi-docs-link" title="pylnlib.Message.FunctionGroup3" href="../../pylnlib.Message/#pylnlib.Message.FunctionGroup3">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="c1"># data[1] is always 0x20</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x08</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f13</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f14</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f15</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f16</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f17</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f18</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f19</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x40</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x09</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f21</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f22</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f23</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f24</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f25</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f26</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f27</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x40</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x05</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f12</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f20</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f28</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x40</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x05</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(slot = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="si">}</span><span class="s2"> f12: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f12</span><span class="si">}</span><span class="s2">  f20: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f20</span><span class="si">}</span><span class="s2"> f28: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f28</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x08</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(slot = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="si">}</span><span class="s2"> f13: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f13</span><span class="si">}</span><span class="s2">  f14: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f14</span><span class="si">}</span><span class="s2"> f15: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f15</span><span class="si">}</span><span class="s2"> f16: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f16</span><span class="si">}</span><span class="s2"> f17: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f17</span><span class="si">}</span><span class="s2"> f18: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f18</span><span class="si">}</span><span class="s2"> f19: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f19</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x09</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(slot = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="si">}</span><span class="s2"> f21: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f21</span><span class="si">}</span><span class="s2">  f22: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f22</span><span class="si">}</span><span class="s2"> f23: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f23</span><span class="si">}</span><span class="s2"> f24: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f24</span><span class="si">}</span><span class="s2"> f25: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f25</span><span class="si">}</span><span class="s2"> f26: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f26</span><span class="si">}</span><span class="s2"> f27: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f27</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span><span class="si">}</span><span class="s2">)&quot;</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(slot = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="si">}</span><span class="s2"> fiegroup: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">RequestSwitchFunction</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.RequestSwitchFunction"></span><a class="mkapi-docs-link" title="pylnlib.Message.RequestSwitchFunction" href="../../pylnlib.Message/#pylnlib.Message.RequestSwitchFunction">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">thrown</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">data</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">opcode</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">OPC_SW_REP</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thrown</span> <span class="o">=</span> <span class="n">thrown</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">engage</span> <span class="o">=</span> <span class="n">engage</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">&amp;</span> <span class="mh">0x7F</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thrown</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x20</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">engage</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x10</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">switchaddress</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thrown</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">engage</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(addr=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">thrown</span><span class="si">=}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">engage</span><span class="si">=}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hexdata</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">SwitchState</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.SwitchState"></span><a class="mkapi-docs-link" title="pylnlib.Message.SwitchState" href="../../pylnlib.Message/#pylnlib.Message.SwitchState">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">switchaddress</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">thrown</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">engage</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(addr=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">thrown</span><span class="si">=}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">engage</span><span class="si">=}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hexdata</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">RequestSwitchState</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.RequestSwitchState"></span><a class="mkapi-docs-link" title="pylnlib.Message.RequestSwitchState" href="../../pylnlib.Message/#pylnlib.Message.RequestSwitchState">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xBC</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span> <span class="o">&amp;</span> <span class="mh">0x7F</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">switchaddress</span><span class="p">(</span><span class="nb">id</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">id</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(addr=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hexdata</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">SensorState</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.SensorState"></span><a class="mkapi-docs-link" title="pylnlib.Message.SensorState" href="../../pylnlib.Message/#pylnlib.Message.SensorState">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xB2</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x7F</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mh">0x10</span> <span class="k">if</span> <span class="nb">id</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">sensoraddress</span><span class="p">(</span><span class="nb">id</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">id</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">id</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(addr=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="s1">&#39; ON&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="k">else</span> <span class="s1">&#39;OFF&#39;</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span> <span class="bp">self</span><span class="o">.</span><span class="n">hexdata</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">LongAcknowledge</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.LongAcknowledge"></span><a class="mkapi-docs-link" title="pylnlib.Message.LongAcknowledge" href="../../pylnlib.Message/#pylnlib.Message.LongAcknowledge">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">opcode</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">|</span> <span class="mh">0x80</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ack1</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(reply to opcode = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, ack1 = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ack1</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hexdata</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">RequestSlotData</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.RequestSlotData"></span><a class="mkapi-docs-link" title="pylnlib.Message.RequestSlotData" href="../../pylnlib.Message/#pylnlib.Message.RequestSlotData">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slot</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">slot</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xBB</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">slot</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">slot</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">slot</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(slot = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hexdata</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">SlotDataReturn</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.SlotDataReturn"></span><a class="mkapi-docs-link" title="pylnlib.Message.SlotDataReturn" href="../../pylnlib.Message/#pylnlib.Message.SlotDataReturn">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="c1"># data[1] is always 0x0e</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">slotaddress</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">9</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f0</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f1</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f2</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f3</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f4</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f5</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f6</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f7</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">f8</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">trk</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ss2</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id1</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">id2</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(slot=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="si">}</span><span class="s2"> loc=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2"> status: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">status</span><span class="si">}</span><span class="s2"> dir: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dir</span><span class="si">}</span><span class="s2"> speed: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="si">}</span><span class="s2"> f0: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f0</span><span class="si">}</span><span class="s2"> f1: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f1</span><span class="si">}</span><span class="s2"> f2: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f2</span><span class="si">}</span><span class="s2"> f3: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f3</span><span class="si">}</span><span class="s2"> f4: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f4</span><span class="si">}</span><span class="s2">  f5: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f5</span><span class="si">}</span><span class="s2"> f6: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f6</span><span class="si">}</span><span class="s2"> f7: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f7</span><span class="si">}</span><span class="s2"> f8: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f8</span><span class="si">}</span><span class="s2"> trk: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">trk</span><span class="si">}</span><span class="s2"> ss2: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">ss2</span><span class="si">}</span><span class="s2"> id1: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id1</span><span class="si">}</span><span class="s2"> id2: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">id2</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hexdata</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">WriteSlotData</span><span class="p">(</span><span class="n">SlotDataReturn</span><span class="p">):</span><span id="pylnlib.Message.WriteSlotData"></span><a class="mkapi-docs-link" title="pylnlib.Message.WriteSlotData" href="../../pylnlib.Message/#pylnlib.Message.WriteSlotData">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slot</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">slot</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">slot</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">):</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xEF</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0E</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span><span class="o">.</span><span class="n">slot</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span><span class="o">.</span><span class="n">status</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span><span class="o">.</span><span class="n">address</span> <span class="o">&amp;</span> <span class="mh">0x7F</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span><span class="o">.</span><span class="n">address</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span><span class="o">.</span><span class="n">speed</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x20</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">dir</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x10</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f0</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x1</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f1</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x2</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f2</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x4</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f3</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x8</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f4</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trk</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss2</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x1</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f5</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x2</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f6</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x4</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f7</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x8</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f8</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id1</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id2</span>
+            <span class="n">Message</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>  <span class="c1"># cannot skip the chain with super()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">SlotSpeed</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.SlotSpeed"></span><a class="mkapi-docs-link" title="pylnlib.Message.SlotSpeed" href="../../pylnlib.Message/#pylnlib.Message.SlotSpeed">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">speed</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">slot</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">speed</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xA0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">speed</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">slot</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">speed</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;slot and speed arguments cannot be combined with data argument&quot;</span>
+                <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(slot=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="si">}</span><span class="s2"> speed: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">speed</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hexdata</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">RequestLocAddress</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.RequestLocAddress"></span><a class="mkapi-docs-link" title="pylnlib.Message.RequestLocAddress" href="../../pylnlib.Message/#pylnlib.Message.RequestLocAddress">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">address</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xBF</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">address</span> <span class="o">&amp;</span> <span class="mh">0x7F</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">address</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">slotaddress</span><span class="p">(</span><span class="n">address</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">address</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(address = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hexdata</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">MoveSlots</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.MoveSlots"></span><a class="mkapi-docs-link" title="pylnlib.Message.MoveSlots" href="../../pylnlib.Message/#pylnlib.Message.MoveSlots">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">src</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="n">src</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dst</span> <span class="o">=</span> <span class="n">dst</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xBA</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">src</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dst</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">src</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">dst</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;slot arguments cannot be combined with data argument&quot;</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">src</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dst</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(src = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">src</span><span class="si">}</span><span class="s2"> dst = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">dst</span><span class="si">}</span><span class="s2">| op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hexdata</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
+
+
+<span class="k">class</span> <span class="nc">CaptureTimeStamp</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.CaptureTimeStamp"></span><a class="mkapi-docs-link" title="pylnlib.Message.CaptureTimeStamp" href="../../pylnlib.Message/#pylnlib.Message.CaptureTimeStamp">DOCS</a>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">t</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">t</span><span class="p">,</span> <span class="n">time</span><span class="p">):</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xC0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">hour</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">minute</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">second</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">microsecond</span> <span class="o">//</span> <span class="mi">10000</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">t</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">t</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">time</span><span class="p">(</span>
+                <span class="n">hour</span><span class="o">=</span><span class="n">t</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">minute</span><span class="o">=</span><span class="n">t</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">second</span><span class="o">=</span><span class="n">t</span><span class="p">[</span><span class="mi">3</span><span class="p">],</span> <span class="n">microsecond</span><span class="o">=</span><span class="n">t</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">*</span> <span class="mi">10000</span>
+            <span class="p">)</span>
+</code></pre></div>
+</div>
+</div>
+
+              
+            </article>
+            
+          </div>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Copyright &copy; 2022 Michel Anders (varkenvarken)
+    </div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    <script id="__config" type="application/json">{"base": "../../..", "features": [], "search": "../../../assets/javascripts/workers/search.b97dbffb.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.config.lang": "en", "search.config.pipeline": "trimmer, stopWordFilter", "search.config.separator": "[\\s\\-]+", "search.placeholder": "Search", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version.title": "Select version"}}</script>
+    
+    
+      <script src="../../../assets/javascripts/bundle.6c7ad80a.min.js"></script>
+      
+        <script src="../../../js/mkapi.js"></script>
+      
+    
+  </body>
+</html>
