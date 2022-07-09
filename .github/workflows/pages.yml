@@ -13,6 +13,7 @@ jobs:
         with:
           python-version: 3.8
       - run: pip install mkdocs-material
-      - run: pip install mkapi
-      - run: PYTHONPATH=`pwd` mkdocs build
+      - run: pip install 
+      - run: echo `pwd`
+      - run: PYTHONPATH=`pwd` mkdocs -v build
       - run: PYTHONPATH=`pwd` mkdocs gh-deploy --force
