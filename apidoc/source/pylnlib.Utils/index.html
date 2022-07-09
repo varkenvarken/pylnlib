@@ -421,7 +421,7 @@
 <span class="c1">#</span>
 <span class="c1"># License: GPL 3, see file LICENSE</span>
 <span class="c1">#</span>
-<span class="c1"># Version: 20220705170738</span>
+<span class="c1"># Version: 20220709154528</span>
 
 <span class="kn">import</span> <span class="nn">argparse</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -510,13 +510,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">args</span> <span class="o">=</span> <span class="n">cmdline</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
 
-<span class="k">def</span> <span class="nf">logger</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">logger</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span><span id="pylnlib.Utils.logger"></span><a class="mkapi-docs-link" title="pylnlib.Utils.logger" href="../../pylnlib.Utils/#pylnlib.Utils.logger">DOCS</a>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Write a message with a timestamp to stderr.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%H:%M:%S&quot;</span><span class="p">),</span> <span class="n">msg</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">,</span> <span class="n">flush</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">dumper</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">timestamp</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span><span id="pylnlib.Utils.dumper"></span><a class="mkapi-docs-link" title="pylnlib.Utils.dumper" href="../../pylnlib.Utils/#pylnlib.Utils.dumper">DOCS</a>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    return a function that writes raw message data to a file.</span>
+
+<span class="sd">    If timestamp is true, it will prefix each message with a [CaptureTimeStamp](pylnlib.Message.CaptureTimeStamp)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">dumpmsg</span><span class="p">(</span><span class="n">msg</span><span class="p">):</span>
@@ -542,7 +547,7 @@
 
 <span class="k">def</span> <span class="nf">createInterface</span><span class="p">(</span><span class="n">args</span><span class="p">):</span><span id="pylnlib.Utils.createInterface"></span><a class="mkapi-docs-link" title="pylnlib.Utils.createInterface" href="../../pylnlib.Utils/#pylnlib.Utils.createInterface">DOCS</a>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    create an interface, possibly pointing to a file with previously captured input.</span>
+<span class="sd">    create an [Interface](pylnlib.Interface) object, possibly pointing to a file with previously captured input.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">capturefile</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">replay</span><span class="p">:</span>
@@ -560,7 +565,20 @@
     <span class="k">return</span> <span class="n">interface</span>
 
 
-<span class="k">def</span> <span class="nf">createScrollkeeper</span><span class="p">(</span><span class="n">interface</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">createScrollkeeper</span><span class="p">(</span><span class="n">interface</span><span class="p">,</span> <span class="n">args</span><span class="p">):</span><span id="pylnlib.Utils.createScrollkeeper"></span><a class="mkapi-docs-link" title="pylnlib.Utils.createScrollkeeper" href="../../pylnlib.Utils/#pylnlib.Utils.createScrollkeeper">DOCS</a>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create a [Scrollkeeper](pylnlib.Scrollkeeper) instance that receives and sends messages via interface.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        interface (Interface): The [Interface](pylnlib.Interface) object that the Scrollkeeper will register a receiver_handler with</span>
+<span class="sd">        args (Namespace): A Namespace (as returned by Argparser.argse_parse() ). Should have slottrace and dummy attributes.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Scrollkeeper: a [Scrollkeeper](pylnlib.Scrollkeeper) instance.</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">        [Args](pylnlib.Utils.Args)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">scrollkeeper</span> <span class="o">=</span> <span class="n">Scrollkeeper</span><span class="p">(</span><span class="n">interface</span><span class="p">,</span> <span class="n">slottrace</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">slottrace</span><span class="p">)</span>
     <span class="n">interface</span><span class="o">.</span><span class="n">receiver_handler</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scrollkeeper</span><span class="o">.</span><span class="n">messageListener</span><span class="p">)</span>
     <span class="n">scrollkeeper</span><span class="o">.</span><span class="n">dummy</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">dummy</span>

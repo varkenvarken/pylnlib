@@ -385,6 +385,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pylnlibutilslogger" class="md-nav__link">
+    logger
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pylnlibutilsdumper" class="md-nav__link">
     dumper
   </a>
@@ -401,6 +408,13 @@
         <li class="md-nav__item">
   <a href="#pylnlibutilscreateinterface" class="md-nav__link">
     createInterface
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pylnlibutilscreatescrollkeeper" class="md-nav__link">
+    createScrollkeeper
   </a>
   
 </li>
@@ -475,6 +489,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#pylnlibutilslogger" class="md-nav__link">
+    logger
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#pylnlibutilsdumper" class="md-nav__link">
     dumper
   </a>
@@ -491,6 +512,13 @@
         <li class="md-nav__item">
   <a href="#pylnlibutilscreateinterface" class="md-nav__link">
     createInterface
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pylnlibutilscreatescrollkeeper" class="md-nav__link">
+    createScrollkeeper
   </a>
   
 </li>
@@ -539,11 +567,19 @@
       <div class="mkapi-section-body functions"><ul class="mkapi-items">
 <li class="function"><code class="mkapi-item-name"><a href="#pylnlib.Utils.createInterface">createInterface</a></code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">args</code><code class="mkapi-object-parenthesis">)</code>
 
-<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">create an interface, possibly pointing to a file with previously captured input.<a class="mkapi-src-link" href="../source/pylnlib.Utils/#pylnlib.Utils.createInterface" title="Source for pylnlib.Utils.createInterface">&lt;/&gt;</a></span></li>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">create an <a href="../pylnlib.Interface/#pylnlib.Interface">Interface</a> object, possibly pointing to a file with previously captured input.<a class="mkapi-src-link" href="../source/pylnlib.Utils/#pylnlib.Utils.createInterface" title="Source for pylnlib.Utils.createInterface">&lt;/&gt;</a></span></li>
+
+<li class="function"><code class="mkapi-item-name"><a href="#pylnlib.Utils.createScrollkeeper">createScrollkeeper</a></code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">interface</code>, <code class="mkapi-object-signature">args</code><code class="mkapi-object-parenthesis">)</code>
+<span class="mkapi-item-type">(Scrollkeeper)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">Create a <a href="../pylnlib.Scrollkeeper/#pylnlib.Scrollkeeper">Scrollkeeper</a> instance that receives and sends messages via interface.<a class="mkapi-src-link" href="../source/pylnlib.Utils/#pylnlib.Utils.createScrollkeeper" title="Source for pylnlib.Utils.createScrollkeeper">&lt;/&gt;</a></span></li>
 
 <li class="function"><code class="mkapi-item-name"><a href="#pylnlib.Utils.dumper">dumper</a></code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">handle</code>, <code class="mkapi-object-signature">timestamp</code><code class="mkapi-object-parenthesis">)</code>
 
 <span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">return a function that writes raw message data to a file.<a class="mkapi-src-link" href="../source/pylnlib.Utils/#pylnlib.Utils.dumper" title="Source for pylnlib.Utils.dumper">&lt;/&gt;</a></span></li>
+
+<li class="function"><code class="mkapi-item-name"><a href="#pylnlib.Utils.logger">logger</a></code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">msg</code><code class="mkapi-object-parenthesis">)</code>
+
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">Write a message with a timestamp to stderr.<a class="mkapi-src-link" href="../source/pylnlib.Utils/#pylnlib.Utils.logger" title="Source for pylnlib.Utils.logger">&lt;/&gt;</a></span></li>
 
 <li class="function"><code class="mkapi-item-name"><a href="#pylnlib.Utils.reporter">reporter</a></code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">scrollkeeper</code>, <code class="mkapi-object-signature">interval</code><code class="mkapi-object-parenthesis">)</code>
 
@@ -574,6 +610,24 @@
 
 </div>
 
+<div class="mkapi-node" id="pylnlib.Utils.logger">
+<div class='mkapi-object-container'>
+  <div class="mkapi-object function code top">
+    <div class="mkapi-object-kind function top">function</div>
+    <h2 id="pylnlibutilslogger" class="mkapi-object-body function top"><code class="mkapi-object-prefix"><a href="#pylnlib.Utils">pylnlib.Utils</a>.</code><code class="mkapi-object-name">logger</code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">msg</code><code class="mkapi-object-parenthesis">)</code></h2>
+  </div>
+  <div class="mkapi-src-link">
+    <a class="mkapi-src-link" href="../source/pylnlib.Utils/#pylnlib.Utils.logger" title="Source for pylnlib.Utils.logger">&lt;/&gt;</a>
+  </div>
+</div>
+<div class="mkapi-docstring">
+<div class="mkapi-section">
+      <div class="mkapi-section-body"><p>Write a message with a timestamp to stderr.</p></div>
+    </div>
+  </div>
+
+</div>
+
 <div class="mkapi-node" id="pylnlib.Utils.dumper">
 <div class='mkapi-object-container'>
   <div class="mkapi-object function code top">
@@ -586,7 +640,8 @@
 </div>
 <div class="mkapi-docstring">
 <div class="mkapi-section">
-      <div class="mkapi-section-body"><p>return a function that writes raw message data to a file.</p></div>
+      <div class="mkapi-section-body"><p>return a function that writes raw message data to a file.</p>
+<p>If timestamp is true, it will prefix each message with a <a href="../pylnlib.Message/#pylnlib.Message.CaptureTimeStamp">CaptureTimeStamp</a></p></div>
     </div>
   </div>
 
@@ -622,7 +677,53 @@
 </div>
 <div class="mkapi-docstring">
 <div class="mkapi-section">
-      <div class="mkapi-section-body"><p>create an interface, possibly pointing to a file with previously captured input.</p></div>
+      <div class="mkapi-section-body"><p>create an <a href="../pylnlib.Interface/#pylnlib.Interface">Interface</a> object, possibly pointing to a file with previously captured input.</p></div>
+    </div>
+  </div>
+
+</div>
+
+<div class="mkapi-node" id="pylnlib.Utils.createScrollkeeper">
+<div class='mkapi-object-container'>
+  <div class="mkapi-object function code top">
+    <div class="mkapi-object-kind function top">function</div>
+    <h2 id="pylnlibutilscreatescrollkeeper" class="mkapi-object-body function top"><code class="mkapi-object-prefix"><a href="#pylnlib.Utils">pylnlib.Utils</a>.</code><code class="mkapi-object-name">createScrollkeeper</code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">interface</code>, <code class="mkapi-object-signature">args</code><code class="mkapi-object-parenthesis">)</code></h2>
+  </div>
+  <div class="mkapi-src-link">
+    <a class="mkapi-src-link" href="../source/pylnlib.Utils/#pylnlib.Utils.createScrollkeeper" title="Source for pylnlib.Utils.createScrollkeeper">&lt;/&gt;</a>
+  </div>
+</div>
+<div class="mkapi-docstring">
+<div class="mkapi-section">
+      <div class="mkapi-section-body"><p>Create a <a href="../pylnlib.Scrollkeeper/#pylnlib.Scrollkeeper">Scrollkeeper</a> instance that receives and sends messages via interface.</p></div>
+    </div>
+  <div class="mkapi-section parameters">
+      <div class="mkapi-section-name parameters">
+          <span class="mkapi-section-name-body parameters">Parameters</span> 
+        </div>
+      <div class="mkapi-section-body parameters"><ul class="mkapi-items">
+<li><code class="mkapi-item-name">interface</code>
+<span class="mkapi-item-type">(Interface)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">The <a href="../pylnlib.Interface/#pylnlib.Interface">Interface</a> object that the Scrollkeeper will register a receiver_handler with</span></li>
+
+<li><code class="mkapi-item-name">args</code>
+<span class="mkapi-item-type">(Namespace)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">A Namespace (as returned by Argparser.argse_parse() ). Should have slottrace and dummy attributes.</span></li>
+
+
+</ul></div>
+    </div>
+  <div class="mkapi-section returns">
+      <div class="mkapi-section-name returns">
+          <span class="mkapi-section-name-body returns">Returns</span> <span class="mkapi-item-type">(Scrollkeeper)</span>
+        </div>
+      <div class="mkapi-section-body returns"><p>a <a href="../pylnlib.Scrollkeeper/#pylnlib.Scrollkeeper">Scrollkeeper</a> instance.</p></div>
+    </div>
+  <div class="mkapi-section see-also">
+      <div class="mkapi-section-name see-also">
+          <span class="mkapi-section-name-body see-also">See Also</span> 
+        </div>
+      <div class="mkapi-section-body see-also"><p><a href="./#pylnlib.Utils.Args">Args</a></p></div>
     </div>
   </div>
 
