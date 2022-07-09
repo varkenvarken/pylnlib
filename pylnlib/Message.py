@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220705171822
+# Version: 20220709153032
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -189,21 +189,35 @@ class Message:
 
 class Unknown(Message):
     """
-    An Unknown message simply hold the data bytes.
+    An Unknown message simply holds the data bytes.
     """
 
     pass
 
 
 class PowerOn(Message):
+    """
+    A PowerOn message represents a global track power on message.
+    """
+
     pass
 
 
 class PowerOff(Message):
+    """
+    A PowerOff message represents a global track power off message.
+    """
+
     pass
 
 
 class FunctionGroup1(Message):
+    """
+    A FunctionGroup1 message represents a slot function status change.
+
+    It holds the status for the direction and functions f0 - f4.
+    """
+
     def __init__(
         self,
         data=None,
@@ -254,6 +268,12 @@ class FunctionGroup1(Message):
 
 
 class FunctionGroupSound(Message):
+    """
+    A FunctionGroupSound message represents a slot function status change.
+
+    It holds the status for functions f5 - f8.
+    """
+
     def __init__(self, data=None, slot=None, f5=None, f6=None, f7=None, f8=None):
         if data is None:
             self.slot = slot
@@ -288,6 +308,12 @@ class FunctionGroupSound(Message):
 
 
 class FunctionGroup2(Message):
+    """
+    A FunctionGroup2 message represents a slot function status change.
+
+    It holds the status for functions f9 - f12.
+    """
+
     def __init__(self, data):
         super().__init__(data)
         self.slot = int(data[1])
@@ -301,6 +327,12 @@ class FunctionGroup2(Message):
 
 
 class FunctionGroup3(Message):
+    """
+    A FunctionGroup3 message represents a slot function status change.
+
+    Depending on the fiegroup, tt holds the status for functions f13 - f19, f21 - f27 or f12 + f20 +f28.
+    """
+
     def __init__(self, data):
         super().__init__(data)
         # data[1] is always 0x20
@@ -339,7 +371,22 @@ class FunctionGroup3(Message):
 
 
 class RequestSwitchFunction(Message):
+    """
+    A RequestSwitchFunction message represents a request for a switch status change.
+
+    It holds the info on whether the switch should be closed or thrown,
+    as well as whether the switch motor should be engaged.
+    """
+
     def __init__(self, data, thrown=None, engage=None):
+        """
+        Construct a RequestSwitchFunction, either from 4 bytes of data or arguments specifying the status for a switch.
+
+        Args:
+            data (bytearray(4) or int): either 4 bytes of raw data or the switch address
+            thrown (bool, optional): if a switch address is given, this should hold thrown or closed. Defaults to None.
+            engage (bool, optional): if a switch address is given, this should signal whether the motor should be engaged . Defaults to None.
+        """ """"""
         if type(data) == int:
             self.address = data
             data = bytearray(4)

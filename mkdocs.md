@@ -2,8 +2,8 @@
 # use sudo if you want to install this site wide
 # the mkdocs package takes care of generating a static site
 python -m pip install mkdocs
-# the jetblack-markdown extension to mkdocs converts docstrings to markdown
-python -m pip install jetblack-markdown
+# the mkapi extension converts docstrings to markdown
+python -m pip install mkapi
 # the material theme for mkdocs
 python -m pip install mkdocs-material
 
@@ -13,4 +13,8 @@ cd pylnlib
 export PYTHONPATH=`pwd`
 # build the docs directory
 mkdocs build
+# publish the site
+mkdocs -v gh-deploy --force
+# I would ove to make this a GitHub action but mkapi won play ball:
+# it works perfectly fine locally but not on GitHub
 ```
