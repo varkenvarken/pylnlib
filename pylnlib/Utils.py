@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220709154257
+# Version: 20220709154528
 
 import argparse
 import sys
@@ -103,6 +103,8 @@ def logger(msg):
 def dumper(handle, timestamp=False):
     """
     return a function that writes raw message data to a file.
+
+    If timestamp is true, it will prefix each message with a [CaptureTimeStamp](pylnlib.Message.CaptureTimeStamp)
     """
 
     def dumpmsg(msg):
@@ -128,7 +130,7 @@ def reporter(scrollkeeper, interval=30):
 
 def createInterface(args):
     """
-    create an interface, possibly pointing to a file with previously captured input.
+    create an [Interface](pylnlib.Interface) object, possibly pointing to a file with previously captured input.
     """
     capturefile = None
     if args.replay:
@@ -148,14 +150,14 @@ def createInterface(args):
 
 def createScrollkeeper(interface, args):
     """
-    Create a Scrollkeeper instance that receives and sends messages via interface.
+    Create a [Scrollkeeper](pylnlib.Scrollkeeper) instance that receives and sends messages via interface.
 
     Args:
         interface (Interface): The [Interface](pylnlib.Interface) object that the Scrollkeeper will register a receiver_handler with
         args (Namespace): A Namespace (as returned by Argparser.argse_parse() ). Should have slottrace and dummy attributes.
 
     Returns:
-        Scrollkeeper: a Scrollkeeper instance.
+        Scrollkeeper: a [Scrollkeeper](pylnlib.Scrollkeeper) instance.
 
     See Also:
         [Args](pylnlib.Utils.Args)
