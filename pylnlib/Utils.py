@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220705170738
+# Version: 20220709154257
 
 import argparse
 import sys
@@ -94,6 +94,9 @@ class Args:
 
 
 def logger(msg):
+    """
+    Write a message with a timestamp to stderr.
+    """
     print(time.strftime("%H:%M:%S"), msg, file=sys.stderr, flush=True)
 
 
@@ -144,6 +147,19 @@ def createInterface(args):
 
 
 def createScrollkeeper(interface, args):
+    """
+    Create a Scrollkeeper instance that receives and sends messages via interface.
+
+    Args:
+        interface (Interface): The [Interface](pylnlib.Interface) object that the Scrollkeeper will register a receiver_handler with
+        args (Namespace): A Namespace (as returned by Argparser.argse_parse() ). Should have slottrace and dummy attributes.
+
+    Returns:
+        Scrollkeeper: a Scrollkeeper instance.
+
+    See Also:
+        [Args](pylnlib.Utils.Args)
+    """
     scrollkeeper = Scrollkeeper(interface, slottrace=args.slottrace)
     interface.receiver_handler.append(scrollkeeper.messageListener)
     scrollkeeper.dummy = args.dummy
