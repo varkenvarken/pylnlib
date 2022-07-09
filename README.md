@@ -1,4 +1,4 @@
-![Docs generated](https://github.com/varkenvarken/pylnlib/actions/workflows/pages.yml/badge.svg)
+![Docs generated](https://github.com/varkenvarken/pylnlib/actions/workflows/black.yml/badge.svg)
 
 
 # pylnlib

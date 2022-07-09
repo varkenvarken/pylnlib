@@ -6,11 +6,15 @@
 #
 # Version: 20220625152422
 
+
 class Switch:
-    switchstates = {None, 'CLOSED', 'THROWN'}
+    switchstates = {None, "CLOSED", "THROWN"}
+
     def __init__(self, id, thrown=None):
         if thrown not in Switch.switchstates:
-            raise ValueError(f"unknown switch state {thrown}, not one of {Switch.switchstates}")
+            raise ValueError(
+                f"unknown switch state {thrown}, not one of {Switch.switchstates}"
+            )
         self.address = id
         self.thrown = thrown
         self.engage = None
