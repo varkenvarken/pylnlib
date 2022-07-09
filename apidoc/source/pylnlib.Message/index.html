@@ -421,7 +421,7 @@
 <span class="c1">#</span>
 <span class="c1"># License: GPL 3, see file LICENSE</span>
 <span class="c1">#</span>
-<span class="c1"># Version: 20220705171822</span>
+<span class="c1"># Version: 20220709153032</span>
 
 <span class="c1"># Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION</span>
 <span class="c1"># Which is © Digitrax Inc.</span>
@@ -606,21 +606,35 @@
 
 <span class="k">class</span> <span class="nc">Unknown</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.Unknown"></span><a class="mkapi-docs-link" title="pylnlib.Message.Unknown" href="../../pylnlib.Message/#pylnlib.Message.Unknown">DOCS</a>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    An Unknown message simply hold the data bytes.</span>
+<span class="sd">    An Unknown message simply holds the data bytes.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">pass</span>
 
 
 <span class="k">class</span> <span class="nc">PowerOn</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.PowerOn"></span><a class="mkapi-docs-link" title="pylnlib.Message.PowerOn" href="../../pylnlib.Message/#pylnlib.Message.PowerOn">DOCS</a>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A PowerOn message represents a global track power on message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">pass</span>
 
 
 <span class="k">class</span> <span class="nc">PowerOff</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.PowerOff"></span><a class="mkapi-docs-link" title="pylnlib.Message.PowerOff" href="../../pylnlib.Message/#pylnlib.Message.PowerOff">DOCS</a>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A PowerOff message represents a global track power off message.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">pass</span>
 
 
 <span class="k">class</span> <span class="nc">FunctionGroup1</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.FunctionGroup1"></span><a class="mkapi-docs-link" title="pylnlib.Message.FunctionGroup1" href="../../pylnlib.Message/#pylnlib.Message.FunctionGroup1">DOCS</a>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A FunctionGroup1 message represents a slot function status change.</span>
+
+<span class="sd">    It holds the status for the direction and functions f0 - f4.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -671,6 +685,12 @@
 
 
 <span class="k">class</span> <span class="nc">FunctionGroupSound</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.FunctionGroupSound"></span><a class="mkapi-docs-link" title="pylnlib.Message.FunctionGroupSound" href="../../pylnlib.Message/#pylnlib.Message.FunctionGroupSound">DOCS</a>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A FunctionGroupSound message represents a slot function status change.</span>
+
+<span class="sd">    It holds the status for functions f5 - f8.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f5</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f6</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f7</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f8</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">slot</span>
@@ -705,6 +725,12 @@
 
 
 <span class="k">class</span> <span class="nc">FunctionGroup2</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.FunctionGroup2"></span><a class="mkapi-docs-link" title="pylnlib.Message.FunctionGroup2" href="../../pylnlib.Message/#pylnlib.Message.FunctionGroup2">DOCS</a>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A FunctionGroup2 message represents a slot function status change.</span>
+
+<span class="sd">    It holds the status for functions f9 - f12.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
@@ -718,6 +744,12 @@
 
 
 <span class="k">class</span> <span class="nc">FunctionGroup3</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.FunctionGroup3"></span><a class="mkapi-docs-link" title="pylnlib.Message.FunctionGroup3" href="../../pylnlib.Message/#pylnlib.Message.FunctionGroup3">DOCS</a>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A FunctionGroup3 message represents a slot function status change.</span>
+
+<span class="sd">    Depending on the fiegroup, tt holds the status for functions f13 - f19, f21 - f27 or f12 + f20 +f28.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="c1"># data[1] is always 0x20</span>
@@ -756,7 +788,22 @@
 
 
 <span class="k">class</span> <span class="nc">RequestSwitchFunction</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.RequestSwitchFunction"></span><a class="mkapi-docs-link" title="pylnlib.Message.RequestSwitchFunction" href="../../pylnlib.Message/#pylnlib.Message.RequestSwitchFunction">DOCS</a>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A RequestSwitchFunction message represents a request for a switch status change.</span>
+
+<span class="sd">    It holds the info on whether the switch should be closed or thrown,</span>
+<span class="sd">    as well as whether the switch motor should be engaged.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">thrown</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Construct a RequestSwitchFunction, either from 4 bytes of data or arguments specifying the status for a switch.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            data (bytearray(4) or int): either 4 bytes of raw data or the switch address</span>
+<span class="sd">            thrown (bool, optional): if a switch address is given, this should hold thrown or closed. Defaults to None.</span>
+<span class="sd">            engage (bool, optional): if a switch address is given, this should signal whether the motor should be engaged . Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span> <span class="s2">&quot;&quot;&quot;&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">data</span>
             <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
