@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220629202609
+# Version: 20220709155819
 
 import signal
 import sys
@@ -19,8 +19,27 @@ from .Message import CaptureTimeStamp, Message
 
 
 class Interface:
-    def __init__(self, port, baud=57600, fast=False, dummy=False):
+    """
+    Handles thread safe sending and receiving LocoNet messages on a serial interface.
 
+    It will gracefully exit if it receives a SIGINT or SIGTERM signal.
+    """
+
+    def __init__(
+        self, port: str, baud: int = 57600, fast: bool = False, dummy: bool = False
+    ):
+        """
+        Creates an Interface instance.
+
+        Args:
+            port (str): seriall port, on Linux typically something like /dev/ttyACM0
+            baud (int, optional): the baudrate. Defaults to 57600.
+            fast (bool, optional): if false it uses timestamp message in the input data to replay a realistic speed. Defaults to False.
+            dummy (bool, optional): if true it will not write anyhting on the serial port. Defaults to False.
+
+        See Also:
+            [Capture and replay](capture_and_replay)
+        """
         self.time = None
         self.fast = fast
         self.dummy = dummy
