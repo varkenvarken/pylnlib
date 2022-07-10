@@ -4,16 +4,31 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220626170320
+# Version: 20220710112411
 
-import argparse
-import sys
-import time
+"""
+Module to allow pylnlib to be invoked as a module.
+
+Example:
+```
+python -m pylnlib
+```
+
+If invoked this way, it will start listening for data on a serial interface 
+and will report any incoming messages. Incoming messages related to unknown
+slots, switches or sensors will trigger outgoing status request messages.
+
+It can both capture and replay messages. For more info run it with the -- help option
+
+```
+python -m pylnlib --help
+```
+
+"""
+
 from threading import Thread
 from time import sleep
 
-from .Interface import Interface
-from .Scrollkeeper import Scrollkeeper
 from .Utils import Args, createInterface, createScrollkeeper, reporter
 
 if __name__ == "__main__":
