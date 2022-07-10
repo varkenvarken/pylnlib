@@ -421,9 +421,26 @@
 <span class="c1">#</span>
 <span class="c1"># License: GPL 3, see file LICENSE</span>
 <span class="c1">#</span>
-<span class="c1"># Version: 20220708155418</span>
+<span class="c1"># Version: 20220710113704</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">This package ...</span>
+<span class="sd">This package can be invoked as a module.</span>
+
+<span class="sd">Example:</span>
+<span class="sd">```</span>
+<span class="sd">python -m pylnlib</span>
+<span class="sd">```</span>
+
+<span class="sd">If invoked this way, it will start listening for data on a serial interface </span>
+<span class="sd">and will report any incoming messages. Incoming messages related to unknown</span>
+<span class="sd">slots, switches or sensors will trigger outgoing status request messages.</span>
+
+<span class="sd">It can both capture and replay messages. For more info run it with the -- help option</span>
+
+<span class="sd">```</span>
+<span class="sd">python -m pylnlib --help</span>
+<span class="sd">```</span>
+
 <span class="sd">&quot;&quot;&quot;</span>
 </code></pre></div>
 </div>
