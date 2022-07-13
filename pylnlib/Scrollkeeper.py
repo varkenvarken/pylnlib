@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220707164000
+# Version: 20220713152737
 
 from datetime import datetime
 from threading import Lock
@@ -321,6 +321,15 @@ class Scrollkeeper:
         slot = self.getSlot(locaddress)
         self.acquireSlot(slot)
         return Throttle(self, locaddress)
+
+    def getSlotIds(self):
+        return [s for s in self.slots]
+
+    def getSensorIds(self):
+        return [s for s in self.sensors]
+
+    def getSwitchIds(self):
+        return [s for s in self.switches]
 
     def __str__(self):
         newline = "\n"

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name="pylnlib",
-    version="0.1.1",
+    version="0.2.0",
     description="A library to monitor LocoNet message on a serial interface",
     url="https://github.com/varkenvarken/pylnlib",
     author="varkenvarken",
