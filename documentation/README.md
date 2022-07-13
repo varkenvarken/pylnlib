@@ -80,11 +80,20 @@ One of the pieces of information in a slot is the decoder address of the locomot
 # dependencies
 - Python 3.8
 - [pyserial](https://github.com/pyserial/pyserial)
+- [fastapi](https://github.com/tiangolo/fastapi) (optional, used for the webserver)
 
 # installation
 
+A basic installation of just the library
+
 ```bash
 pip install pylnlib
+```
+
+Installation with support for the webserver
+
+```bash
+pip install pylnlib[webserver]
 ```
 
 # example programs
