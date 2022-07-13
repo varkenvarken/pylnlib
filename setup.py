@@ -6,7 +6,7 @@ long_description = (this_directory / "README.md").read_text()
 
 setup(
     name="pylnlib",
-    version="0.2.1",
+    version="0.2.2",
     description="A library to monitor LocoNet message on a serial interface",
     long_description=long_description,
     long_description_content_type='text/markdown',
