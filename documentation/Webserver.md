@@ -21,7 +21,7 @@ flowchart LR
 
 # experiments
 
-A tiny [sample implementation](main.py) is a starting point for further enhancements.
+A tiny [sample implementation](https://github.com/varkenvarken/pylnlib/blob/master/webserver/main.py) is a starting point for further enhancements.
 
 It serves a webpage that will open a websocket. This websocket periodically sends a list of known sensor ids.
 
