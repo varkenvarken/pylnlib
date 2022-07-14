@@ -13,6 +13,7 @@ A python library to monitor LocoNet traffic on a usb/serial bus.
 - [installation](#installation)
 - [example programs](#example-programs)
 - [capture and replay](#capture-and-replay)
+- [webapp](#webapp)
 - [reference](#reference)
 # intro
 I am automating my layout with several [Digikeijs](https://www.digikeijs.com) components ([DR5000](https://www.digikeijs.com/en/digital-model-railway-accessories/command-stations.html), [DR4024](https://www.digikeijs.com/en/dr4024-4-channel-servodecoder-with-4-additional-switching-outputs.html), [DR4088CS](https://www.digikeijs.com/en/dr4088cs-16-channel-feedback-module-s88n.html)) and I want to be able to script part of the running operation.
@@ -114,6 +115,11 @@ The [scripts directory](https://github.com/varkenvarken/pylnlib/tree/master/scri
 The `pylnlib` library can also capture raw LocoNet bytes and store it for later replay in a file.
 
 This can be really helpful when developing scripts. More details can be found here [capture_and_replay.md](capture_and_replay.md)
+
+# webapp
+
+at some point a webapp will be implemented to show layout status and start cripts.
+Some details are provided in [Webserver.md](Webserver.md)
 
 # reference
 
