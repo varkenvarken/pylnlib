@@ -26,6 +26,11 @@ nav:
 markdown_extensions:
   - admonition
   - codehilite
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
 #  - jetblack_markdown.autodoc:
 #      class_from_init: true
 #      ignore_dunder: true
