@@ -421,7 +421,7 @@
 <span class="c1">#</span>
 <span class="c1"># License: GPL 3, see file LICENSE</span>
 <span class="c1">#</span>
-<span class="c1"># Version: 20220707164000</span>
+<span class="c1"># Version: 20220716125748</span>
 
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
@@ -615,7 +615,7 @@
             <span class="k">if</span> <span class="n">address</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">:</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">address</span><span class="p">]</span> <span class="o">=</span> <span class="n">Sensor</span><span class="p">(</span><span class="n">address</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">level</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">address</span><span class="p">]</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">address</span><span class="p">]</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">level</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slottrace</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
@@ -640,7 +640,7 @@
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slottrace</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getSlot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span><span id="pylnlib.Scrollkeeper.Scrollkeeper.getSlot"></span><a class="mkapi-docs-link" title="pylnlib.Scrollkeeper.Scrollkeeper.getSlot" href="../../pylnlib.Scrollkeeper/#pylnlib.Scrollkeeper.Scrollkeeper.getSlot">DOCS</a>
+    <span class="k">def</span> <span class="nf">getLocoSlot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">):</span><span id="pylnlib.Scrollkeeper.Scrollkeeper.getLocoSlot"></span><a class="mkapi-docs-link" title="pylnlib.Scrollkeeper.Scrollkeeper.getLocoSlot" href="../../pylnlib.Scrollkeeper/#pylnlib.Scrollkeeper.Scrollkeeper.getLocoSlot">DOCS</a>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Return the slot id associated with the loc address.</span>
 
@@ -735,9 +735,38 @@
         <span class="c1"># TODO: ? should we wait for slot data ?</span>
 
     <span class="k">def</span> <span class="nf">getThrottle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locaddress</span><span class="p">):</span>
-        <span class="n">slot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getSlot</span><span class="p">(</span><span class="n">locaddress</span><span class="p">)</span>
+        <span class="n">slot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLocoSlot</span><span class="p">(</span><span class="n">locaddress</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">acquireSlot</span><span class="p">(</span><span class="n">slot</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Throttle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locaddress</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">getSlot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">slots</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">getSensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">getSwitch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">switches</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">getSlotIds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">slots</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">getSensorIds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">getSwitchIds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">switches</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">getAllStatusInfo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">{</span>
+            <span class="s2">&quot;slots&quot;</span><span class="p">:</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">slots</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">toJSON</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">slots</span><span class="p">)],</span>
+            <span class="s2">&quot;switches&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">switches</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">toJSON</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">switches</span><span class="p">)</span>
+            <span class="p">],</span>
+            <span class="s2">&quot;sensors&quot;</span><span class="p">:</span> <span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="n">s</span><span class="p">]</span><span class="o">.</span><span class="n">toJSON</span><span class="p">()</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">s</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">)</span>
+            <span class="p">],</span>
+        <span class="p">}</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">newline</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span>

@@ -432,6 +432,7 @@
 <li><a href="#installation">installation</a></li>
 <li><a href="#example-programs">example programs</a></li>
 <li><a href="#capture-and-replay">capture and replay</a></li>
+<li><a href="#webapp">webapp</a></li>
 <li><a href="#reference">reference</a></li>
 </ul>
 <h1 id="intro">intro</h1>
@@ -475,9 +476,15 @@
 <ul>
 <li>Python 3.8</li>
 <li><a href="https://github.com/pyserial/pyserial">pyserial</a></li>
+<li><a href="https://github.com/tiangolo/fastapi">fastapi</a> (optional, used for the webserver)</li>
 </ul>
 <h1 id="installation">installation</h1>
+<p>A basic installation of just the library</p>
 <div class="codehilite"><pre><span></span><code>pip install pylnlib
+</code></pre></div>
+
+<p>Installation with support for the webserver</p>
+<div class="codehilite"><pre><span></span><code>pip install pylnlib<span class="o">[</span>webserver<span class="o">]</span>
 </code></pre></div>
 
 <h1 id="example-programs">example programs</h1>
@@ -493,6 +500,9 @@
 <h1 id="capture-and-replay">capture and replay</h1>
 <p>The <code>pylnlib</code> library can also capture raw LocoNet bytes and store it for later replay in a file.</p>
 <p>This can be really helpful when developing scripts. More details can be found here <a href="capture_and_replay/">capture_and_replay.md</a></p>
+<h1 id="webapp">webapp</h1>
+<p>at some point a webapp will be implemented to show layout status and start cripts.
+Some details are provided in <a href="Webserver/">Webserver.md</a></p>
 <h1 id="reference">reference</h1>
 <ul>
 <li><a href="https://www.digitrax.com/support/loconet/loconetpersonaledition.pdf">LocoNet personal edition</a> [Pdf]</li>
