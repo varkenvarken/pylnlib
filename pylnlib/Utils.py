@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220716124954
+# Version: 20220716180157
 
 import argparse
 import sys
@@ -166,6 +166,3 @@ def createScrollkeeper(interface, args):
     interface.receiver_handler.append(scrollkeeper.messageListener)
     scrollkeeper.dummy = args.dummy
     return scrollkeeper
-
-
-

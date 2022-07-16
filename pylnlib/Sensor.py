@@ -4,9 +4,11 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220716125655
+# Version: 20220716180150
 
 from inspect import signature
+
+
 class Sensor:
     sensorstates = {None, "ON", "OFF"}
 
