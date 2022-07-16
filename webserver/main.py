@@ -27,21 +27,32 @@ html = """
         <title>Chat</title>
     </head>
     <body>
-        <h1>WebSocket Chat</h1>
+        <h1>Pylnlib test webapp</h1>
+        <!--
         <form action="" onsubmit="sendMessage(event)">
             <input type="text" id="messageText" autocomplete="off"/>
             <button>Send</button>
         </form>
-        <ul id='messages'>
-        </ul>
+        -->
+        <div id='status'>
+            <ul id="slots" />
+            <ul id="switches" />
+            <ul id="sensors" />
+        </div>
         <script>
             var ws = new WebSocket("ws://localhost:8081/ws");
             ws.onmessage = function(event) {
-                var messages = document.getElementById('messages')
-                var message = document.createElement('li')
-                var content = document.createTextNode(event.data)
-                message.appendChild(content)
-                messages.appendChild(message)
+                // console.log(event.data);
+                var slots = document.getElementById('slots');
+                var status = JSON.parse(event.data);
+                slots.replaceChildren();
+                for(const slot in status.slots){
+                    console.log(status.slots[slot]);
+                    var slotelement = document.createElement('li')
+                    var content = document.createTextNode(JSON.stringify(status.slots[slot]))
+                    slotelement.appendChild(content)
+                    slots.appendChild(slotelement)
+                }
             };
             function sendMessage(event) {
                 var input = document.getElementById("messageText")
@@ -79,5 +90,6 @@ def get_slot_ids():
 async def websocket_endpoint(websocket: WebSocket):
     await websocket.accept()
     while True:
+        print("send")
         await asyncio.sleep(5)
-        await websocket.send_json(scrollkeeper.getSensorIds())
+        await websocket.send_json(scrollkeeper.getAllStatusInfo())

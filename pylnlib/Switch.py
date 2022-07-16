@@ -4,7 +4,9 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220625152422
+# Version: 20220716125619
+
+from inspect import signature
 
 
 class Switch:
@@ -15,9 +17,16 @@ class Switch:
             raise ValueError(
                 f"unknown switch state {thrown}, not one of {Switch.switchstates}"
             )
-        self.address = id
+        self.id = id
         self.thrown = thrown
         self.engage = None
 
+    def toJSON(self):
+        return {
+            p: getattr(self, p)
+            for p in signature(self.__init__).parameters
+            if p != "self"
+        }
+
     def __str__(self):
-        return f"Switch(address={self.address+1}, level={'THROWN' if self.thrown else 'CLOSED'})"
+        return f"Switch(address={self.id+1}, level={'THROWN' if self.thrown else 'CLOSED'})"

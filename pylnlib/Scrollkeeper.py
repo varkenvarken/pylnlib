@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220713152737
+# Version: 20220716125748
 
 from datetime import datetime
 from threading import Lock
@@ -198,7 +198,7 @@ class Scrollkeeper:
             if address not in self.sensors:
                 self.sensors[address] = Sensor(address)
             if level is not None:
-                self.sensors[address].level = level
+                self.sensors[address].state = level
             if self.slottrace:
                 print(self)
 
@@ -223,7 +223,7 @@ class Scrollkeeper:
             if self.slottrace:
                 print(self)
 
-    def getSlot(self, address):
+    def getLocoSlot(self, address):
         """
         Return the slot id associated with the loc address.
 
@@ -318,9 +318,18 @@ class Scrollkeeper:
         # TODO: ? should we wait for slot data ?
 
     def getThrottle(self, locaddress):
-        slot = self.getSlot(locaddress)
+        slot = self.getLocoSlot(locaddress)
         self.acquireSlot(slot)
         return Throttle(self, locaddress)
+
+    def getSlot(self, id):
+        return self.slots[id]
+
+    def getSensor(self, id):
+        return self.sensors[id]
+
+    def getSwitch(self, id):
+        return self.switches[id]
 
     def getSlotIds(self):
         return [s for s in self.slots]
@@ -330,6 +339,17 @@ class Scrollkeeper:
 
     def getSwitchIds(self):
         return [s for s in self.switches]
+
+    def getAllStatusInfo(self):
+        return {
+            "slots": [self.slots[s].toJSON() for s in sorted(s for s in self.slots)],
+            "switches": [
+                self.switches[s].toJSON() for s in sorted(s for s in self.switches)
+            ],
+            "sensors": [
+                self.sensors[s].toJSON() for s in sorted(s for s in self.sensors)
+            ],
+        }
 
     def __str__(self):
         newline = "\n"

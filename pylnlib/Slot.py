@@ -4,7 +4,9 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220705171937
+# Version: 20220716125138
+
+from inspect import signature
 
 from .Message import (
     FunctionGroup1,
@@ -72,6 +74,13 @@ class Slot:
             f"f{f}:" + ("ON" if getattr(self, f"f{f}") else "OFF") for f in range(13)
         )
         return f"Slot({self.id:2d}): loc={self.address}, dir={'REVERSE' if self.dir else 'FORWARD'}, speed={self.speed}/{Slot.speedsteps[self.status&0x7]}, [{ff}]"
+
+    def toJSON(self):
+        return {
+            p: getattr(self, p)
+            for p in signature(self.__init__).parameters
+            if p != "self"
+        }
 
     def getSpeed(self):
         if self.speed < 2:
