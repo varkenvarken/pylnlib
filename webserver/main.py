@@ -43,14 +43,26 @@ html = """
             var ws = new WebSocket("ws://localhost:8081/ws");
             ws.onmessage = function(event) {
                 // console.log(event.data);
-                var slots = document.getElementById('slots');
-                var status = JSON.parse(event.data);
+                let slots = document.getElementById('slots');
+                let status = JSON.parse(event.data);
                 slots.replaceChildren();
                 for(const slot in status.slots){
                     console.log(status.slots[slot]);
-                    var slotelement = document.createElement('li')
-                    var content = document.createTextNode(JSON.stringify(status.slots[slot]))
-                    slotelement.appendChild(content)
+                    let slotelement = document.createElement('li')
+                    let table = document.createElement('table')
+                    let obj = status.slots[slot]
+                    for(const attr in obj){
+                        let attrrow = document.createElement('tr')
+                        let attrcol = document.createElement('td')
+                        let valcol = document.createElement('td')
+                        attrcol.appendChild(document.createTextNode(attr))
+                        valcol.appendChild(document.createTextNode(obj[attr]))
+                        table.appendChild(attrrow)
+                        attrrow.appendChild(attrcol)
+                        attrrow.appendChild(valcol)
+                    }
+                    //var content = document.createTextNode(JSON.stringify(status.slots[slot]))
+                    slotelement.appendChild(table)
                     slots.appendChild(slotelement)
                 }
             };
