@@ -436,22 +436,19 @@ It can also read from this file instead of from a serial port.</p>
 it can also help for the same reason when developing scripts that use the library.</p>
 <h2 id="options">options</h2>
 <p>The monitoring program has options to enable capturing or replay</p>
-<p>Capture:</p>
-<div class="codehilite"><pre><span></span><code>python -m pylnlib -c -f capturefile
+<p>Capture:
+<div class="highlight"><pre><span></span><code>python -m pylnlib -c -f capturefile
 </code></pre></div>
-
-<p>Replay:</p>
-<div class="codehilite"><pre><span></span><code>python -m pylnlib -r -f capturefile
-</code></pre></div>
-
+Replay:
+<div class="highlight"><pre><span></span><code>python -m pylnlib -r -f capturefile
+</code></pre></div></p>
 <p>Output messages are captured as well but during replay no output is generated. Instead, any captured output is shown as is.
 This means that we can replay without being connected to a command station.</p>
 <h2 id="timestamps">timestamps</h2>
-<p>When capturing you also specify the -t option:</p>
-<div class="codehilite"><pre><span></span><code>python -m pylnlib -c -t -f capturefile
+<p>When capturing you also specify the -t option:
+<div class="highlight"><pre><span></span><code>python -m pylnlib -c -t -f capturefile
 </code></pre></div>
-
-<p>This will write a timestamp before every message that is written to the capture file.
+This will write a timestamp before every message that is written to the capture file.
 During replay this timestamp is used to replay the messages in the exact same tempo as they were recorded.</p>
 <p>The timestamps are written to the capture file as an unused but valid, 6-byte LocoNet message with opcode 0xc0.
 A corresponding <code>CaptureTimeStamp</code> class is defined to represent this.</p>

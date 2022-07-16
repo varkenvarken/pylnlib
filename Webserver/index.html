@@ -416,10 +416,8 @@
 <p>Fortunately all these requirements can be met with <a href="https://github.com/tiangolo/fastapi">fastapi</a>
 that not just enables use to create REST functionality in a really simple way, but also allows serving static pages
 and more importantly, can implement web sockets.</p>
-<div class="codehilite"><pre><span></span><code><span class="n">flowchart</span><span class="w"> </span><span class="n">LR</span><span class="w"></span>
-<span class="w">  </span><span class="kr">Interface</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">Scrollkeeper</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">fastapi</span><span class="o">:</span><span class="n">app</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">uvicorn</span><span class="w"> </span><span class="o">--&gt;</span><span class="w"> </span><span class="n">webbrowser</span><span class="w"></span>
-</code></pre></div>
-
+<pre class="mermaid"><code>flowchart LR
+  Interface --&gt; Scrollkeeper --&gt; fastapi:app --&gt; uvicorn --&gt; webbrowser</code></pre>
 <h1 id="experiments">experiments</h1>
 <p>A tiny <a href="https://github.com/varkenvarken/pylnlib/blob/master/webserver/main.py">sample implementation</a> is a starting point for further enhancements.</p>
 <p>It serves a webpage that will open a websocket. This websocket periodically sends a list of known sensor ids.</p>
