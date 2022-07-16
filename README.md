@@ -15,7 +15,7 @@ just the library:
 pip install pylnlib
 ```
 
-with the experimental webserver:
+with the experimental webserver (not sure if this will pull fastapi's dependencies fully; I'll have to check):
 
 ```bash
 pip install pylnlib[webserver]
