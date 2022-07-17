@@ -21,12 +21,12 @@ h6 {
     text-transform: capitalize;
 }
 
-h1.mkapi-node,
-h2.mkapi-node,
-h3.mkapi-node,
-h4.mkapi-node,
-h5.mkapi-node,
-h6.mkapi-node {
+.mkapi-node h1,
+.mkapi-node h2,
+.mkapi-node h3,
+.mkapi-node h4,
+.mkapi-node h5,
+.mkapi-node h6{
     text-transform: none;
 }
 
