@@ -21,7 +21,27 @@ flowchart LR
 
 # experiments
 
-A tiny [sample implementation](https://github.com/varkenvarken/pylnlib/blob/master/webserver/main.py) is a starting point for further enhancements.
+A tiny [sample implementation](https://github.com/varkenvarken/pylnlib/blob/master/pylnlib/Webserver.py) is a starting point for further enhancements.
 
-It serves a webpage that will open a websocket. This websocket periodically sends a list of known sensor ids.
+It serves a webpage that will open a websocket. This websocket periodically sends an object with lists of slots, sensors and switches,
+and the webpage then shows this data every time it gets refreshed.
 
+If you have installed the package with the webserver dependencies like
+
+```bash
+pip install pylnlib[webserver]
+```
+
+you can run this sample implementation: 
+
+```bash
+uvicorn pylnlib.Webserver:app --port 8081 -host 192.168.0.163
+```
+
+The example will run a server listening on http://192.168.0.163:8081, where of course
+you should use an ipaddress (or hostname) and port suitable for wherever you host the server.
+
+!!! warning
+
+    This tiny example currently does *not* listen on the serial interface but will replay captured LocoNet data
+    from the file [captures/session001.capture](https://github.com/varkenvarken/pylnlib/blob/captures/session001.capture)

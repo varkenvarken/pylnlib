@@ -40,7 +40,7 @@ html = """
             <ul id="sensors" />
         </div>
         <script>
-            var ws = new WebSocket("ws://localhost:8081/ws");
+            var ws = new WebSocket("ws://" + location.host + "/ws"); // unencrypted web socket on same host/port but specific path
             ws.onmessage = function(event) {
                 // console.log(event.data);
                 let slots = document.getElementById('slots');
