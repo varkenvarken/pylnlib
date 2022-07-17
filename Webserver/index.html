@@ -419,8 +419,22 @@ and more importantly, can implement web sockets.</p>
 <pre class="mermaid"><code>flowchart LR
   Interface --&gt; Scrollkeeper --&gt; fastapi:app --&gt; uvicorn --&gt; webbrowser</code></pre>
 <h1 id="experiments">experiments</h1>
-<p>A tiny <a href="https://github.com/varkenvarken/pylnlib/blob/master/webserver/main.py">sample implementation</a> is a starting point for further enhancements.</p>
-<p>It serves a webpage that will open a websocket. This websocket periodically sends a list of known sensor ids.</p>
+<p>A tiny <a href="https://github.com/varkenvarken/pylnlib/blob/master/pylnlib/Webserver.py">sample implementation</a> is a starting point for further enhancements.</p>
+<p>It serves a webpage that will open a websocket. This websocket periodically sends an object with lists of slots, sensors and switches,
+and the webpage then shows this data every time it gets refreshed.</p>
+<p>If you have installed the package with the webserver dependencies like</p>
+<div class="highlight"><pre><span></span><code>pip install pylnlib<span class="o">[</span>webserver<span class="o">]</span>
+</code></pre></div>
+<p>you can run this sample implementation: </p>
+<div class="highlight"><pre><span></span><code>uvicorn pylnlib.Webserver:app --port <span class="m">8081</span> -host <span class="m">192</span>.168.0.163
+</code></pre></div>
+<p>The example will run a server listening on http://192.168.0.163:8081, where of course
+you should use an ipaddress (or hostname) and port suitable for wherever you host the server.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This tiny example currently does <em>not</em> listen on the serial interface but will replay captured LocoNet data
+from the file <a href="https://github.com/varkenvarken/pylnlib/blob/captures/session001.capture">captures/session001.capture</a></p>
+</div>
 
               
             </article>
