@@ -21,6 +21,8 @@ theme:
 
 nav:
   - Home: 'README.md'
+  - Webapp: 'Webserver.md'
+  - Replay: 'capture_and_replay.md'
   - API: 'mkapi/apidoc/pylnlib'
 
 markdown_extensions:
@@ -31,13 +33,6 @@ markdown_extensions:
         - name: mermaid
           class: mermaid
           format: !!python/name:pymdownx.superfences.fence_code_format
-#  - jetblack_markdown.autodoc:
-#      class_from_init: true
-#      ignore_dunder: true
-#      ignore_private: true
-#      ignore_all: false
-#      prefer_docstring: true
-#      template_folder: null
 
 plugins:
   - search # necessary for search to work
