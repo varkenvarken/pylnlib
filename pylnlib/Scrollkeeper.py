@@ -342,6 +342,7 @@ class Scrollkeeper:
 
     def getAllStatusInfo(self):
         return {
+            "time" : f"{datetime.now()}",
             "slots": [self.slots[s].toJSON() for s in sorted(s for s in self.slots)],
             "switches": [
                 self.switches[s].toJSON() for s in sorted(s for s in self.switches)

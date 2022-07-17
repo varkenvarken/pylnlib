@@ -5,19 +5,22 @@ from fastapi.responses import HTMLResponse
 
 from pylnlib.Interface import Interface
 from pylnlib.Scrollkeeper import Scrollkeeper
+from pylnlib.Utils import EnvArgs,createInterface, createScrollkeeper
 
-capturefile = open("captures/session001.capture", "rb")
-interface = Interface(capturefile)
+args = EnvArgs()
 
-scrollkeeper = Scrollkeeper(interface)
+# create an interface, possibly pointing to a file with previously captured input
+interface = createInterface(args)
+
+# create a Scrollkeeper instance and let it process messages
+scrollkeeper = createScrollkeeper(interface, args)
+
 interface.receiver_handler.append(scrollkeeper.messageListener)
-scrollkeeper.dummy = True
 
 print("starting fastapi")
 app = FastAPI()
 
 print("starting interface")
-
 Thread(target=interface.run, daemon=True).start()
 
 html = """
@@ -35,6 +38,7 @@ html = """
         </form>
         -->
         <div id='status'>
+            <div id="time">Timestamp</div>
             <ul id="slots" />
             <ul id="switches" />
             <ul id="sensors" />
@@ -45,6 +49,9 @@ html = """
                 // console.log(event.data);
                 let slots = document.getElementById('slots');
                 let status = JSON.parse(event.data);
+                // timestamp
+                document.getElementById('time').replaceChildren(document.createTextNode(status.time))
+                // slots
                 slots.replaceChildren();
                 for(const slot in status.slots){
                     console.log(status.slots[slot]);

@@ -4,13 +4,14 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220716180157
+# Version: 20220717141935
 
 import argparse
 import sys
 import time
 from atexit import register
 from datetime import datetime
+from os import environ
 
 from .Interface import Interface
 from .Message import CaptureTimeStamp
@@ -91,6 +92,63 @@ class Args:
         )
 
         self.args = cmdline.parse_args()
+
+
+class EnvArgs:
+    def __init__(self):
+        self.port = environ.get("PYLNLIB_PORT", "/dev/ttyACM0")
+        self.baud = int(environ.get("PYLNLIB_BAUD", "57600"))
+        self.capture = environ.get("PYLNLIB_CAPTURE", "False") in {
+            "true",
+            "True",
+            "TRUE",
+            "1",
+            "Y",
+            "y",
+        }
+        self.dummy = environ.get("PYLNLIB_DUMMY", "False") in {
+            "true",
+            "True",
+            "TRUE",
+            "1",
+            "Y",
+            "y",
+        }
+        self.timestamp = environ.get("PYLNLIB_TIMESTAMP", "False") in {
+            "true",
+            "True",
+            "TRUE",
+            "1",
+            "Y",
+            "y",
+        }
+        self.log = environ.get("PYLNLIB_LOG", "False") in {
+            "true",
+            "True",
+            "TRUE",
+            "1",
+            "Y",
+            "y",
+        }
+        self.replay = environ.get("PYLNLIB_REPLAY", "False") in {
+            "true",
+            "True",
+            "TRUE",
+            "1",
+            "Y",
+            "y",
+        }
+        self.fast = environ.get("PYLNLIB_FAST", "False") in {
+            "true",
+            "True",
+            "TRUE",
+            "1",
+            "Y",
+            "y",
+        }
+        self.capturefile = environ.get("PYLNLIB_CAPTUREFILE", "pylnlib.capture")
+        self.port = environ.get("PYLNLIB_PORT", "/dev/ttyACM0")
+        self.slottrace = False
 
 
 def logger(msg):
