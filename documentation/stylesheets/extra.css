@@ -12,7 +12,7 @@
     font-family: "Amaranth";
 }
 
-h1, h2, h3, h4, h5, h6 { text-decoration: capitalize;}
+h1, h2, h3, h4, h5, h6 { text-transform: capitalize;}
 
 pre { line-height: 125%; }
 td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
