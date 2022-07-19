@@ -5,7 +5,7 @@ from fastapi.responses import HTMLResponse
 
 from pylnlib.Interface import Interface
 from pylnlib.Scrollkeeper import Scrollkeeper
-from pylnlib.Utils import EnvArgs,createInterface, createScrollkeeper
+from pylnlib.Utils import EnvArgs, createInterface, createScrollkeeper
 
 args = EnvArgs()
 

@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220716125748
+# Version: 20220719161337
 
 from datetime import datetime
 from threading import Lock
@@ -342,7 +342,7 @@ class Scrollkeeper:
 
     def getAllStatusInfo(self):
         return {
-            "time" : f"{datetime.now()}",
+            "time": f"{datetime.now()}",
             "slots": [self.slots[s].toJSON() for s in sorted(s for s in self.slots)],
             "switches": [
                 self.switches[s].toJSON() for s in sorted(s for s in self.switches)

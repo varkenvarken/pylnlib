@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220629203235
+# Version: 20220718112828
 
 import pathlib
 import sys
@@ -14,7 +14,7 @@ from sys import path
 d = pathlib.Path(__file__).parent.parent.resolve()
 path.append(str(d))
 
-from pylnlib.Script import Script
+from pylnlib.ScriptRunner import ScriptRunner
 from pylnlib.Utils import Args, createInterface, createScrollkeeper
 
 if __name__ == "__main__":
@@ -28,7 +28,7 @@ if __name__ == "__main__":
     scrollkeeper = createScrollkeeper(interface, args)
 
     # create a script instance that refers to a scrollkeeper
-    s = Script(scrollkeeper)
+    s = ScriptRunner(scrollkeeper)
 
     # start the interface in the background to process serial data
     interface.run_in_background(delay=0.1)
