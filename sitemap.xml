@@ -41,6 +41,11 @@
          <changefreq>daily</changefreq>
     </url>
     <url>
+         <loc>https://varkenvarken.github.io/pylnlib/apidoc/pylnlib.Webserver/</loc>
+         <lastmod>2022-07-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
          <loc>https://varkenvarken.github.io/pylnlib/apidoc/pylnlib/</loc>
          <lastmod>2022-07-20</lastmod>
          <changefreq>daily</changefreq>
@@ -67,6 +72,11 @@
     </url>
     <url>
          <loc>https://varkenvarken.github.io/pylnlib/apidoc/source/pylnlib.Utils/</loc>
+         <lastmod>2022-07-20</lastmod>
+         <changefreq>daily</changefreq>
+    </url>
+    <url>
+         <loc>https://varkenvarken.github.io/pylnlib/apidoc/source/pylnlib.Webserver/</loc>
          <lastmod>2022-07-20</lastmod>
          <changefreq>daily</changefreq>
     </url>
