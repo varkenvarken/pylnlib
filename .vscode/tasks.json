@@ -6,7 +6,7 @@
         {
             "label": "mkdocs",
             "type": "shell",
-            "command": "PYTHONPATH=`pwd` mkdocs gh-deploy --force"
+            "command": "PYTHONPATH=`pwd` PYLNLIB_DUMMY=Y mkdocs gh-deploy --force"
         }
     ]
 }
