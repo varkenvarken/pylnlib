@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220720144957
+# Version: 20220721111928
 
 """
 This module defines a simple webserver that provides REST webservices
@@ -17,8 +17,9 @@ More info [on this page](https://varkenvarken.github.io/pylnlib/Webserver/).
 
 import asyncio
 from threading import Thread
-from os import environ
+from os import path
 from fastapi import FastAPI, WebSocket
+from fastapi.staticfiles import StaticFiles
 from fastapi.responses import HTMLResponse
 
 from pylnlib.Interface import Interface
@@ -41,71 +42,31 @@ app = FastAPI()
 print("starting interface")
 Thread(target=interface.run, daemon=True).start()
 
-html = """
-<!DOCTYPE html>
-<html>
-    <head>
-        <title>Chat</title>
-    </head>
-    <body>
-        <h1>Pylnlib test webapp</h1>
-        <!--
-        <form action="" onsubmit="sendMessage(event)">
-            <input type="text" id="messageText" autocomplete="off"/>
-            <button>Send</button>
-        </form>
-        -->
-        <div id='status'>
-            <div id="time">Timestamp</div>
-            <ul id="slots" />
-            <ul id="switches" />
-            <ul id="sensors" />
-        </div>
-        <script>
-            var ws = new WebSocket("ws://" + location.host + "/ws"); // unencrypted web socket on same host/port but specific path
-            ws.onmessage = function(event) {
-                // console.log(event.data);
-                let slots = document.getElementById('slots');
-                let status = JSON.parse(event.data);
-                // timestamp
-                document.getElementById('time').replaceChildren(document.createTextNode(status.time))
-                // slots
-                slots.replaceChildren();
-                for(const slot in status.slots){
-                    console.log(status.slots[slot]);
-                    let slotelement = document.createElement('li')
-                    let table = document.createElement('table')
-                    let obj = status.slots[slot]
-                    for(const attr in obj){
-                        let attrrow = document.createElement('tr')
-                        let attrcol = document.createElement('td')
-                        let valcol = document.createElement('td')
-                        attrcol.appendChild(document.createTextNode(attr))
-                        valcol.appendChild(document.createTextNode(obj[attr]))
-                        table.appendChild(attrrow)
-                        attrrow.appendChild(attrcol)
-                        attrrow.appendChild(valcol)
-                    }
-                    //var content = document.createTextNode(JSON.stringify(status.slots[slot]))
-                    slotelement.appendChild(table)
-                    slots.appendChild(slotelement)
-                }
-            };
-            function sendMessage(event) {
-                var input = document.getElementById("messageText")
-                ws.send(input.value)
-                input.value = ''
-                event.preventDefault()
-            }
-        </script>
-    </body>
-</html>
-"""
+app.mount(
+    "/javascript",
+    StaticFiles(
+        directory=path.join(
+            path.dirname(path.normpath(__file__)), "assets", "javascript"
+        ),
+    ),
+    name="static_assets_javascript",
+)
 
+app.mount(
+    "/css",
+    StaticFiles(
+        directory=path.join(path.dirname(path.normpath(__file__)), "assets", "css"),
+    ),
+    name="static_assets_css",
+)
 
-@app.get("/")
-def read_root():
-    return HTMLResponse(html)
+app.mount(
+    "/html",
+    StaticFiles(
+        directory=path.join(path.dirname(path.normpath(__file__)), "assets", "html"),
+    ),
+    name="static_assets_html",
+)
 
 
 @app.get("/sensors")
