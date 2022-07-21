@@ -1,3 +1,20 @@
+# pylnlib : a package to communicate with a model railroad controller using the LocoNet® protocol
+#
+# (c) 2022 Michel Anders (varkenvarken)
+#
+# License: GPL 3, see file LICENSE
+#
+# Version: 20220720144957
+
+"""
+This module defines a simple webserver that provides REST webservices
+as well as a websocket to show status info about the layout.
+
+Typicall run using the uvicorn WSGI server.
+
+More info [on this page](https://varkenvarken.github.io/pylnlib/Webserver/).
+"""
+
 import asyncio
 from threading import Thread
 from os import environ

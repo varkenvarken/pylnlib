@@ -28,6 +28,7 @@ nav:
 markdown_extensions:
   - admonition
   - codehilite
+  - tables
   - pymdownx.superfences:
       custom_fences:
         - name: mermaid

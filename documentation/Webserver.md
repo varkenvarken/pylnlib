@@ -35,13 +35,30 @@ pip install pylnlib[webserver]
 you can run this sample implementation: 
 
 ```bash
-uvicorn pylnlib.Webserver:app --port 8081 -host 192.168.0.163
+uvicorn pylnlib.Webserver:app --port 8081 --host 192.168.0.163
 ```
 
 The example will run a server listening on http://192.168.0.163:8081, where of course
 you should use an ipaddress (or hostname) and port suitable for wherever you host the server.
 
-!!! warning
+!!! note
 
-    This tiny example currently does *not* listen on the serial interface but will replay captured LocoNet data
-    from the file [captures/session001.capture](https://github.com/varkenvarken/pylnlib/blob/captures/session001.capture)
+    The defaults for this app should work out of the box on a rapberrypi where
+    the serial interface presented by the DR5000 over usb is `/dev/ttyACM0`,
+    but most aspects can  be controlled by setting environment variables (because
+    uvicorn does not provide facilities to forward commandline options to the app
+    it calls)
+## Environment variables
+
+|variable           | default         |
+--------------------|------------------
+|PYLNLIB_PORT       |/dev/ttyACM0     | 
+|PYLNLIB_BAUD       |57600            |
+|PYLNLIB_CAPTURE    |False            |
+|PYLNLIB_DUMMY      |False            |
+|PYLNLIB_TIMESTAMP  |False            |
+|PYLNLIB_LOG        |False            |
+|PYLNLIB_REPLAY     |False            |
+|PYLNLIB_FAST       |False            |
+|PYLNLIB_CAPTUREFILE|pylnlib.capture  |
+|PYLNLIB_PORT       |/dev/ttyACM0     |
