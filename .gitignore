@@ -8,3 +8,5 @@
 
 drawings/*.bkp
 docs/*
+.tox/*
+.tox/log/*
