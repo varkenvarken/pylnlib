@@ -1,3 +1,4 @@
+![Test](https://github.com/varkenvarken/pylnlib/actions/workflows/test.yml/badge.svg)
 ![CodeQL](https://github.com/varkenvarken/pylnlib/actions/workflows/codeql-analysis.yml/badge.svg)
 ![Black](https://github.com/varkenvarken/pylnlib/actions/workflows/black.yml/badge.svg)
 ![Versions](https://img.shields.io/pypi/v/pylnlib)
