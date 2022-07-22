@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220722135238
+# Version: 20220722164829
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -327,13 +327,34 @@ class FunctionGroup2(Message):
     It holds the status for functions f9 - f12.
     """
 
-    def __init__(self, data):
-        super().__init__(data)
-        self.slot = int(data[1])
-        self.f9 = bool(data[2] & 0x1)
-        self.f10 = bool(data[2] & 0x2)
-        self.f11 = bool(data[2] & 0x4)
-        self.f12 = bool(data[2] & 0x8)
+    def __init__(self, data=None, slot=None, f9=None, f10=None, f11=None, f12=None):
+        if data is None:
+            self.slot = slot
+            self.f9 = f9
+            self.f10 = f10
+            self.f11 = f11
+            self.f12 = f12
+            data = bytearray(4)
+            data[0] = Message.OPC_LOCO_F2
+            data[1] = self.slot
+            data[2] = 0
+            data[2] += 0x1 if self.f9 else 0
+            data[2] += 0x2 if self.f10 else 0
+            data[2] += 0x4 if self.f11 else 0
+            data[2] += 0x8 if self.f12 else 0
+            super().__init__(data)
+            self.updateChecksum()
+        else:
+            if slot is not None or f9 is not None:
+                raise ValueError(
+                    "slot and function arguments cannot be combined with data argument"
+                )
+            super().__init__(data)
+            self.slot = int(data[1])
+            self.f9 = bool(data[2] & 0x1)
+            self.f10 = bool(data[2] & 0x2)
+            self.f11 = bool(data[2] & 0x4)
+            self.f12 = bool(data[2] & 0x8)
 
     def __str__(self):
         return f"{self.__class__.__name__}(slot = {self.slot} f9: {self.f9}  f10: {self.f10} f11: {self.f11} f12: {self.f12} | op = {hex(self.opcode)}, {self.length=}, data={list(map(hex,map(int, self.data)))})"
@@ -346,31 +367,132 @@ class FunctionGroup3(Message):
     Depending on the fiegroup, tt holds the status for functions f13 - f19, f21 - f27 or f12 + f20 +f28.
     """
 
-    def __init__(self, data):
-        super().__init__(data)
-        # data[1] is always 0x20
-        self.slot = int(data[2])
-        self.fiegroup = data[3]
-        if self.fiegroup == 0x08:
-            self.f13 = bool(data[4] & 0x1)
-            self.f14 = bool(data[4] & 0x2)
-            self.f15 = bool(data[4] & 0x4)
-            self.f16 = bool(data[4] & 0x8)
-            self.f17 = bool(data[4] & 0x10)
-            self.f18 = bool(data[4] & 0x20)
-            self.f19 = bool(data[4] & 0x40)
-        elif self.fiegroup == 0x09:
-            self.f21 = bool(data[4] & 0x1)
-            self.f22 = bool(data[4] & 0x2)
-            self.f23 = bool(data[4] & 0x4)
-            self.f24 = bool(data[4] & 0x8)
-            self.f25 = bool(data[4] & 0x10)
-            self.f26 = bool(data[4] & 0x20)
-            self.f27 = bool(data[4] & 0x40)
-        elif self.fiegroup == 0x05:
-            self.f12 = bool(data[4] & 0x10)
-            self.f20 = bool(data[4] & 0x20)
-            self.f28 = bool(data[4] & 0x40)
+    params = {
+        "f12",
+        "f13",
+        "f14",
+        "f15",
+        "f16",
+        "f17",
+        "f18",
+        "f19",
+        "f20",
+        "f21",
+        "f22",
+        "f23",
+        "f24",
+        "f25",
+        "f26",
+        "f27",
+        "f28",
+    }
+    p12 = {"f12", "f20", "f28"}
+    p13 = {"f13", "f14", "f15", "f16", "f17", "f18", "f19"}
+    p21 = {"f21", "f22", "f23", "f24", "f25", "f26", "f27"}
+
+    def __init__(self, data=None, slot=None, **kwargs):
+        if data is None:
+            self.slot = slot
+            for k in FunctionGroup3.params:
+                setattr(self, k, False)
+            for k, v in kwargs.items():
+                if k in FunctionGroup3.params:
+                    setattr(self, k, v)
+                else:
+                    raise ValueError(f"unknown parameter {k}")
+            if (
+                sum(
+                    [
+                        bool(set(kwargs.keys()) & s)
+                        for s in (
+                            FunctionGroup3.p12,
+                            FunctionGroup3.p13,
+                            FunctionGroup3.p21,
+                        )
+                    ]
+                )
+                != 1
+            ):
+                raise ValueError(f"mixed param groups")
+            data = bytearray(6)
+            data[0] = Message.OPC_LOCO_F3
+            data[1] = 0x20
+            data[2] = self.slot
+            if "f13" in kwargs:
+                data[3] = 0x08
+                data[4] = 0
+                if self.f13:
+                    data[4] += 0x1
+                if self.f14:
+                    data[4] += 0x2
+                if self.f15:
+                    data[4] += 0x4
+                if self.f16:
+                    data[4] += 0x8
+                if self.f17:
+                    data[4] += 0x10
+                if self.f18:
+                    data[4] += 0x20
+                if self.f19:
+                    data[4] += 0x40
+            elif "f21" in kwargs:
+                data[3] = 0x09
+                data[4] = 0
+                if self.f21:
+                    data[4] += 0x1
+                if self.f22:
+                    data[4] += 0x2
+                if self.f23:
+                    data[4] += 0x4
+                if self.f24:
+                    data[4] += 0x8
+                if self.f25:
+                    data[4] += 0x10
+                if self.f26:
+                    data[4] += 0x20
+                if self.f27:
+                    data[4] += 0x40
+            elif "f12" in kwargs:
+                data[3] = 0x05
+                data[4] = 0
+                if self.f12:
+                    data[4] += 0x10
+                if self.f20:
+                    data[4] += 0x20
+                if self.f28:
+                    data[4] += 0x40
+
+            super().__init__(data)
+            self.updateChecksum()
+        else:
+            if slot is not None or len(kwargs):
+                raise ValueError(
+                    "slot and function arguments cannot be combined with data argument"
+                )
+            super().__init__(data)
+            # data[1] is always 0x20
+            self.slot = int(data[2])
+            self.fiegroup = data[3]
+            if self.fiegroup == 0x08:
+                self.f13 = bool(data[4] & 0x1)
+                self.f14 = bool(data[4] & 0x2)
+                self.f15 = bool(data[4] & 0x4)
+                self.f16 = bool(data[4] & 0x8)
+                self.f17 = bool(data[4] & 0x10)
+                self.f18 = bool(data[4] & 0x20)
+                self.f19 = bool(data[4] & 0x40)
+            elif self.fiegroup == 0x09:
+                self.f21 = bool(data[4] & 0x1)
+                self.f22 = bool(data[4] & 0x2)
+                self.f23 = bool(data[4] & 0x4)
+                self.f24 = bool(data[4] & 0x8)
+                self.f25 = bool(data[4] & 0x10)
+                self.f26 = bool(data[4] & 0x20)
+                self.f27 = bool(data[4] & 0x40)
+            elif self.fiegroup == 0x05:
+                self.f12 = bool(data[4] & 0x10)
+                self.f20 = bool(data[4] & 0x20)
+                self.f28 = bool(data[4] & 0x40)
 
     def __str__(self):
         if self.fiegroup == 0x05:
