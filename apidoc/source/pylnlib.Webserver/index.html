@@ -465,7 +465,7 @@
 <span class="c1">#</span>
 <span class="c1"># License: GPL 3, see file LICENSE</span>
 <span class="c1">#</span>
-<span class="c1"># Version: 20220720144957</span>
+<span class="c1"># Version: 20220721111928</span>
 
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This module defines a simple webserver that provides REST webservices</span>
@@ -478,8 +478,9 @@
 
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Thread</span>
-<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">environ</span>
+<span class="kn">from</span> <span class="nn">os</span> <span class="kn">import</span> <span class="n">path</span>
 <span class="kn">from</span> <span class="nn">fastapi</span> <span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">WebSocket</span>
+<span class="kn">from</span> <span class="nn">fastapi.staticfiles</span> <span class="kn">import</span> <span class="n">StaticFiles</span>
 <span class="kn">from</span> <span class="nn">fastapi.responses</span> <span class="kn">import</span> <span class="n">HTMLResponse</span>
 
 <span class="kn">from</span> <span class="nn">pylnlib.Interface</span> <span class="kn">import</span> <span class="n">Interface</span>
@@ -502,71 +503,31 @@
 <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;starting interface&quot;</span><span class="p">)</span>
 <span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">interface</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-<span class="n">html</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">&lt;!DOCTYPE html&gt;</span>
-<span class="s2">&lt;html&gt;</span>
-<span class="s2">    &lt;head&gt;</span>
-<span class="s2">        &lt;title&gt;Chat&lt;/title&gt;</span>
-<span class="s2">    &lt;/head&gt;</span>
-<span class="s2">    &lt;body&gt;</span>
-<span class="s2">        &lt;h1&gt;Pylnlib test webapp&lt;/h1&gt;</span>
-<span class="s2">        &lt;!--</span>
-<span class="s2">        &lt;form action=&quot;&quot; onsubmit=&quot;sendMessage(event)&quot;&gt;</span>
-<span class="s2">            &lt;input type=&quot;text&quot; id=&quot;messageText&quot; autocomplete=&quot;off&quot;/&gt;</span>
-<span class="s2">            &lt;button&gt;Send&lt;/button&gt;</span>
-<span class="s2">        &lt;/form&gt;</span>
-<span class="s2">        --&gt;</span>
-<span class="s2">        &lt;div id=&#39;status&#39;&gt;</span>
-<span class="s2">            &lt;div id=&quot;time&quot;&gt;Timestamp&lt;/div&gt;</span>
-<span class="s2">            &lt;ul id=&quot;slots&quot; /&gt;</span>
-<span class="s2">            &lt;ul id=&quot;switches&quot; /&gt;</span>
-<span class="s2">            &lt;ul id=&quot;sensors&quot; /&gt;</span>
-<span class="s2">        &lt;/div&gt;</span>
-<span class="s2">        &lt;script&gt;</span>
-<span class="s2">            var ws = new WebSocket(&quot;ws://&quot; + location.host + &quot;/ws&quot;); // unencrypted web socket on same host/port but specific path</span>
-<span class="s2">            ws.onmessage = function(event) {</span>
-<span class="s2">                // console.log(event.data);</span>
-<span class="s2">                let slots = document.getElementById(&#39;slots&#39;);</span>
-<span class="s2">                let status = JSON.parse(event.data);</span>
-<span class="s2">                // timestamp</span>
-<span class="s2">                document.getElementById(&#39;time&#39;).replaceChildren(document.createTextNode(status.time))</span>
-<span class="s2">                // slots</span>
-<span class="s2">                slots.replaceChildren();</span>
-<span class="s2">                for(const slot in status.slots){</span>
-<span class="s2">                    console.log(status.slots[slot]);</span>
-<span class="s2">                    let slotelement = document.createElement(&#39;li&#39;)</span>
-<span class="s2">                    let table = document.createElement(&#39;table&#39;)</span>
-<span class="s2">                    let obj = status.slots[slot]</span>
-<span class="s2">                    for(const attr in obj){</span>
-<span class="s2">                        let attrrow = document.createElement(&#39;tr&#39;)</span>
-<span class="s2">                        let attrcol = document.createElement(&#39;td&#39;)</span>
-<span class="s2">                        let valcol = document.createElement(&#39;td&#39;)</span>
-<span class="s2">                        attrcol.appendChild(document.createTextNode(attr))</span>
-<span class="s2">                        valcol.appendChild(document.createTextNode(obj[attr]))</span>
-<span class="s2">                        table.appendChild(attrrow)</span>
-<span class="s2">                        attrrow.appendChild(attrcol)</span>
-<span class="s2">                        attrrow.appendChild(valcol)</span>
-<span class="s2">                    }</span>
-<span class="s2">                    //var content = document.createTextNode(JSON.stringify(status.slots[slot]))</span>
-<span class="s2">                    slotelement.appendChild(table)</span>
-<span class="s2">                    slots.appendChild(slotelement)</span>
-<span class="s2">                }</span>
-<span class="s2">            };</span>
-<span class="s2">            function sendMessage(event) {</span>
-<span class="s2">                var input = document.getElementById(&quot;messageText&quot;)</span>
-<span class="s2">                ws.send(input.value)</span>
-<span class="s2">                input.value = &#39;&#39;</span>
-<span class="s2">                event.preventDefault()</span>
-<span class="s2">            }</span>
-<span class="s2">        &lt;/script&gt;</span>
-<span class="s2">    &lt;/body&gt;</span>
-<span class="s2">&lt;/html&gt;</span>
-<span class="s2">&quot;&quot;&quot;</span>
+<span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span>
+    <span class="s2">&quot;/javascript&quot;</span><span class="p">,</span>
+    <span class="n">StaticFiles</span><span class="p">(</span>
+        <span class="n">directory</span><span class="o">=</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span>
+            <span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;assets&quot;</span><span class="p">,</span> <span class="s2">&quot;javascript&quot;</span>
+        <span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;static_assets_javascript&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
+<span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span>
+    <span class="s2">&quot;/css&quot;</span><span class="p">,</span>
+    <span class="n">StaticFiles</span><span class="p">(</span>
+        <span class="n">directory</span><span class="o">=</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;assets&quot;</span><span class="p">,</span> <span class="s2">&quot;css&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;static_assets_css&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
-<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
-<span class="k">def</span> <span class="nf">read_root</span><span class="p">():</span>
-    <span class="k">return</span> <span class="n">HTMLResponse</span><span class="p">(</span><span class="n">html</span><span class="p">)</span>
+<span class="n">app</span><span class="o">.</span><span class="n">mount</span><span class="p">(</span>
+    <span class="s2">&quot;/html&quot;</span><span class="p">,</span>
+    <span class="n">StaticFiles</span><span class="p">(</span>
+        <span class="n">directory</span><span class="o">=</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">path</span><span class="o">.</span><span class="n">normpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)),</span> <span class="s2">&quot;assets&quot;</span><span class="p">,</span> <span class="s2">&quot;html&quot;</span><span class="p">),</span>
+    <span class="p">),</span>
+    <span class="n">name</span><span class="o">=</span><span class="s2">&quot;static_assets_html&quot;</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/sensors&quot;</span><span class="p">)</span>
