@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220709153032
+# Version: 20220722135238
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -62,8 +62,11 @@ class Message:
         self.checksum = data[-1]
         if len(data) != self.length:
             raise ValueError("length mismatch")
-        if self.checksum and self.checksum != Message.checksum(data[:-1]):
-            raise ValueError("checksum error")
+        calculated_checksum = Message.checksum(data[:-1])
+        if self.checksum and self.checksum != calculated_checksum:
+            raise ValueError(
+                f"checksum error {self.checksum:x} != {calculated_checksum=:x}"
+            )
 
     def hexdata(self):
         """
@@ -200,7 +203,12 @@ class PowerOn(Message):
     A PowerOn message represents a global track power on message.
     """
 
-    pass
+    def __init__(self, data=None):
+        if data is None:
+            super().__init__(bytearray([Message.OPC_GPON, 0]))
+            self.updateChecksum()
+        else:
+            super().__init__(data)
 
 
 class PowerOff(Message):
@@ -208,7 +216,12 @@ class PowerOff(Message):
     A PowerOff message represents a global track power off message.
     """
 
-    pass
+    def __init__(self, data=None):
+        if data is None:
+            super().__init__(bytearray([Message.OPC_GPOFF, 0]))
+            self.updateChecksum()
+        else:
+            super().__init__(data)
 
 
 class FunctionGroup1(Message):
@@ -238,7 +251,7 @@ class FunctionGroup1(Message):
             self.f3 = f3
             self.f4 = f4
             data = bytearray(4)
-            data[0] = 0xA1
+            data[0] = Message.OPC_LOCO_DIRF
             data[1] = self.slot
             data[2] = 0
             data[2] += 0x20 if self.dir else 0
@@ -282,7 +295,7 @@ class FunctionGroupSound(Message):
             self.f7 = f7
             self.f8 = f8
             data = bytearray(4)
-            data[0] = 0xA2
+            data[0] = Message.OPC_LOCO_SND
             data[1] = self.slot
             data[2] = 0
             data[2] += 0x1 if self.f5 else 0
