@@ -8,7 +8,17 @@ from pylnlib.Message import (
     FunctionGroupSound,
     FunctionGroup2,
     FunctionGroup3,
+    RequestSwitchFunction,
+    SwitchState,
+    RequestSwitchState,
+    SensorState,
+    LongAcknowledge,
+    RequestSlotData,
+    SlotDataReturn,
+    WriteSlotData,
 )
+
+from pylnlib.Slot import Slot
 
 
 class TestMessage:
@@ -139,3 +149,141 @@ class TestMessage:
     def test_FunctionGroup3_from_init_pmixed(self):
         with pytest.raises(ValueError):
             msg = FunctionGroup3(slot=3, f12=True, f13=True, f28=True)
+
+    RequestSwitchFunction_data = bytes([0xB0, 0x03, 0x10, 0x5C])
+
+    def test_RequestSwitchFunction_from_data(self):
+        msg = RequestSwitchFunction(TestMessage.RequestSwitchFunction_data)
+        assert type(msg) == RequestSwitchFunction
+        assert msg.engage == True
+        assert msg.thrown == False
+
+    def test_RequestSwitchFunction_from_init(self):
+        msg = RequestSwitchFunction(3, thrown=True, engage=True)
+        assert msg.data == TestMessage.RequestSwitchFunction_data
+
+    SwitchState_data = bytes([0xB1, 0x03, 0x30, 0x7D])
+
+    def test_SwitchState_from_data(self):
+        msg = SwitchState(TestMessage.SwitchState_data)
+        assert type(msg) == SwitchState
+        assert msg.address == 3
+        assert msg.thrown == True
+        assert msg.engage == True
+
+    RequestSwitchState_data = bytes([0xBC, 0x03, 0x00, 0x40])
+
+    def test_RequestSwitchState_from_data(self):
+        msg = Message.from_data(TestMessage.RequestSwitchState_data)
+        assert type(msg) == RequestSwitchState
+        assert msg.address == 3
+
+    def test_RequestSwitchState_from_init(self):
+        msg = Message.from_data(TestMessage.RequestSwitchState_data)
+        assert type(msg) == RequestSwitchState
+        assert msg.address == 3
+
+    SensorState_data = bytes([0xB2, 0x03, 0x30, 0x7E])
+
+    def test_SensorState_from_data(self):
+        msg = Message.from_data(TestMessage.SensorState_data)
+        assert type(msg) == SensorState
+        assert msg.address == 7
+        assert msg.level == True
+
+    LongAcknowledge_data = bytes([0xB4, 0x51, 0x01, 0x1B])
+
+    def test_LongAcknowledge_from_data(self):
+        msg = Message.from_data(TestMessage.LongAcknowledge_data)
+        assert type(msg) == LongAcknowledge
+        assert msg.ack1 == 1
+
+    RequestSlotData_data = bytes([0xBB, 0x03, 0x00, 0x47])
+
+    def test_RequestSlotData_from_init(self):
+        msg = RequestSlotData(3)
+        assert msg.data == TestMessage.RequestSlotData_data
+
+    def test_RequestSlotData_from_data(self):
+        msg = Message.from_data(TestMessage.RequestSlotData_data)
+        assert type(msg) == RequestSlotData
+        assert msg.slot == 3
+
+    SlotDataReturn_data = bytes(
+        [
+            0xE7,
+            0x0E,
+            0x03,
+            0x01,
+            0x10,
+            0x30,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x34,
+        ]
+    )
+
+    def test_SlotDataReturn_from_data(self):
+        msg = Message.from_data(TestMessage.SlotDataReturn_data)
+        assert type(msg) == SlotDataReturn
+        assert msg.slot == 3
+        assert msg.address == 16
+        assert msg.status == 1
+        assert msg.speed == 48
+        assert msg.dir == False
+        assert msg.f0 == False
+        assert msg.f1 == False
+        assert msg.f2 == False
+        assert msg.f3 == False
+        assert msg.f4 == False
+        assert msg.f5 == False
+        assert msg.f6 == False
+        assert msg.f7 == False
+        assert msg.f8 == False
+
+    WriteSlotData_data = bytes(
+        [
+            0xEF,
+            0x0E,
+            0x03,
+            0x01,
+            0x10,
+            0x30,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x00,
+            0x3C,
+        ]
+    )
+
+    def test_WriteSlotData_from_data(self):
+        msg = Message.from_data(TestMessage.WriteSlotData_data)
+        assert type(msg) == WriteSlotData
+        assert msg.slot == 3
+        assert msg.address == 16
+        assert msg.status == 1
+        assert msg.speed == 48
+        assert msg.dir == False
+        assert msg.f0 == False
+        assert msg.f1 == False
+        assert msg.f2 == False
+        assert msg.f3 == False
+        assert msg.f4 == False
+        assert msg.f5 == False
+        assert msg.f6 == False
+        assert msg.f7 == False
+        assert msg.f8 == False
+
+    def test_WriteSlotData_from_init(self):
+        slot = Slot(3, speed=48, status=1, address=16)
+        msg = WriteSlotData(slot)
+        assert msg.data == TestMessage.WriteSlotData_data

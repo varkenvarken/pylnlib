@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220722164829
+# Version: 20220723150552
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -29,7 +29,7 @@ class Message:
     OPC_LOCO_SND = 0xA2
     OPC_LOCO_F2 = 0xA3  # not defined in locnet specs, but implemented nevertheless
     OPC_SW_REQ = 0xB0
-    OPC_SW_REP = 0xB1  # not implemented
+    OPC_SW_REP = 0xB1
     OPC_INPUT_REP = 0xB2
     OPC_LONG_ACK = 0xB4
     OPC_SLOT_STAT1 = 0xB5  # not implemented
@@ -525,12 +525,12 @@ class RequestSwitchFunction(Message):
         if type(data) == int:
             self.address = data
             data = bytearray(4)
-            self.opcode = data[0] = Message.OPC_SW_REP
+            self.opcode = data[0] = Message.OPC_SW_REQ
             self.thrown = thrown
             self.engage = engage
             data[1] = self.address & 0x7F
             data[2] = self.address >> 7
-            if self.thrown:
+            if not self.thrown:
                 data[2] |= 0x20
             if self.engage:
                 data[2] |= 0x10
@@ -651,12 +651,12 @@ class SlotDataReturn(Message):
 class WriteSlotData(SlotDataReturn):
     def __init__(self, slot):
         if isinstance(slot, bytes) or isinstance(slot, bytearray):
-            super().__init__(data)
+            super().__init__(slot)
         else:
             data = bytearray(14)
             data[0] = 0xEF
             data[1] = 0x0E
-            data[2] = slot.slot
+            data[2] = slot.id
             data[3] = slot.status
             data[4] = slot.address & 0x7F
             data[9] = slot.address >> 7
@@ -668,15 +668,17 @@ class WriteSlotData(SlotDataReturn):
             data[6] += 0x2 if slot.f2 else 0
             data[6] += 0x4 if slot.f3 else 0
             data[6] += 0x8 if slot.f4 else 0
-            data[7] = self.trk
-            data[8] = self.ss2
+            data[7] = data[8] = 0
+            data[7] += slot.trk if slot.trk else 0
+            data[8] += slot.ss2 if slot.ss2 else 0
             data[10] = 0
             data[10] += 0x1 if slot.f5 else 0
             data[10] += 0x2 if slot.f6 else 0
             data[10] += 0x4 if slot.f7 else 0
             data[10] += 0x8 if slot.f8 else 0
-            data[11] = self.id1
-            data[12] = self.id2
+            data[11] = data[12] = 0
+            data[11] += slot.id1 if slot.id1 else 0
+            data[12] += slot.id2 if slot.id2 else 0
             Message.__init__(self, data)  # cannot skip the chain with super()
             self.updateChecksum()
 
