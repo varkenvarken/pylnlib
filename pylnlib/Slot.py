@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220716125138
+# Version: 20220724134029
 
 from inspect import signature
 
@@ -74,6 +74,34 @@ class Slot:
             f"f{f}:" + ("ON" if getattr(self, f"f{f}") else "OFF") for f in range(13)
         )
         return f"Slot({self.id:2d}): loc={self.address}, dir={'REVERSE' if self.dir else 'FORWARD'}, speed={self.speed}/{Slot.speedsteps[self.status&0x7]}, [{ff}]"
+
+    def __eq__(self, other:"Slot"):
+        return all(
+            [
+                self.id == other.id,
+                self.dir == other.dir,
+                self.speed == other.speed,
+                self.status == other.status,
+                self.address == other.address,
+                self.f0 == other.f0,
+                self.f1 == other.f1,
+                self.f2 == other.f2,
+                self.f3 == other.f3,
+                self.f4 == other.f4,
+                self.f5 == other.f5,
+                self.f6 == other.f6,
+                self.f7 == other.f7,
+                self.f8 == other.f8,
+                self.f9 == other.f9,
+                self.f10 == other.f10,
+                self.f11 == other.f11,
+                self.f12 == other.f12,
+                self.trk == other.trk,
+                self.ss2 == other.ss2,
+                self.id1 == other.id1,
+                self.id2 == other.id2,
+            ]
+        )
 
     def toJSON(self):
         return {

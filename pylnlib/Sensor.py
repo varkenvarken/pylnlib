@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220716180150
+# Version: 20220724134012
 
 from inspect import signature
 
@@ -29,3 +29,6 @@ class Sensor:
 
     def __str__(self):
         return f"Sensor({self.address+1:2d}) = {'ON' if self.state else 'OFF'}"
+
+    def __eq__(self, other: "Sensor"):
+        return self.address == other.address and self.state == other.state
