@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220724135621
+# Version: 20220724135831
 
 from datetime import datetime
 from threading import Lock
@@ -237,7 +237,7 @@ class Scrollkeeper:
         Returns:
             Slot: The Slot instance associated with this loc address.
         """
-        for id,slot in self.slots.items():
+        for id, slot in self.slots.items():
             if slot.address == address:
                 return slot
         if self.dummy:

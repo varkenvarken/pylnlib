@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220724134029
+# Version: 20220724135827
 
 from inspect import signature
 
@@ -75,7 +75,7 @@ class Slot:
         )
         return f"Slot({self.id:2d}): loc={self.address}, dir={'REVERSE' if self.dir else 'FORWARD'}, speed={self.speed}/{Slot.speedsteps[self.status&0x7]}, [{ff}]"
 
-    def __eq__(self, other:"Slot"):
+    def __eq__(self, other: "Slot"):
         return all(
             [
                 self.id == other.id,
