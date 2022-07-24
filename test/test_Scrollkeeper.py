@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220724191509
+# Version: 20220724191844
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -97,3 +97,15 @@ class TestScrollkeeper:
     def test_getSwitch(self, scrollkeeper: Scrollkeeper, switch5: Switch):
         scrollkeeper.updateSwitch(5, thrown=True, engage=False)
         assert scrollkeeper.getSwitch(5) == switch5
+
+    def test_getSlotIds(self, scrollkeeper: Scrollkeeper):
+        scrollkeeper.updateSlot(3, f0=True, address=12)
+        assert scrollkeeper.getSlotIds() == [3]
+
+    def test_getSensorIds(self, scrollkeeper: Scrollkeeper, sensor4: Sensor):
+        scrollkeeper.updateSensor(4, level="ON")
+        assert scrollkeeper.getSensorIds() == [4]
+
+    def test_getSwitchIds(self, scrollkeeper: Scrollkeeper, switch5: Switch):
+        scrollkeeper.updateSwitch(5, thrown=True, engage=False)
+        assert scrollkeeper.getSwitchIds() == [5]
