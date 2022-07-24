@@ -4,13 +4,14 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220724135456
+# Version: 20220724191509
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
 # See also: https://www.digitrax.com/static/apps/cms/media/documents/loconet/loconetpersonaledition.pdf
 # See also: https://wiki.rocrail.net/doku.php?id=loconet:ln-pe-en
 
+from operator import le
 import pytest
 
 from pylnlib.Scrollkeeper import Scrollkeeper
@@ -74,3 +75,25 @@ class TestScrollkeeper:
         scrollkeeper.updateSlot(3, f0=True, address=12)
         sl = scrollkeeper.getLocoSlot(address=12)
         assert sl == slot3
+
+    def test_getSwitchState(self, scrollkeeper: Scrollkeeper, switch5: Switch):
+        scrollkeeper.updateSwitch(5, thrown="THROWN", engage=False)
+        sw = scrollkeeper.getSwitchState(5)
+        assert sw == "THROWN"
+
+    def test_getSensorState(self, scrollkeeper: Scrollkeeper, sensor4: Sensor):
+        scrollkeeper.updateSensor(4, level="ON")
+        s = scrollkeeper.getSensorState(4)
+        assert s == "ON"
+
+    def test_getSlot(self, scrollkeeper: Scrollkeeper, slot3: Slot):
+        scrollkeeper.updateSlot(3, f0=True, address=12)
+        assert scrollkeeper.getSlot(3) == slot3
+
+    def test_getSensor(self, scrollkeeper: Scrollkeeper, sensor4: Sensor):
+        scrollkeeper.updateSensor(4, level="ON")
+        assert scrollkeeper.getSensor(4) == sensor4
+
+    def test_getSwitch(self, scrollkeeper: Scrollkeeper, switch5: Switch):
+        scrollkeeper.updateSwitch(5, thrown=True, engage=False)
+        assert scrollkeeper.getSwitch(5) == switch5

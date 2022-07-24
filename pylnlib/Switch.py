@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220724134754
+# Version: 20220724191006
 
 from inspect import signature
 
@@ -29,7 +29,7 @@ class Switch:
         }
 
     def __str__(self):
-        return f"Switch(address={self.id+1}, level={'THROWN' if self.thrown else 'CLOSED'})"
+        return f"Switch(address={self.id+1}, level={'THROWN' if self.thrown else 'CLOSED'}, engage={self.engage})"
 
     def __eq__(self, other: "Switch"):
         return (

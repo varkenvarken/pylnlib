@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220724135831
+# Version: 20220724185946
 
 from datetime import datetime
 from threading import Lock
@@ -277,7 +277,7 @@ class Scrollkeeper:
             )  # request for sensor state is same a sensor state report
             if not self.waitUntilSensorKnown(id):
                 raise ValueError(f"Sensor id {id} unknown")
-        return self.sensors[id].level
+        return self.sensors[id].state
 
     def sendMessage(self, message):
         """
