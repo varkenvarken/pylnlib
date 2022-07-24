@@ -1,3 +1,17 @@
+# pylnlib : a package to communicate with a model railroad controller using the LocoNet® protocol
+#
+# (c) 2022 Michel Anders (varkenvarken)
+#
+# License: GPL 3, see file LICENSE
+#
+# Version: 20220724130928
+
+# Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
+# Which is © Digitrax Inc.
+# See also: https://www.digitrax.com/static/apps/cms/media/documents/loconet/loconetpersonaledition.pdf
+# See also: https://wiki.rocrail.net/doku.php?id=loconet:ln-pe-en
+
+
 import pytest
 
 from pylnlib.Message import (
@@ -16,6 +30,11 @@ from pylnlib.Message import (
     RequestSlotData,
     SlotDataReturn,
     WriteSlotData,
+    SlotSpeed,
+    RequestLocAddress,
+    MoveSlots,
+    CaptureTimeStamp,
+    Unknown,
 )
 
 from pylnlib.Slot import Slot
@@ -287,3 +306,58 @@ class TestMessage:
         slot = Slot(3, speed=48, status=1, address=16)
         msg = WriteSlotData(slot)
         assert msg.data == TestMessage.WriteSlotData_data
+
+    SlotSpeed_data = bytes([0xA0, 0x03, 0x30, 0x6C])
+
+    def test_SlotSpeed_from_data(self):
+        msg = Message.from_data(TestMessage.SlotSpeed_data)
+        assert type(msg) == SlotSpeed
+        assert msg.slot == 3
+        assert msg.speed == 48
+
+    def test_SlotSpeed_from_init(self):
+        msg = SlotSpeed(slot=3, speed=48)
+        assert msg.data == TestMessage.SlotSpeed_data
+
+    RequestLocAddress_data = bytes([0xBF, 0x03, 0x00, 0x43])
+
+    def test_RequestLocAddress_from_data(self):
+        msg = Message.from_data(TestMessage.RequestLocAddress_data)
+        assert type(msg) == RequestLocAddress
+        assert msg.address == 3
+
+    def test_RequestLocAddress_from_init(self):
+        msg = RequestLocAddress(3)
+        assert msg.data == TestMessage.RequestLocAddress_data
+
+    MoveSlots_data = bytes([0xBA, 0x03, 0x04, 0x42])
+
+    def test_MoveSlots_from_data(self):
+        msg = Message.from_data(TestMessage.MoveSlots_data)
+        assert type(msg) == MoveSlots
+        assert msg.src == 3
+        assert msg.dst == 4
+
+    def test_MoveSlots_from_init(self):
+        msg = MoveSlots(src=3, dst=4)
+        assert msg.data == TestMessage.MoveSlots_data
+
+    CaptureTimeStamp_data = bytes([0xC0, 0x01, 0x02, 0x03, 0x04, 0x3B])
+
+    def test_CaptureTimeStamp_from_data(self):
+        msg = Message.from_data(TestMessage.CaptureTimeStamp_data)
+        assert type(msg) == CaptureTimeStamp
+        assert msg.time.hour == 1
+        assert msg.time.minute == 2
+        assert msg.time.second == 3
+        assert msg.time.microsecond == 4 * 10000
+
+    def test_CaptureTimeStamp_from_init(self):
+        from datetime import time
+
+        t = time(hour=1, minute=2, second=3, microsecond=40000)
+        msg = CaptureTimeStamp(t)
+        assert msg.data == TestMessage.CaptureTimeStamp_data
+
+    def test_Unknown_from_data(self):
+        assert type(Message.from_data(bytes([0xD0, 0, 0, 0, 0, 0x2F]))) == Unknown
