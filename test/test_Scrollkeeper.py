@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220724191844
+# Version: 20220725115729
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -12,12 +12,14 @@
 # See also: https://wiki.rocrail.net/doku.php?id=loconet:ln-pe-en
 
 from operator import le
+from socket import SocketIO
 import pytest
 
 from pylnlib.Scrollkeeper import Scrollkeeper
 from pylnlib.Slot import Slot
 from pylnlib.Sensor import Sensor
 from pylnlib.Switch import Switch
+from pylnlib.Message import SlotDataReturn, SensorState, SwitchState
 
 
 @pytest.fixture
@@ -41,6 +43,43 @@ def sensor4():
 @pytest.fixture
 def switch5():
     return Switch(5, thrown="THROWN", engage=False)
+
+
+SlotDataReturn_data = bytes(
+    [
+        0xE7,
+        0x0E,
+        0x03,
+        0x01,
+        0x10,
+        0x30,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x00,
+        0x34,
+    ]
+)
+
+
+@pytest.fixture
+def slotdatareturn():
+    return SlotDataReturn(SlotDataReturn_data)
+
+
+@pytest.fixture
+def sensorstate():
+    s = SensorState(3, True)
+    return s
+
+
+@pytest.fixture
+def switchstate():
+    s = SwitchState(3, thrown=True, engage=False)
+    return s
 
 
 class TestScrollkeeper:
@@ -109,3 +148,24 @@ class TestScrollkeeper:
     def test_getSwitchIds(self, scrollkeeper: Scrollkeeper, switch5: Switch):
         scrollkeeper.updateSwitch(5, thrown=True, engage=False)
         assert scrollkeeper.getSwitchIds() == [5]
+
+    def test_messageListener_slot(
+        self, scrollkeeper: Scrollkeeper, slotdatareturn: SlotDataReturn
+    ):
+        scrollkeeper.messageListener(slotdatareturn)
+        slot = scrollkeeper.getSlot(3)
+        assert slot.address == 16
+
+    def test_messageListener_sensor(
+        self, scrollkeeper: Scrollkeeper, sensorstate: SensorState
+    ):
+        scrollkeeper.messageListener(sensorstate)
+        s = scrollkeeper.getSensorState(3)
+        assert s == True
+
+    def test_messageListener_switch(
+        self, scrollkeeper: Scrollkeeper, switchstate: SwitchState
+    ):
+        scrollkeeper.messageListener(switchstate)
+        s = scrollkeeper.getSwitchState(3)
+        assert s == True

@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220723150552
+# Version: 20220725115650
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -547,11 +547,24 @@ class RequestSwitchFunction(Message):
 
 
 class SwitchState(Message):
-    def __init__(self, data):
-        super().__init__(data)
-        self.address = Message.switchaddress(data[1], data[2])
-        self.thrown = bool(data[2] & 0x20)
-        self.engage = bool(data[2] & 0x10)
+    def __init__(self, id, thrown=None, engage=None):
+        if type(id) == int:
+            data = bytearray(4)
+            data[0] = 0xB1
+            self.address = id
+            self.thrown = thrown
+            self.engage = engage
+            data[1] = id & 0x7F
+            data[2] = id >> 7
+            data[2] |= 0x20 if thrown else 0
+            data[2] |= 0x10 if engage else 0
+            super().__init__(data)
+            self.updateChecksum()
+        else:
+            super().__init__(id)
+            self.address = Message.switchaddress(id[1], id[2])
+            self.thrown = bool(id[2] & 0x20)
+            self.engage = bool(id[2] & 0x10)
 
     def __str__(self):
         return f"{self.__class__.__name__}(addr={self.address+1:2d} = {self.thrown=} {self.engage=} | op = {hex(self.opcode)}, {self.length=}, data={self.hexdata()})"
@@ -576,13 +589,15 @@ class RequestSwitchState(Message):
 
 
 class SensorState(Message):
-    def __init__(self, id):
+    def __init__(self, id, level=None):
         if type(id) == int:
             data = bytearray(4)
             data[0] = 0xB2
             self.address = id
+            self.level = level
             data[1] = (id >> 1) & 0x7F
-            data[2] = (id >> 8) | (0x10 if id % 2 else 0)
+            data[2] = (id >> 8) | (0x20 if id % 2 else 0)
+            data[2] |= 0x10 if level else 0
             super().__init__(data)
             self.updateChecksum()
         else:
