@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220724185946
+# Version: 20220725140655
 
 from datetime import datetime
 from threading import Lock
@@ -316,18 +316,18 @@ class Scrollkeeper:
         self.sendMessage(MoveSlots(src=slot.id, dst=slot.id))
         # TODO: ? should we wait for slot data ?
 
-    def getThrottle(self, locaddress):
+    def getThrottle(self, locaddress:int) -> Throttle:
         slot = self.getLocoSlot(locaddress)
         self.acquireSlot(slot)
         return Throttle(self, locaddress)
 
-    def getSlot(self, id):
+    def getSlot(self, id:int) -> Slot:
         return self.slots[id]
 
-    def getSensor(self, id):
+    def getSensor(self, id:int) -> Sensor:
         return self.sensors[id]
 
-    def getSwitch(self, id):
+    def getSwitch(self, id:int) -> Switch:
         return self.switches[id]
 
     def getSlotIds(self):

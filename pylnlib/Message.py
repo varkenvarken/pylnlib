@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220725115650
+# Version: 20220725140509
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -461,7 +461,7 @@ class FunctionGroup3(Message):
                     data[4] += 0x20
                 if self.f28:
                     data[4] += 0x40
-
+            self.fiegroup = data[3]
             super().__init__(data)
             self.updateChecksum()
         else:

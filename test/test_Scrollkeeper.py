@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220725120253
+# Version: 20220725141045
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -17,7 +17,16 @@ from pylnlib.Scrollkeeper import Scrollkeeper
 from pylnlib.Slot import Slot
 from pylnlib.Sensor import Sensor
 from pylnlib.Switch import Switch
-from pylnlib.Message import SlotDataReturn, SensorState, SwitchState
+from pylnlib.Message import (
+    SlotDataReturn,
+    SensorState,
+    SwitchState,
+    FunctionGroup1,
+    FunctionGroup2,
+    FunctionGroup3,
+    FunctionGroupSound,
+    SlotSpeed,
+)
 
 
 @pytest.fixture
@@ -41,6 +50,41 @@ def sensor4():
 @pytest.fixture
 def switch5():
     return Switch(5, thrown="THROWN", engage=False)
+
+
+@pytest.fixture
+def fie1():
+    return FunctionGroup1(slot=3, dir=False, f2=True)
+
+
+@pytest.fixture
+def fie2():
+    return FunctionGroup2(slot=3, f10=True)
+
+
+@pytest.fixture
+def fie3a():
+    return FunctionGroup3(slot=3, f12=True)
+
+
+@pytest.fixture
+def fie3b():
+    return FunctionGroup3(slot=3, f13=True)
+
+
+@pytest.fixture
+def fie3c():
+    return FunctionGroup3(slot=3, f21=True)
+
+
+@pytest.fixture
+def fiesnd():
+    return FunctionGroupSound(slot=3, f5=True)
+
+
+@pytest.fixture
+def fiespeed():
+    return SlotSpeed(slot=3, speed=24)
 
 
 SlotDataReturn_data = bytes(
@@ -167,3 +211,60 @@ class TestScrollkeeper:
         scrollkeeper.messageListener(switchstate)
         s = scrollkeeper.getSwitchState(3)
         assert s == True
+
+    def test_messageListener_fg1(
+        self, scrollkeeper: Scrollkeeper, fie1: FunctionGroup1
+    ):
+        scrollkeeper.updateSlot(3, f0=True, address=12)
+        scrollkeeper.messageListener(fie1)
+        s = scrollkeeper.getSlot(3)
+        assert s.dir == False
+        assert s.f2 == True
+
+    def test_messageListener_fg2(
+        self, scrollkeeper: Scrollkeeper, fie2: FunctionGroup2
+    ):
+        scrollkeeper.updateSlot(3, f0=True, address=12)
+        scrollkeeper.messageListener(fie2)
+        s = scrollkeeper.getSlot(3)
+        assert s.f10 == True
+
+    def test_messageListener_fg3a(
+        self, scrollkeeper: Scrollkeeper, fie3a: FunctionGroup3
+    ):
+        scrollkeeper.updateSlot(3, f0=True, address=12)
+        scrollkeeper.messageListener(fie3a)
+        s = scrollkeeper.getSlot(3)
+        assert s.f12 == True
+
+    def test_messageListener_fg3b(
+        self, scrollkeeper: Scrollkeeper, fie3b: FunctionGroup3
+    ):
+        scrollkeeper.updateSlot(3, f0=True, address=12)
+        scrollkeeper.messageListener(fie3b)
+        s = scrollkeeper.getSlot(3)
+        assert s.f13 == True
+
+    def test_messageListener_fg3c(
+        self, scrollkeeper: Scrollkeeper, fie3c: FunctionGroup3
+    ):
+        scrollkeeper.updateSlot(3, f0=True, address=12)
+        scrollkeeper.messageListener(fie3c)
+        s = scrollkeeper.getSlot(3)
+        assert s.f21 == True
+
+    def test_messageListener_fgsnd(
+        self, scrollkeeper: Scrollkeeper, fiesnd: FunctionGroupSound
+    ):
+        scrollkeeper.updateSlot(3, f0=True, address=12)
+        scrollkeeper.messageListener(fiesnd)
+        s = scrollkeeper.getSlot(3)
+        assert s.f5 == True
+
+    def test_messageListener_fgspeed(
+        self, scrollkeeper: Scrollkeeper, fiespeed: SlotSpeed
+    ):
+        scrollkeeper.updateSlot(3, f0=True, address=12)
+        scrollkeeper.messageListener(fiespeed)
+        s = scrollkeeper.getSlot(3)
+        assert s.speed == 24
