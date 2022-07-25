@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220724130928
+# Version: 20220725133417
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -235,7 +235,7 @@ class TestMessage:
             0x03,
             0x01,
             0x10,
-            0x30,
+            0x0B,
             0x00,
             0x00,
             0x00,
@@ -243,7 +243,7 @@ class TestMessage:
             0x00,
             0x00,
             0x00,
-            0x34,
+            0x0F,
         ]
     )
 
@@ -253,7 +253,7 @@ class TestMessage:
         assert msg.slot == 3
         assert msg.address == 16
         assert msg.status == 1
-        assert msg.speed == 48
+        assert msg.speed == 11  # == 0.5 * (28 - 2) - 2
         assert msg.dir == False
         assert msg.f0 == False
         assert msg.f1 == False
@@ -272,7 +272,7 @@ class TestMessage:
             0x03,
             0x01,
             0x10,
-            0x30,
+            0x0F,
             0x00,
             0x00,
             0x00,
@@ -280,7 +280,7 @@ class TestMessage:
             0x00,
             0x00,
             0x00,
-            0x3C,
+            0x03,
         ]
     )
 
@@ -290,7 +290,7 @@ class TestMessage:
         assert msg.slot == 3
         assert msg.address == 16
         assert msg.status == 1
-        assert msg.speed == 48
+        assert msg.speed == 15
         assert msg.dir == False
         assert msg.f0 == False
         assert msg.f1 == False
@@ -303,7 +303,7 @@ class TestMessage:
         assert msg.f8 == False
 
     def test_WriteSlotData_from_init(self):
-        slot = Slot(3, speed=48, status=1, address=16)
+        slot = Slot(3, speed=0.5, status=1, address=16)
         msg = WriteSlotData(slot)
         assert msg.data == TestMessage.WriteSlotData_data
 

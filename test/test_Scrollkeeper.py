@@ -4,15 +4,13 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220725115729
+# Version: 20220725120253
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
 # See also: https://www.digitrax.com/static/apps/cms/media/documents/loconet/loconetpersonaledition.pdf
 # See also: https://wiki.rocrail.net/doku.php?id=loconet:ln-pe-en
 
-from operator import le
-from socket import SocketIO
 import pytest
 
 from pylnlib.Scrollkeeper import Scrollkeeper

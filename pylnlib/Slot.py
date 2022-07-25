@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220724135827
+# Version: 20220725133627
 
 from inspect import signature
 
@@ -24,9 +24,9 @@ class Slot:
     def __init__(
         self,
         id,
-        dir=None,
-        speed=None,
-        status=None,
+        dir=False,
+        speed=0,
+        status=0,
         address=None,
         f0=None,
         f1=None,
@@ -48,8 +48,10 @@ class Slot:
     ):
         self.id = id
         self.dir = dir
-        self.speed = speed
-        self.status = status
+        self.status = (
+            status  # order is important here because setSpeed() depens on status
+        )
+        self.setSpeed(speed)
         self.address = address
         self.f0 = f0
         self.f1 = f1
@@ -105,7 +107,7 @@ class Slot:
 
     def toJSON(self):
         return {
-            p: getattr(self, p)
+            p: self.getSpeed() if p == "speed" else getattr(self, p)
             for p in signature(self.__init__).parameters
             if p != "self"
         }
@@ -115,7 +117,7 @@ class Slot:
             return (
                 self.speed
             )  # either 0 or 1 for inertial stop and emergency stop respectively
-        return (self.speed - 2) / Slot.speedsteps[self.status & 0x7]
+        return (self.speed - 2) / (Slot.speedsteps[self.status & 0x7] - 2)
 
     def setSpeed(self, speed=0.0, stop=False, emergency=False):
         if stop or speed <= 0.0:
@@ -124,7 +126,7 @@ class Slot:
             self.speed = 1
         else:
             self.speed = (
-                2 + int(speed * Slot.speedsteps[self.status & 0x7] - 2)
+                2 + int(speed * (Slot.speedsteps[self.status & 0x7] - 2))
                 if speed > 0.0
                 else 0
             )
