@@ -4,14 +4,18 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220725141045
+# Version: 20220725153132
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
 # See also: https://www.digitrax.com/static/apps/cms/media/documents/loconet/loconetpersonaledition.pdf
 # See also: https://wiki.rocrail.net/doku.php?id=loconet:ln-pe-en
 
+from threading import Timer
+from time import sleep, time
+
 import pytest
+from pytest import approx
 
 from pylnlib.Scrollkeeper import Scrollkeeper
 from pylnlib.Slot import Slot
@@ -268,3 +272,33 @@ class TestScrollkeeper:
         scrollkeeper.messageListener(fiespeed)
         s = scrollkeeper.getSlot(3)
         assert s.speed == 24
+
+    def test_waitUntilLocAddressKnown(self, scrollkeeper: Scrollkeeper, slotdatareturn):
+        waittime = 3.0
+        Timer(waittime, lambda: scrollkeeper.messageListener(slotdatareturn)).start()
+        start = time()
+        result = scrollkeeper.waitUntilLocAddressKnown(16)
+        end = time()
+        delta = end - start
+        assert result == True
+        assert delta == approx(waittime, abs=0.5)
+
+    def test_waitUntilSensorAddressKnown(self, scrollkeeper: Scrollkeeper, sensorstate):
+        waittime = 3.0
+        Timer(waittime, lambda: scrollkeeper.messageListener(sensorstate)).start()
+        start = time()
+        result = scrollkeeper.waitUntilSensorKnown(3)
+        end = time()
+        delta = end - start
+        assert result == True
+        assert delta == approx(waittime, abs=0.5)
+
+    def test_waitUntilSwitchAddressKnown(self, scrollkeeper: Scrollkeeper, switchstate):
+        waittime = 3.0
+        Timer(waittime, lambda: scrollkeeper.messageListener(switchstate)).start()
+        start = time()
+        result = scrollkeeper.waitUntilSwitchKnown(3)
+        end = time()
+        delta = end - start
+        assert result == True
+        assert delta == approx(waittime, abs=0.5)

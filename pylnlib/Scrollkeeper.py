@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220725140655
+# Version: 20220725152641
 
 from datetime import datetime
 from threading import Lock
@@ -305,7 +305,7 @@ class Scrollkeeper:
 
     def waitUntilLocAddressKnown(self, address, timeout=30):
         time_elapsed = 0
-        while not any(slot.address == address for slot in self.slots):
+        while not any(slot.address == address for slot in self.slots.values()):
             sleep(0.25)
             time_elapsed += 0.25
             if time_elapsed > timeout:
@@ -316,18 +316,18 @@ class Scrollkeeper:
         self.sendMessage(MoveSlots(src=slot.id, dst=slot.id))
         # TODO: ? should we wait for slot data ?
 
-    def getThrottle(self, locaddress:int) -> Throttle:
+    def getThrottle(self, locaddress: int) -> Throttle:
         slot = self.getLocoSlot(locaddress)
         self.acquireSlot(slot)
         return Throttle(self, locaddress)
 
-    def getSlot(self, id:int) -> Slot:
+    def getSlot(self, id: int) -> Slot:
         return self.slots[id]
 
-    def getSensor(self, id:int) -> Sensor:
+    def getSensor(self, id: int) -> Sensor:
         return self.sensors[id]
 
-    def getSwitch(self, id:int) -> Switch:
+    def getSwitch(self, id: int) -> Switch:
         return self.switches[id]
 
     def getSlotIds(self):
