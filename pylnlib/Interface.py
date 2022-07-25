@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220709155819
+# Version: 20220725163638
 
 import signal
 import sys
@@ -40,6 +40,7 @@ class Interface:
         See Also:
             [Capture and replay](capture_and_replay)
         """
+        self.running = False
         self.time = None
         self.fast = fast
         self.dummy = dummy
@@ -97,7 +98,7 @@ class Interface:
         self.time = msg.time
 
     def run(self, delay=0):
-
+        self.running = True
         self.time = None
 
         self.inputThread.start()
@@ -123,8 +124,9 @@ class Interface:
         self.com.close()
 
         print("Done...", file=sys.stderr)
+        self.running = False
 
-    def run_in_background(self, delay):
+    def run_in_background(self, delay=0):
         threading.Thread(
             name="interface", target=self.run, daemon=True, args=(delay,)
         ).start()
