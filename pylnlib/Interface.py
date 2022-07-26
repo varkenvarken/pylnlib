@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220725163638
+# Version: 20220726144455
 
 import signal
 import sys
@@ -13,7 +13,9 @@ from datetime import datetime
 from queue import Queue
 from time import sleep
 
-import serial
+import serial  # type: ignore
+
+from typing import List, Callable
 
 from .Message import CaptureTimeStamp, Message
 
@@ -56,15 +58,15 @@ class Interface:
         )
         self.inputThread.setDaemon(True)
 
-        self.receiver_handler = []
+        self.receiver_handler: List[Callable[[Message], None]] = []
 
         self.rd_event = threading.Event()
 
-        self.inputqueue = Queue()
+        self.inputqueue: Queue = Queue()
 
         self.outputThread = threading.Thread(name="sender", target=self.sender_thread)
         self.outputThread.setDaemon(True)
-        self.outputqueue = Queue()
+        self.outputqueue: Queue = Queue()
 
         self.input = "com"
         if type(port) == str:
