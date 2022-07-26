@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220726152041
+# Version: 20220726161758
 
 from inspect import signature
 
@@ -15,7 +15,7 @@ class Switch:
     switchstates = {None, "CLOSED", "THROWN"}
 
     def __init__(
-        self, id: int, thrown=Optional[Literal["CLOSED", "THROWN"]], engage: bool = None
+        self, id: int, thrown:Optional[Literal["CLOSED", "THROWN"]] = None, engage: bool = None
     ):
         if thrown not in Switch.switchstates:
             raise ValueError(
