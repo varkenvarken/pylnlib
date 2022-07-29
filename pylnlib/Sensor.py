@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220726145313
+# Version: 20220729113814
 
 from inspect import signature
 
@@ -12,6 +12,18 @@ from typing import Optional, Literal, Dict, Any
 
 
 class Sensor:
+    """
+    Represents a sensor state.
+
+    Args:
+        address: The sensor address.
+        state: The sensor state.
+
+    Raises:
+        ValueError: if the state is an unknown literal and not None.
+
+    """
+
     sensorstates = {None, "ON", "OFF"}
 
     def __init__(self, address: int, state: Optional[Literal["ON", "OFF"]] = None):
@@ -23,6 +35,12 @@ class Sensor:
         self.state = state
 
     def toJSON(self) -> Dict[str, Any]:
+        """
+        Returns an object suitable for serialiazing as JSON.
+
+        Returns:
+            Dict[str, Any]: a dictionary with the object attributes.
+        """
         return {
             p: getattr(self, p)
             for p in signature(self.__init__).parameters  # type: ignore

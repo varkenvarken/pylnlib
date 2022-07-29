@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220725152641
+# Version: 20220728172843
 
 from datetime import datetime
 from threading import Lock
@@ -183,14 +183,14 @@ class Scrollkeeper:
             if self.slottrace:
                 print(self)
 
-    def updateSensor(self, address, level=None) -> None:
+    def updateSensor(self, address: int, level=None) -> None:
         """
         Update the attributes of a sensor.
 
         The method is thread safe.
 
         Args:
-            address (int): The address of the sensor. This is zero based.
+            address: The address of the sensor. This is zero based.
             level (bool, optional): Either True (on) or False (off). Defaults to None.
         """
         with self.sensorlock:
