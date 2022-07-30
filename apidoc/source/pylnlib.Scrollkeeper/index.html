@@ -384,6 +384,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../pylnlib.Sensor/" class="md-nav__link">
+        pylnlib.Sensor
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../pylnlib.Message/" class="md-nav__link">
         pylnlib.Message
       </a>
@@ -465,7 +479,7 @@
 <span class="c1">#</span>
 <span class="c1"># License: GPL 3, see file LICENSE</span>
 <span class="c1">#</span>
-<span class="c1"># Version: 20220719161337</span>
+<span class="c1"># Version: 20220728172843</span>
 
 <span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">threading</span> <span class="kn">import</span> <span class="n">Lock</span>
@@ -640,19 +654,18 @@
             <span class="n">slot</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">id</span>
 
             <span class="k">for</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-                <span class="k">if</span> <span class="nb">dir</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="n">slot</span><span class="p">,</span> <span class="n">attr</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">slottrace</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">updateSensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span><span id="pylnlib.Scrollkeeper.Scrollkeeper.updateSensor"></span><a class="mkapi-docs-link" title="pylnlib.Scrollkeeper.Scrollkeeper.updateSensor" href="../../pylnlib.Scrollkeeper/#pylnlib.Scrollkeeper.Scrollkeeper.updateSensor">DOCS</a>
+    <span class="k">def</span> <span class="nf">updateSensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span><span id="pylnlib.Scrollkeeper.Scrollkeeper.updateSensor"></span><a class="mkapi-docs-link" title="pylnlib.Scrollkeeper.Scrollkeeper.updateSensor" href="../../pylnlib.Scrollkeeper/#pylnlib.Scrollkeeper.Scrollkeeper.updateSensor">DOCS</a>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Update the attributes of a sensor.</span>
 
 <span class="sd">        The method is thread safe.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            address (int): The address of the sensor. This is zero based.</span>
+<span class="sd">            address: The address of the sensor. This is zero based.</span>
 <span class="sd">            level (bool, optional): Either True (on) or False (off). Defaults to None.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensorlock</span><span class="p">:</span>
@@ -699,7 +712,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            Slot: The Slot instance associated with this loc address.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">slots</span><span class="p">:</span>
+        <span class="k">for</span> <span class="nb">id</span><span class="p">,</span> <span class="n">slot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">slots</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
             <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">address</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">slot</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span>
@@ -739,7 +752,7 @@
             <span class="p">)</span>  <span class="c1"># request for sensor state is same a sensor state report</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">waitUntilSensorKnown</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
                 <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Sensor id </span><span class="si">{</span><span class="nb">id</span><span class="si">}</span><span class="s2"> unknown&quot;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">level</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span><span class="o">.</span><span class="n">state</span>
 
     <span class="k">def</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">message</span><span class="p">):</span><span id="pylnlib.Scrollkeeper.Scrollkeeper.sendMessage"></span><a class="mkapi-docs-link" title="pylnlib.Scrollkeeper.Scrollkeeper.sendMessage" href="../../pylnlib.Scrollkeeper/#pylnlib.Scrollkeeper.Scrollkeeper.sendMessage">DOCS</a>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -767,7 +780,7 @@
 
     <span class="k">def</span> <span class="nf">waitUntilLocAddressKnown</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">30</span><span class="p">):</span>
         <span class="n">time_elapsed</span> <span class="o">=</span> <span class="mi">0</span>
-        <span class="k">while</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">slot</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">address</span> <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">slots</span><span class="p">):</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="nb">any</span><span class="p">(</span><span class="n">slot</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">address</span> <span class="k">for</span> <span class="n">slot</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">slots</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
             <span class="n">sleep</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
             <span class="n">time_elapsed</span> <span class="o">+=</span> <span class="mf">0.25</span>
             <span class="k">if</span> <span class="n">time_elapsed</span> <span class="o">&gt;</span> <span class="n">timeout</span><span class="p">:</span>
@@ -778,18 +791,18 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">sendMessage</span><span class="p">(</span><span class="n">MoveSlots</span><span class="p">(</span><span class="n">src</span><span class="o">=</span><span class="n">slot</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="n">dst</span><span class="o">=</span><span class="n">slot</span><span class="o">.</span><span class="n">id</span><span class="p">))</span>
         <span class="c1"># TODO: ? should we wait for slot data ?</span>
 
-    <span class="k">def</span> <span class="nf">getThrottle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locaddress</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">getThrottle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locaddress</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Throttle</span><span class="p">:</span>
         <span class="n">slot</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">getLocoSlot</span><span class="p">(</span><span class="n">locaddress</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">acquireSlot</span><span class="p">(</span><span class="n">slot</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">Throttle</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">locaddress</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">getSlot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">getSlot</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Slot</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">slots</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">getSensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">getSensor</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Sensor</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">sensors</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">getSwitch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">getSwitch</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Switch</span><span class="p">:</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">switches</span><span class="p">[</span><span class="nb">id</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="nf">getSlotIds</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

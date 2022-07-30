@@ -384,6 +384,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../pylnlib.Sensor/" class="md-nav__link">
+        pylnlib.Sensor
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../pylnlib.Message/" class="md-nav__link">
         pylnlib.Message
       </a>
@@ -465,7 +479,7 @@
 <span class="c1">#</span>
 <span class="c1"># License: GPL 3, see file LICENSE</span>
 <span class="c1">#</span>
-<span class="c1"># Version: 20220709153032</span>
+<span class="c1"># Version: 20220725140509</span>
 
 <span class="c1"># Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION</span>
 <span class="c1"># Which is © Digitrax Inc.</span>
@@ -490,7 +504,7 @@
     <span class="n">OPC_LOCO_SND</span> <span class="o">=</span> <span class="mh">0xA2</span>
     <span class="n">OPC_LOCO_F2</span> <span class="o">=</span> <span class="mh">0xA3</span>  <span class="c1"># not defined in locnet specs, but implemented nevertheless</span>
     <span class="n">OPC_SW_REQ</span> <span class="o">=</span> <span class="mh">0xB0</span>
-    <span class="n">OPC_SW_REP</span> <span class="o">=</span> <span class="mh">0xB1</span>  <span class="c1"># not implemented</span>
+    <span class="n">OPC_SW_REP</span> <span class="o">=</span> <span class="mh">0xB1</span>
     <span class="n">OPC_INPUT_REP</span> <span class="o">=</span> <span class="mh">0xB2</span>
     <span class="n">OPC_LONG_ACK</span> <span class="o">=</span> <span class="mh">0xB4</span>
     <span class="n">OPC_SLOT_STAT1</span> <span class="o">=</span> <span class="mh">0xB5</span>  <span class="c1"># not implemented</span>
@@ -523,8 +537,11 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;length mismatch&quot;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="o">!=</span> <span class="n">Message</span><span class="o">.</span><span class="n">checksum</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
-            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;checksum error&quot;</span><span class="p">)</span>
+        <span class="n">calculated_checksum</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">checksum</span><span class="p">(</span><span class="n">data</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">checksum</span> <span class="o">!=</span> <span class="n">calculated_checksum</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;checksum error </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">checksum</span><span class="si">:</span><span class="s2">x</span><span class="si">}</span><span class="s2"> != </span><span class="si">{</span><span class="n">calculated_checksum</span><span class="si">=:</span><span class="s2">x</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">hexdata</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><span id="pylnlib.Message.Message.hexdata"></span><a class="mkapi-docs-link" title="pylnlib.Message.Message.hexdata" href="../../pylnlib.Message/#pylnlib.Message.Message.hexdata">DOCS</a>
         <span class="sd">&quot;&quot;&quot;</span>
@@ -661,7 +678,12 @@
 <span class="sd">    A PowerOn message represents a global track power on message.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">pass</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="n">Message</span><span class="o">.</span><span class="n">OPC_GPON</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">PowerOff</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.PowerOff"></span><a class="mkapi-docs-link" title="pylnlib.Message.PowerOff" href="../../pylnlib.Message/#pylnlib.Message.PowerOff">DOCS</a>
@@ -669,7 +691,12 @@
 <span class="sd">    A PowerOff message represents a global track power off message.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">pass</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">bytearray</span><span class="p">([</span><span class="n">Message</span><span class="o">.</span><span class="n">OPC_GPOFF</span><span class="p">,</span> <span class="mi">0</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
 
 
 <span class="k">class</span> <span class="nc">FunctionGroup1</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.FunctionGroup1"></span><a class="mkapi-docs-link" title="pylnlib.Message.FunctionGroup1" href="../../pylnlib.Message/#pylnlib.Message.FunctionGroup1">DOCS</a>
@@ -699,7 +726,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">f3</span> <span class="o">=</span> <span class="n">f3</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">f4</span> <span class="o">=</span> <span class="n">f4</span>
             <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xA1</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">OPC_LOCO_DIRF</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x20</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dir</span> <span class="k">else</span> <span class="mi">0</span>
@@ -743,7 +770,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">f7</span> <span class="o">=</span> <span class="n">f7</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">f8</span> <span class="o">=</span> <span class="n">f8</span>
             <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xA2</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">OPC_LOCO_SND</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f5</span> <span class="k">else</span> <span class="mi">0</span>
@@ -775,13 +802,34 @@
 <span class="sd">    It holds the status for functions f9 - f12.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">f9</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">f10</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">f11</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">f12</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f9</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f10</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f11</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">f12</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">slot</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f9</span> <span class="o">=</span> <span class="n">f9</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f10</span> <span class="o">=</span> <span class="n">f10</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f11</span> <span class="o">=</span> <span class="n">f11</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f12</span> <span class="o">=</span> <span class="n">f12</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">OPC_LOCO_F2</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x1</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f9</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x2</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f10</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x4</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f11</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x8</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f12</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">slot</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="n">f9</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;slot and function arguments cannot be combined with data argument&quot;</span>
+                <span class="p">)</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f9</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f10</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f11</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">f12</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(slot = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">slot</span><span class="si">}</span><span class="s2"> f9: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f9</span><span class="si">}</span><span class="s2">  f10: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f10</span><span class="si">}</span><span class="s2"> f11: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f11</span><span class="si">}</span><span class="s2"> f12: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">f12</span><span class="si">}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="nb">list</span><span class="p">(</span><span class="nb">map</span><span class="p">(</span><span class="nb">hex</span><span class="p">,</span><span class="nb">map</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">)))</span><span class="si">}</span><span class="s2">)&quot;</span>
@@ -794,31 +842,132 @@
 <span class="sd">    Depending on the fiegroup, tt holds the status for functions f13 - f19, f21 - f27 or f12 + f20 +f28.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="c1"># data[1] is always 0x20</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
-        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x08</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f13</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f14</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f15</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f16</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f17</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f18</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f19</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x40</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x09</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f21</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f22</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f23</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f24</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f25</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f26</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f27</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x40</span><span class="p">)</span>
-        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x05</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f12</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f20</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">f28</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x40</span><span class="p">)</span>
+    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;f12&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f13&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f14&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f15&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f16&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f17&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f18&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f19&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f20&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f21&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f22&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f23&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f24&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f25&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f26&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f27&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;f28&quot;</span><span class="p">,</span>
+    <span class="p">}</span>
+    <span class="n">p12</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;f12&quot;</span><span class="p">,</span> <span class="s2">&quot;f20&quot;</span><span class="p">,</span> <span class="s2">&quot;f28&quot;</span><span class="p">}</span>
+    <span class="n">p13</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;f13&quot;</span><span class="p">,</span> <span class="s2">&quot;f14&quot;</span><span class="p">,</span> <span class="s2">&quot;f15&quot;</span><span class="p">,</span> <span class="s2">&quot;f16&quot;</span><span class="p">,</span> <span class="s2">&quot;f17&quot;</span><span class="p">,</span> <span class="s2">&quot;f18&quot;</span><span class="p">,</span> <span class="s2">&quot;f19&quot;</span><span class="p">}</span>
+    <span class="n">p21</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;f21&quot;</span><span class="p">,</span> <span class="s2">&quot;f22&quot;</span><span class="p">,</span> <span class="s2">&quot;f23&quot;</span><span class="p">,</span> <span class="s2">&quot;f24&quot;</span><span class="p">,</span> <span class="s2">&quot;f25&quot;</span><span class="p">,</span> <span class="s2">&quot;f26&quot;</span><span class="p">,</span> <span class="s2">&quot;f27&quot;</span><span class="p">}</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">slot</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">data</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="n">slot</span>
+            <span class="k">for</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">FunctionGroup3</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+                <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">k</span> <span class="ow">in</span> <span class="n">FunctionGroup3</span><span class="o">.</span><span class="n">params</span><span class="p">:</span>
+                    <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;unknown parameter </span><span class="si">{</span><span class="n">k</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span>
+                <span class="nb">sum</span><span class="p">(</span>
+                    <span class="p">[</span>
+                        <span class="nb">bool</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">kwargs</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span> <span class="o">&amp;</span> <span class="n">s</span><span class="p">)</span>
+                        <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="p">(</span>
+                            <span class="n">FunctionGroup3</span><span class="o">.</span><span class="n">p12</span><span class="p">,</span>
+                            <span class="n">FunctionGroup3</span><span class="o">.</span><span class="n">p13</span><span class="p">,</span>
+                            <span class="n">FunctionGroup3</span><span class="o">.</span><span class="n">p21</span><span class="p">,</span>
+                        <span class="p">)</span>
+                    <span class="p">]</span>
+                <span class="p">)</span>
+                <span class="o">!=</span> <span class="mi">1</span>
+            <span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;mixed param groups&quot;</span><span class="p">)</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">OPC_LOCO_F3</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x20</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">slot</span>
+            <span class="k">if</span> <span class="s2">&quot;f13&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x08</span>
+                <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f13</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x1</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f14</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x2</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f15</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x4</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f16</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x8</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f17</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x10</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f18</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x20</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f19</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x40</span>
+            <span class="k">elif</span> <span class="s2">&quot;f21&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x09</span>
+                <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f21</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x1</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f22</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x2</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f23</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x4</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f24</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x8</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f25</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x10</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f26</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x20</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f27</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x40</span>
+            <span class="k">elif</span> <span class="s2">&quot;f12&quot;</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+                <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x05</span>
+                <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f12</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x10</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f20</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x20</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">f28</span><span class="p">:</span>
+                    <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x40</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">slot</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">or</span> <span class="nb">len</span><span class="p">(</span><span class="n">kwargs</span><span class="p">):</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                    <span class="s2">&quot;slot and function arguments cannot be combined with data argument&quot;</span>
+                <span class="p">)</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="c1"># data[1] is always 0x20</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">slot</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x08</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f13</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f14</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f15</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f16</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f17</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f18</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f19</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x40</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x09</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f21</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x1</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f22</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x2</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f23</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x4</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f24</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x8</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f25</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f26</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f27</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x40</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x05</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f12</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f20</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">f28</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x40</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">fiegroup</span> <span class="o">==</span> <span class="mh">0x05</span><span class="p">:</span>
@@ -851,12 +1000,12 @@
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">data</span>
             <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">opcode</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">OPC_SW_REP</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">opcode</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">OPC_SW_REQ</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">thrown</span> <span class="o">=</span> <span class="n">thrown</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">engage</span> <span class="o">=</span> <span class="n">engage</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">&amp;</span> <span class="mh">0x7F</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span>
-            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">thrown</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">thrown</span><span class="p">:</span>
                 <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x20</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">engage</span><span class="p">:</span>
                 <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x10</span>
@@ -873,11 +1022,24 @@
 
 
 <span class="k">class</span> <span class="nc">SwitchState</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.SwitchState"></span><a class="mkapi-docs-link" title="pylnlib.Message.SwitchState" href="../../pylnlib.Message/#pylnlib.Message.SwitchState">DOCS</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">switchaddress</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">thrown</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">engage</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">thrown</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">engage</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
+            <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xB1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thrown</span> <span class="o">=</span> <span class="n">thrown</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">engage</span> <span class="o">=</span> <span class="n">engage</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span> <span class="o">&amp;</span> <span class="mh">0x7F</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="nb">id</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x20</span> <span class="k">if</span> <span class="n">thrown</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x10</span> <span class="k">if</span> <span class="n">engage</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">Message</span><span class="o">.</span><span class="n">switchaddress</span><span class="p">(</span><span class="nb">id</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="nb">id</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">thrown</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">id</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x20</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">engage</span> <span class="o">=</span> <span class="nb">bool</span><span class="p">(</span><span class="nb">id</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">&amp;</span> <span class="mh">0x10</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="si">}</span><span class="s2">(addr=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2"> = </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">thrown</span><span class="si">=}</span><span class="s2"> </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">engage</span><span class="si">=}</span><span class="s2"> | op = </span><span class="si">{</span><span class="nb">hex</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">opcode</span><span class="p">)</span><span class="si">}</span><span class="s2">, </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">length</span><span class="si">=}</span><span class="s2">, data=</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">hexdata</span><span class="p">()</span><span class="si">}</span><span class="s2">)&quot;</span>
@@ -902,13 +1064,15 @@
 
 
 <span class="k">class</span> <span class="nc">SensorState</span><span class="p">(</span><span class="n">Message</span><span class="p">):</span><span id="pylnlib.Message.SensorState"></span><a class="mkapi-docs-link" title="pylnlib.Message.SensorState" href="../../pylnlib.Message/#pylnlib.Message.SensorState">DOCS</a>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">id</span><span class="p">,</span> <span class="n">level</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="o">==</span> <span class="nb">int</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xB2</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="nb">id</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">level</span> <span class="o">=</span> <span class="n">level</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span> <span class="o">&gt;&gt;</span> <span class="mi">1</span><span class="p">)</span> <span class="o">&amp;</span> <span class="mh">0x7F</span>
-            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mh">0x10</span> <span class="k">if</span> <span class="nb">id</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="nb">id</span> <span class="o">&gt;&gt;</span> <span class="mi">8</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="mh">0x20</span> <span class="k">if</span> <span class="nb">id</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">else</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">|=</span> <span class="mh">0x10</span> <span class="k">if</span> <span class="n">level</span> <span class="k">else</span> <span class="mi">0</span>
             <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
@@ -977,12 +1141,12 @@
 <span class="k">class</span> <span class="nc">WriteSlotData</span><span class="p">(</span><span class="n">SlotDataReturn</span><span class="p">):</span><span id="pylnlib.Message.WriteSlotData"></span><a class="mkapi-docs-link" title="pylnlib.Message.WriteSlotData" href="../../pylnlib.Message/#pylnlib.Message.WriteSlotData">DOCS</a>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">slot</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">slot</span><span class="p">,</span> <span class="nb">bytes</span><span class="p">)</span> <span class="ow">or</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">slot</span><span class="p">,</span> <span class="nb">bytearray</span><span class="p">):</span>
-            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">slot</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">data</span> <span class="o">=</span> <span class="nb">bytearray</span><span class="p">(</span><span class="mi">14</span><span class="p">)</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0xEF</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mh">0x0E</span>
-            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span><span class="o">.</span><span class="n">slot</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span><span class="o">.</span><span class="n">id</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span><span class="o">.</span><span class="n">status</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">4</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span><span class="o">.</span><span class="n">address</span> <span class="o">&amp;</span> <span class="mh">0x7F</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">9</span><span class="p">]</span> <span class="o">=</span> <span class="n">slot</span><span class="o">.</span><span class="n">address</span> <span class="o">&gt;&gt;</span> <span class="mi">7</span>
@@ -994,15 +1158,17 @@
             <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x2</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f2</span> <span class="k">else</span> <span class="mi">0</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x4</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f3</span> <span class="k">else</span> <span class="mi">0</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x8</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f4</span> <span class="k">else</span> <span class="mi">0</span>
-            <span class="n">data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trk</span>
-            <span class="n">data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ss2</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">7</span><span class="p">]</span> <span class="o">+=</span> <span class="n">slot</span><span class="o">.</span><span class="n">trk</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">trk</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">8</span><span class="p">]</span> <span class="o">+=</span> <span class="n">slot</span><span class="o">.</span><span class="n">ss2</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">ss2</span> <span class="k">else</span> <span class="mi">0</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x1</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f5</span> <span class="k">else</span> <span class="mi">0</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x2</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f6</span> <span class="k">else</span> <span class="mi">0</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x4</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f7</span> <span class="k">else</span> <span class="mi">0</span>
             <span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">+=</span> <span class="mh">0x8</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">f8</span> <span class="k">else</span> <span class="mi">0</span>
-            <span class="n">data</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id1</span>
-            <span class="n">data</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">id2</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">11</span><span class="p">]</span> <span class="o">+=</span> <span class="n">slot</span><span class="o">.</span><span class="n">id1</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">id1</span> <span class="k">else</span> <span class="mi">0</span>
+            <span class="n">data</span><span class="p">[</span><span class="mi">12</span><span class="p">]</span> <span class="o">+=</span> <span class="n">slot</span><span class="o">.</span><span class="n">id2</span> <span class="k">if</span> <span class="n">slot</span><span class="o">.</span><span class="n">id2</span> <span class="k">else</span> <span class="mi">0</span>
             <span class="n">Message</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>  <span class="c1"># cannot skip the chain with super()</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">updateChecksum</span><span class="p">()</span>
 
