@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220801172528
+# Version: 20220801175214
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -17,11 +17,12 @@ from os import path
 import pytest
 from pytest import approx
 
-from pylnlib.Interface import Interface
+from pylnlib.Interface import Interface, timeDiff
 from pylnlib.Slot import Slot
 from pylnlib.Sensor import Sensor
 from pylnlib.Switch import Switch
 from pylnlib.Message import (
+    PowerOff,
     SlotDataReturn,
     SensorState,
     SwitchState,
@@ -70,3 +71,27 @@ class TestInterface:
         while interface.running:
             sleep(0.1)
         assert msg is not None
+
+    def test_sendMessage(self, interface: Interface):
+        msg = None
+        count = 0
+
+        def handler(m):
+            nonlocal msg, count
+            msg = m
+            count += 1
+
+        interface.receiver_handler.append(handler)
+        interface.run_in_background()
+        interface.sendMessage(PowerOff())
+        sleep(1)
+        assert count == 2
+        assert type(msg) is PowerOff
+
+    def test_timeDiff(self):
+        from datetime import time
+
+        a = time(minute=3)
+        b = time(minute=10)
+        assert timeDiff(a, b) == approx(7 * 60.0)
+        assert timeDiff(b, a) == approx((24 * 60 - 7) * 60.0)

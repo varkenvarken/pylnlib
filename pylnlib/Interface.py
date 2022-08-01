@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220801144046
+# Version: 20220801175222
 
 import signal
 import sys
@@ -256,8 +256,8 @@ def timeDiff(a, b):
     b MUST be later than a, so the difference between a = 23:55:49 and b = 00:05:49 will be correctly reported as 10 minutes.
 
     Args:
-        a (datetime) : earlier timestamp
-        b (datetime) : later timestamp
+        a (time) : earlier timestamp
+        b (time) : later timestamp
 
     Returns:
         (float) : the total number of seconds between  a and b
@@ -267,5 +267,5 @@ def timeDiff(a, b):
     B = datetime.combine(T, b)
     s = (B - A).total_seconds()
     if s < 0:
-        s = 24 * 3600 - s
+        s = 24 * 3600 + s
     return s
