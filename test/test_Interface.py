@@ -66,7 +66,7 @@ class TestInterface:
 
         interface.receiver_handler.append(handler)
         interface.run_in_background()
-        sleep(1)
+        sleep(3)
         interface.exit = True
         while interface.running:
             sleep(0.1)
@@ -84,7 +84,7 @@ class TestInterface:
         interface.receiver_handler.append(handler)
         interface.run_in_background()
         interface.sendMessage(PowerOff())
-        sleep(1)
+        sleep(3)
         assert count == 2
         assert type(msg) is PowerOff
 
