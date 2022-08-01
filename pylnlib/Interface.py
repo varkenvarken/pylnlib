@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220726144455
+# Version: 20220801144046
 
 import signal
 import sys
@@ -13,9 +13,7 @@ from datetime import datetime
 from queue import Queue
 from time import sleep
 
-import serial  # type: ignore
-
-from typing import List, Callable
+import serial
 
 from .Message import CaptureTimeStamp, Message
 
@@ -24,47 +22,53 @@ class Interface:
     """
     Handles thread safe sending and receiving LocoNet messages on a serial interface.
 
-    It will gracefully exit if it receives a SIGINT or SIGTERM signal.
+    Args:
+        port (str): serial port, on Linux typically something like `/dev/ttyACM0`
+        baud (int, optional): the baudrate. Defaults to 57600.
+        fast (bool, optional): if false it uses timestamp message in the input data to replay a realistic speed. Defaults to False.
+        dummy (bool, optional): if true it will not write anyhting on the serial port. Defaults to False.
+
+    See Also:
+        [Capture and replay](capture_and_replay)
+
+    Example:
+        ```python
+        interface = Interface()
+        scrollkeeper = Scrollkeeper(interface)
+        interface.receiver_handler.append(scrollkeeper.messageListener)
+        Thread(target=interface.run, daemon=True).start()
+        ```
+
+    It will gracefully exit if it receives a SIGINT or SIGTERM signal,
+    i.e. terminate the thread that handle the input and output queues.
     """
 
     def __init__(
         self, port: str, baud: int = 57600, fast: bool = False, dummy: bool = False
     ):
-        """
-        Creates an Interface instance.
-
-        Args:
-            port (str): seriall port, on Linux typically something like /dev/ttyACM0
-            baud (int, optional): the baudrate. Defaults to 57600.
-            fast (bool, optional): if false it uses timestamp message in the input data to replay a realistic speed. Defaults to False.
-            dummy (bool, optional): if true it will not write anyhting on the serial port. Defaults to False.
-
-        See Also:
-            [Capture and replay](capture_and_replay)
-        """
         self.running = False
         self.time = None
         self.fast = fast
         self.dummy = dummy
 
-        signal.signal(signal.SIGTERM, self.on_interrupt)
-        signal.signal(signal.SIGINT, self.on_interrupt)
+        signal.signal(signal.SIGTERM, self._on_interrupt)
+        signal.signal(signal.SIGINT, self._on_interrupt)
 
         self.exit = False
         self.capture_finished = False
 
         self.inputThread = threading.Thread(
-            name="receiver", target=self.receiver_thread
+            name="receiver", target=self._receiver_thread
         )
         self.inputThread.setDaemon(True)
 
-        self.receiver_handler: List[Callable[[Message], None]] = []
+        self.receiver_handler = []
 
         self.rd_event = threading.Event()
 
         self.inputqueue: Queue = Queue()
 
-        self.outputThread = threading.Thread(name="sender", target=self.sender_thread)
+        self.outputThread = threading.Thread(name="sender", target=self._sender_thread)
         self.outputThread.setDaemon(True)
         self.outputqueue: Queue = Queue()
 
@@ -86,20 +90,56 @@ class Interface:
             self.input = "file"
             self.com = port
 
-    def on_interrupt(self, signum, frame):
+    def _on_interrupt(self, signum, frame):
+        """
+        Signal handler, sets self.exit to True.
+
+        Args:
+            signum: not used
+            frame : not used
+        """
         self.exit = True
 
-    def on_receive(self, msg):
+    def _on_receive(self, msg):
+        """
+        Dispatch a message object to registered handlers.
+
+        Args:
+            msg (Message): A LocoNet [Message](pylnlib.Message.md)
+        """
         if self.receiver_handler != None:
             for handler in self.receiver_handler:
                 handler(msg)
 
-    def processTimeStamp(self, msg):
+    def _processTimeStamp(self, msg):
+        """
+        Act on a [CaptureTimeStamp](pylnlib.Message.md#pylnlibmessagecapturetimestamp) messages.
+
+        Args:
+            msg (CaptureTimeStamp): a LocoNet message representing a timestamp
+
+        If the `fast` attribute is False, this message will sleep to synchronize the replay of messages.
+
+        !!! note
+            CaptureTimeStamp is not defined in the LocoNet specification. It is defined in the pylnlib package
+            and these message are added to captured datastream to allow for realistic replay of messages.
+        """
         if not self.fast and self.time is not None:
             sleep(timeDiff(self.time, msg.time))
         self.time = msg.time
 
-    def run(self, delay=0):
+    def run(self, delay=0.0):
+        """
+        Start processing input and output.
+
+        This will continue until an external SIGINT or SIGKILL signal is received.
+
+        Args:
+            delay (float, optional): Time in seconds to wait between incoming messages. Defaults to 0.
+
+        Returns:
+            only returns upon receiving an external signal.
+        """
         self.running = True
         self.time = None
 
@@ -116,9 +156,9 @@ class Interface:
                         sleep(delay)
                     msg = self.inputqueue.get()
                     if isinstance(msg, CaptureTimeStamp):
-                        self.processTimeStamp(msg)
+                        self._processTimeStamp(msg)
                     else:
-                        self.on_receive(msg)
+                        self._on_receive(msg)
 
         self.inputThread.join()
         self.outputThread.join()
@@ -128,12 +168,26 @@ class Interface:
         print("Done...", file=sys.stderr)
         self.running = False
 
-    def run_in_background(self, delay=0):
+    def run_in_background(self, delay=0.0):
+        """
+        Start processing input and output and return immediately.
+
+        Processing will continue until an external SIGINT or SIGKILL signal is received.
+
+        Args:
+            delay (float, optional): Time in seconds to wait between incoming messages. Defaults to 0.
+
+        Returns:
+            immediately.
+        """
         threading.Thread(
             name="interface", target=self.run, daemon=True, args=(delay,)
         ).start()
 
-    def receiver_thread(self):
+    def _receiver_thread(self):
+        """
+        Read data from the interface and fill the internal input queue with messages.
+        """
         while not self.exit:
             if self.dummy:
                 sleep(0.1)
@@ -171,7 +225,10 @@ class Interface:
                     self.inputqueue.put(msg)
                     self.rd_event.set()
 
-    def sender_thread(self):
+    def _sender_thread(self):
+        """
+        Retrieve messages in the internal output queue and send them to the serial interface.
+        """
         while not self.exit:
             if not self.outputqueue.empty():
                 msg = self.outputqueue.get()
@@ -183,14 +240,27 @@ class Interface:
                 sleep(0.25)
 
     def sendMessage(self, msg):
+        """
+        Put a message on the internal output queue.
+
+        Args:
+            msg (Message): A LocoNet [Message](pylnlib.Message.md)
+        """
         self.outputqueue.put(msg)
 
 
 def timeDiff(a, b):
     """
-    return the total number of seconds between  a and b.
+    Return the total number of seconds between  a and b.
 
     b MUST be later than a, so the difference between a = 23:55:49 and b = 00:05:49 will be correctly reported as 10 minutes.
+
+    Args:
+        a (datetime) : earlier timestamp
+        b (datetime) : later timestamp
+
+    Returns:
+        (float) : the total number of seconds between  a and b
     """
     T = datetime.today()
     A = datetime.combine(T, a)

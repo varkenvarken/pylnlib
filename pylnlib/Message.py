@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220725140509
+# Version: 20220801163148
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -16,9 +16,21 @@ from datetime import time
 
 class Message:
     """
-    represents a LocoNet message.
+    Initialize a Loconet message from a byte array.
 
-    several subclasses are provided to implemented actual messages.
+    Represents a basic LocoNet message.
+    Several subclasses are provided to implemented actual messages.
+
+    The 'opcode' (message type) is determined from byte 0,
+    The length of the data (incl. the checksum) is determined by bits in the first byte and the second byte (if it is a variable byte message)
+    The checksum is the last byte in the data. If the last byte in the data is 0, no check is done, so you can create a message from scratch and calculate the checksum later.
+
+    Args:
+        data (bytearray): the bytes of the message
+
+    Raises:
+        ValueError: If the length of the byte array does not match the encoded length, a ValueError is raised.
+        ValueError: If the calculated checksum doesn match the last byte of the byte array, a ValueError is raised (unless the last data byte is 0)
     """
 
     OPC_GPON = 0x83
@@ -36,26 +48,16 @@ class Message:
     OPC_CONSIST_FUNC = 0xB6  # not implemented
     OPC_UNLINK_SLOTS = 0xB8  # not implemented
     OPC_LINK_SLOTS = 0xB9  # not implemented
-    OPC_MOVE_SLOTS = 0xBA  # not implemented
+    OPC_MOVE_SLOTS = 0xBA
     OPC_RQ_SL_DATA = 0xBB
     OPC_SW_STATE = 0xBC
-    OPC_SW_ACK = 0xBD  # not implemented
+    OPC_SW_ACK = 0xBD
     OPC_LOCO_ADR = 0xBF
     OPC_LOCO_F3 = 0xD4  # not defined in locnet specs, but implemented nevertheless (seen on Roco WLAN maus)
     OPC_SL_RD_DATA = 0xE7
     OPC_WR_SL_DATA = 0xEF
 
     def __init__(self, data):
-        """
-        Initialize a message from a byte array.
-
-        The 'opcode' (message type) is determined from byte 0,
-        The length of the data (incl. the checksum) is determined by bits in the first byte and the second byte (if it is a variable byte message)
-        The checksum is the last byte in the data. If the last byte in the data is 0, no check is done, so you can create a message from scratch and calculate the checksum later.
-
-        If the length of the byte array does not match the encoded length, a ValueError is raised.
-        If the calculated checksum doesn match the last byte of the byte array, a ValueError is raised (unless the last data byte is 0)
-        """
         self.opcode = data[0]
         self.length = Message.length(data[0], data[1])
         self.data = data
@@ -71,6 +73,9 @@ class Message:
     def hexdata(self):
         """
         Return the message data as a list of numbers formatted as hexadecimals with 2 digits and without 0x prefix.
+
+        Returns:
+            list[str] :  a list of lowercase hexadecimal number with leading zeros.
         """
         return list(f"{v:02x}" for v in map(int, self.data))
 
@@ -88,9 +93,15 @@ class Message:
         """
         Determine the length of a LocoNet message based on its opcode and next byte.
 
-        The next byte holds the total number of bytes in the message if the opcode indicates this is a variable length message.
-
         The length is inclusive the opcode and the final checksum.
+
+        Args:
+            opcode (byte): the opcode
+            nextbyte (byte): the total number of bytes in the message if the opcode indicates this is a variable length message.
+
+        Returns:
+            _type_: _description_
+
         """
         d6d5 = (opcode >> 5) & 3
         if d6d5 == 0:
@@ -107,7 +118,14 @@ class Message:
         """
         A factory method that returns a specific subclass of a Message based on the opcode, or an instance of Unknown.
 
-        TODO: not all possible opcodes/message types are implemented yet.
+        Args:
+            data (bytearray) : the bytes of the message
+
+        Returns:
+            Message : a subclass of [Message](pylnlib.Message.md)
+
+        !!! todo
+            not all possible opcodes/message types are implemented yet.
         """
         opcode = data[0]
         if opcode == 0x83:
@@ -151,11 +169,17 @@ class Message:
     @staticmethod
     def checksum(msg):
         """
-        Calculate the checksum over the data of a message.
+        Calculate the checksum over the message.
 
-        The checksum is calculate over all data bytes except the last one (which will be the checksum).
+        The checksum is calculated over all bytes.
 
-        This method does NOT overwrite the checksum byte.
+        This method does NOT overwrite the checksum byte, but simply returns it.
+
+        Args:
+            msg (bytes) : the data
+
+        Returns:
+            byte : the checksum over all the bytes
         """
         chksum = 0
         for c in msg:
@@ -165,27 +189,54 @@ class Message:
     @staticmethod
     def sensoraddress(d0, d1):
         """
-        Return a sensor address from the data.
+        Return a 12-bit sensor address from the data.
 
         Sensors start from zero (but may typically displayed with an added offset of 1).
+
+        Args:
+            d0 (byte) : first byte of the sensor address
+            d1 (byte) : second byte of the sensor address
+
+        !!! note
+            sensor addresses are 12 bits running from 11 (most significant) to 0 (least significant)
+            bits 11 - 8  and bit 0 are encoded in byte d1, bits 7 - 1 in byte d0.
         """
         return ((d0 & 0x7F) << 1) | ((d1 & 0x0F) << 8) | ((d1 >> 5) & 0x1)
 
     @staticmethod
     def switchaddress(d0, d1):
         """
-        Return a switch address from the data.
+        Return an 11-bit switch address from the data.
 
         Switches start from zero (but may typically displayed with an added offset of 1).
+
+        Args:
+            d0 (byte) : first byte of the switch address
+            d1 (byte) : second byte of the switch address
+
+        !!! note
+            switch addresses are 11 bits running from 10 (most significant) to 0 (least significant)
+            bits 10 - 7 are encoded in byte d1, bits 6 - 0 in byte d0.
         """
         return (d0 & 0x7F) | ((d1 & 0x0F) << 7)
 
     @staticmethod
     def slotaddress(d0, d1):
         """
-        Return a slot address from the data.
+        Return an 11-bit slot address from the data.
 
         Slots start from zero (but slot 0 is special, as are several others >= 0x70).
+
+        Args:
+            d0 (byte) : first byte of the switch address
+            d1 (byte) : second byte of the switch address
+
+        !!! note
+            slot addresses are 11 bits running from 10 (most significant) to 0 (least significant)
+            bits 10 - 7 are encoded in byte d1, bits 6 - 0 in byte d0.
+
+        !!! note
+            all addresses > 111 are considered special and not used for locos.
         """
         return (d0 & 0x7F) | ((d1 & 0x0F) << 7)
 
@@ -201,6 +252,9 @@ class Unknown(Message):
 class PowerOn(Message):
     """
     A PowerOn message represents a global track power on message.
+
+    Args:
+        data (bytes, optional): raw message data. Defaults to None.
     """
 
     def __init__(self, data=None):
@@ -214,6 +268,9 @@ class PowerOn(Message):
 class PowerOff(Message):
     """
     A PowerOff message represents a global track power off message.
+
+    Args:
+        data (bytes, optional): raw message data. Defaults to None.
     """
 
     def __init__(self, data=None):
@@ -229,6 +286,19 @@ class FunctionGroup1(Message):
     A FunctionGroup1 message represents a slot function status change.
 
     It holds the status for the direction and functions f0 - f4.
+
+    Args:
+        data (bytes, optional): raw message data. Defaults to None.
+        slot (int, optional): slot number. Defaults to None.
+        dir (bool, optional): running direction. Defaults to None.
+        f0 (bool, optional): function 0 (running lights). Defaults to None.
+        f1 (bool, optional): function 1 (engine sound). Defaults to None.
+        f2 (bool, optional): function 2 (whistle). Defaults to None.
+        f3 (bool, optional): function 3. Defaults to None.
+        f4 (bool, optional): function 4. Defaults to None.
+
+    Raises:
+        ValueError: if data is specified at the same time as one of the other arguments.
     """
 
     def __init__(
@@ -285,6 +355,18 @@ class FunctionGroupSound(Message):
     A FunctionGroupSound message represents a slot function status change.
 
     It holds the status for functions f5 - f8.
+
+    Args:
+        data (bytes, optional): raw message data. Defaults to None.
+        slot (int, optional): slot number. Defaults to None.
+        f5 (bool, optional): function 5. Defaults to None.
+        f6 (bool, optional): function 6. Defaults to None.
+        f7 (bool, optional): function 7. Defaults to None.
+        f8 (bool, optional): function 8. Defaults to None.
+
+    Raises:
+        ValueError:  if data is specified at the same time as one of the other arguments.
+
     """
 
     def __init__(self, data=None, slot=None, f5=None, f6=None, f7=None, f8=None):
@@ -325,6 +407,17 @@ class FunctionGroup2(Message):
     A FunctionGroup2 message represents a slot function status change.
 
     It holds the status for functions f9 - f12.
+
+    Args:
+        data (bytes, optional): raw message data. Defaults to None.
+        slot (int, optional): slot number. Defaults to None.
+        f9 (bool, optional): function 9. Defaults to None.
+        f10 (bool, optional): function 10. Defaults to None.
+        f11 (bool, optional): function 11. Defaults to None.
+        f12 (bool, optional): function 12. Defaults to None.
+
+    Raises:
+        ValueError:  if data is specified at the same time as one of the other arguments.
     """
 
     def __init__(self, data=None, slot=None, f9=None, f10=None, f11=None, f12=None):
@@ -364,7 +457,31 @@ class FunctionGroup3(Message):
     """
     A FunctionGroup3 message represents a slot function status change.
 
-    Depending on the fiegroup, tt holds the status for functions f13 - f19, f21 - f27 or f12 + f20 +f28.
+    Depending on the fiegroup, it holds the status for functions f13 - f19, f21 - f27 or f12 + f20 +f28.
+
+    Other Parameters:
+        f13 (bool, optional): function 13. Defaults to None.
+        f14 (bool, optional): function 14. Defaults to None.
+        f15 (bool, optional): function 15. Defaults to None.
+        f16 (bool, optional): function 16. Defaults to None.
+        f17 (bool, optional): function 17. Defaults to None.
+        f18 (bool, optional): function 18. Defaults to None.
+        f19 (bool, optional): function 19. Defaults to None.
+        f21 (bool, optional): function 21. Defaults to None.
+        f22 (bool, optional): function 22. Defaults to None.
+        f23 (bool, optional): function 23. Defaults to None.
+        f24 (bool, optional): function 24. Defaults to None.
+        f25 (bool, optional): function 25. Defaults to None.
+        f26 (bool, optional): function 26. Defaults to None.
+        f27 (bool, optional): function 27. Defaults to None.
+        f12 (bool, optional): function 12. Defaults to None.
+        f20 (bool, optional): function 20. Defaults to None.
+        f28 (bool, optional): function 28. Defaults to None.
+
+    Raises:
+        ValueError:  if data is specified at the same time as one of the other arguments.
+        ValueError:  if an unknown argument is passed.
+        ValueError:  if arguments from different function groups are passed at the same time.
     """
 
     params = {
@@ -511,17 +628,14 @@ class RequestSwitchFunction(Message):
 
     It holds the info on whether the switch should be closed or thrown,
     as well as whether the switch motor should be engaged.
+
+    Args:
+        data (bytearray(4) or int): either 4 bytes of raw data or the switch address
+        thrown (bool, optional): if a switch address is given, this should hold thrown or closed. Defaults to None.
+        engage (bool, optional): if a switch address is given, this should signal whether the motor should be engaged . Defaults to None.
     """
 
     def __init__(self, data, thrown=None, engage=None):
-        """
-        Construct a RequestSwitchFunction, either from 4 bytes of data or arguments specifying the status for a switch.
-
-        Args:
-            data (bytearray(4) or int): either 4 bytes of raw data or the switch address
-            thrown (bool, optional): if a switch address is given, this should hold thrown or closed. Defaults to None.
-            engage (bool, optional): if a switch address is given, this should signal whether the motor should be engaged . Defaults to None.
-        """ """"""
         if type(data) == int:
             self.address = data
             data = bytearray(4)
@@ -547,6 +661,18 @@ class RequestSwitchFunction(Message):
 
 
 class SwitchState(Message):
+    """
+    A SwitchState message represents a switch status.
+
+    It holds the info on whether the switch is closed or thrown,
+    as well as whether the switch motor is engaged.
+
+    Args:
+        data (bytearray(4) or int): either 4 bytes of raw data or the switch address
+        thrown (bool, optional): if a switch address is given, this should hold thrown or closed. Defaults to None.
+        engage (bool, optional): if a switch address is given, this should signal whether the motor should be engaged . Defaults to None.
+    """
+
     def __init__(self, id, thrown=None, engage=None):
         if type(id) == int:
             data = bytearray(4)
@@ -571,6 +697,13 @@ class SwitchState(Message):
 
 
 class RequestSwitchState(Message):
+    """
+    A RequestSwitchState message represents a request for a switch status update.
+
+    Args:
+        data (bytearray(4) or int): either 4 bytes of raw data or the switch address
+    """
+
     def __init__(self, id):
         if type(id) == int:
             data = bytearray(4)
@@ -589,6 +722,16 @@ class RequestSwitchState(Message):
 
 
 class SensorState(Message):
+    """
+    A SensorState message represents a sensor's status.
+
+    It holds the info on whether the sensor is on or off.
+
+    Args:
+        id (bytearray(4) or int): either 4 bytes of raw data or the switch address
+        level (bool, optional): if a sensor address is given, this should hold True or False. Defaults to None.
+    """
+
     def __init__(self, id, level=None):
         if type(id) == int:
             data = bytearray(4)
