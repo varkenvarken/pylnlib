@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220725163858
+# Version: 20220801172528
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -43,7 +43,7 @@ def capture1():
 
 @pytest.fixture
 def interface(capture1):
-    return Interface(port=open(capture1, "rb"), dummy=True)
+    return Interface(port=open(capture1, "rb"))
 
 
 class TestInterface:
@@ -55,3 +55,18 @@ class TestInterface:
             sleep(0.1)
         captured = capsys.readouterr()
         assert captured.err == "Done...\n"
+
+    def test_receive(self, interface: Interface):
+        msg = None
+
+        def handler(m):
+            nonlocal msg
+            msg = m
+
+        interface.receiver_handler.append(handler)
+        interface.run_in_background()
+        sleep(1)
+        interface.exit = True
+        while interface.running:
+            sleep(0.1)
+        assert msg is not None
