@@ -370,6 +370,33 @@
     Interface
   </a>
   
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pylnlibinterfaceinterfacerun" class="md-nav__link">
+    run
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pylnlibinterfaceinterfacerun_in_background" class="md-nav__link">
+    run_in_background
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pylnlibinterfaceinterfacesendmessage" class="md-nav__link">
+    sendMessage
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
       
         <li class="md-nav__item">
@@ -464,6 +491,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../pylnlib.Switch/" class="md-nav__link">
+        pylnlib.Switch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../pylnlib.Webserver/" class="md-nav__link">
         pylnlib.Webserver
       </a>
@@ -515,6 +556,33 @@
   <a href="#pylnlibinterfaceinterface" class="md-nav__link">
     Interface
   </a>
+  
+    <nav class="md-nav" aria-label="Interface">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#pylnlibinterfaceinterfacerun" class="md-nav__link">
+    run
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pylnlibinterfaceinterfacerun_in_background" class="md-nav__link">
+    run_in_background
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pylnlibinterfaceinterfacesendmessage" class="md-nav__link">
+    sendMessage
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -568,8 +636,8 @@
         </div>
       <div class="mkapi-section-body functions"><ul class="mkapi-items">
 <li class="function"><code class="mkapi-item-name"><a href="#pylnlib.Interface.timeDiff">timeDiff</a></code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">a</code>, <code class="mkapi-object-signature">b</code><code class="mkapi-object-parenthesis">)</code>
-
-<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">return the total number of seconds between  a and b.<a class="mkapi-src-link" href="../source/pylnlib.Interface/#pylnlib.Interface.timeDiff" title="Source for pylnlib.Interface.timeDiff">&lt;/&gt;</a></span></li>
+<span class="mkapi-item-type">(float)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">Return the total number of seconds between  a and b.<a class="mkapi-src-link" href="../source/pylnlib.Interface/#pylnlib.Interface.timeDiff" title="Source for pylnlib.Interface.timeDiff">&lt;/&gt;</a></span></li>
 
 
 </ul></div>
@@ -590,9 +658,186 @@
 </div>
 <div class="mkapi-docstring">
 <div class="mkapi-section">
-      <div class="mkapi-section-body"><p>Handles thread safe sending and receiving LocoNet messages on a serial interface.</p>
-<p>It will gracefully exit if it receives a SIGINT or SIGTERM signal.</p></div>
+      <div class="mkapi-section-body"><p>Handles thread safe sending and receiving LocoNet messages on a serial interface.</p></div>
     </div>
+  <div class="mkapi-section parameters">
+      <div class="mkapi-section-name parameters">
+          <span class="mkapi-section-name-body parameters">Parameters</span> 
+        </div>
+      <div class="mkapi-section-body parameters"><ul class="mkapi-items">
+<li><code class="mkapi-item-name">port</code>
+<span class="mkapi-item-type">(str)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">serial port, on Linux typically something like <code>/dev/ttyACM0</code></span></li>
+
+<li><code class="mkapi-item-name">baud</code>
+<span class="mkapi-item-type">(int, optional)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">the baudrate. Defaults to 57600.</span></li>
+
+<li><code class="mkapi-item-name">fast</code>
+<span class="mkapi-item-type">(bool, optional)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">if false it uses timestamp message in the input data to replay a realistic speed. Defaults to False.</span></li>
+
+<li><code class="mkapi-item-name">dummy</code>
+<span class="mkapi-item-type">(bool, optional)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">if true it will not write anyhting on the serial port. Defaults to False.</span></li>
+
+
+</ul></div>
+    </div>
+  <div class="mkapi-section see-also">
+      <div class="mkapi-section-name see-also">
+          <span class="mkapi-section-name-body see-also">See Also</span> 
+        </div>
+      <div class="mkapi-section-body see-also"><p><a href="capture_and_replay">Capture and replay</a></p></div>
+    </div>
+  <div class="mkapi-section example">
+      <div class="mkapi-section-name example">
+          <span class="mkapi-section-name-body example">Example</span> 
+        </div>
+      <div class="mkapi-section-body example"><div class="highlight"><pre><span></span><code><span class="n">interface</span> <span class="o">=</span> <span class="n">Interface</span><span class="p">()</span>
+<span class="n">scrollkeeper</span> <span class="o">=</span> <span class="n">Scrollkeeper</span><span class="p">(</span><span class="n">interface</span><span class="p">)</span>
+<span class="n">interface</span><span class="o">.</span><span class="n">receiver_handler</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">scrollkeeper</span><span class="o">.</span><span class="n">messageListener</span><span class="p">)</span>
+<span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="n">interface</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+</code></pre></div></div>
+    </div>
+  <div class="mkapi-section">
+      <div class="mkapi-section-body"><p>It will gracefully exit if it receives a SIGINT or SIGTERM signal,
+i.e. terminate the thread that handle the input and output queues.</p></div>
+    </div>
+  <div class="mkapi-section methods">
+      <div class="mkapi-section-name methods">
+          <span class="mkapi-section-name-body methods">Methods</span> 
+        </div>
+      <div class="mkapi-section-body methods"><ul class="mkapi-items">
+<li class="method"><code class="mkapi-item-name"><a href="#pylnlib.Interface.Interface.run">run</a></code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">delay</code><code class="mkapi-object-parenthesis">)</code>
+
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">Start processing input and output.<a class="mkapi-src-link" href="../source/pylnlib.Interface/#pylnlib.Interface.Interface.run" title="Source for pylnlib.Interface.Interface.run">&lt;/&gt;</a></span></li>
+
+<li class="method"><code class="mkapi-item-name"><a href="#pylnlib.Interface.Interface.run_in_background">run_in_background</a></code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">delay</code><code class="mkapi-object-parenthesis">)</code>
+
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">Start processing input and output and return immediately.<a class="mkapi-src-link" href="../source/pylnlib.Interface/#pylnlib.Interface.Interface.run_in_background" title="Source for pylnlib.Interface.Interface.run_in_background">&lt;/&gt;</a></span></li>
+
+<li class="method"><code class="mkapi-item-name"><a href="#pylnlib.Interface.Interface.sendMessage">sendMessage</a></code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">msg</code><code class="mkapi-object-parenthesis">)</code>
+
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">Put a message on the internal output queue.<a class="mkapi-src-link" href="../source/pylnlib.Interface/#pylnlib.Interface.Interface.sendMessage" title="Source for pylnlib.Interface.Interface.sendMessage">&lt;/&gt;</a></span></li>
+
+
+</ul></div>
+    </div>
+  </div>
+
+  <div class="mkapi-members">
+  
+    <div class="mkapi-member">
+      <div class="mkapi-node" id="pylnlib.Interface.Interface.run">
+<div class='mkapi-object-container'>
+  <div class="mkapi-object method code">
+    <div class="mkapi-object-kind method">method</div>
+    <h3 id="pylnlibinterfaceinterfacerun" class="mkapi-object-body method"><code class="mkapi-object-name">run</code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">delay=0.0</code><code class="mkapi-object-parenthesis">)</code></h3>
+  </div>
+  <div class="mkapi-src-link">
+    <a class="mkapi-src-link" href="../source/pylnlib.Interface/#pylnlib.Interface.Interface.run" title="Source for pylnlib.Interface.Interface.run">&lt;/&gt;</a>
+  </div>
+</div>
+<div class="mkapi-docstring">
+<div class="mkapi-section">
+      <div class="mkapi-section-body"><p>Start processing input and output.</p>
+<p>This will continue until an external SIGINT or SIGKILL signal is received.</p></div>
+    </div>
+  <div class="mkapi-section parameters">
+      <div class="mkapi-section-name parameters">
+          <span class="mkapi-section-name-body parameters">Parameters</span> 
+        </div>
+      <div class="mkapi-section-body parameters"><ul class="mkapi-items">
+<li><code class="mkapi-item-name">delay</code>
+<span class="mkapi-item-type">(float, optional)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">Time in seconds to wait between incoming messages. Defaults to 0.</span></li>
+
+
+</ul></div>
+    </div>
+  <div class="mkapi-section returns">
+      <div class="mkapi-section-name returns">
+          <span class="mkapi-section-name-body returns">Returns</span> 
+        </div>
+      <div class="mkapi-section-body returns"><p>only returns upon receiving an external signal.</p></div>
+    </div>
+  </div>
+
+</div>
+    </div>
+  
+    <div class="mkapi-member">
+      <div class="mkapi-node" id="pylnlib.Interface.Interface.run_in_background">
+<div class='mkapi-object-container'>
+  <div class="mkapi-object method code">
+    <div class="mkapi-object-kind method">method</div>
+    <h3 id="pylnlibinterfaceinterfacerun_in_background" class="mkapi-object-body method"><code class="mkapi-object-name">run_in_background</code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">delay=0.0</code><code class="mkapi-object-parenthesis">)</code></h3>
+  </div>
+  <div class="mkapi-src-link">
+    <a class="mkapi-src-link" href="../source/pylnlib.Interface/#pylnlib.Interface.Interface.run_in_background" title="Source for pylnlib.Interface.Interface.run_in_background">&lt;/&gt;</a>
+  </div>
+</div>
+<div class="mkapi-docstring">
+<div class="mkapi-section">
+      <div class="mkapi-section-body"><p>Start processing input and output and return immediately.</p>
+<p>Processing will continue until an external SIGINT or SIGKILL signal is received.</p></div>
+    </div>
+  <div class="mkapi-section parameters">
+      <div class="mkapi-section-name parameters">
+          <span class="mkapi-section-name-body parameters">Parameters</span> 
+        </div>
+      <div class="mkapi-section-body parameters"><ul class="mkapi-items">
+<li><code class="mkapi-item-name">delay</code>
+<span class="mkapi-item-type">(float, optional)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">Time in seconds to wait between incoming messages. Defaults to 0.</span></li>
+
+
+</ul></div>
+    </div>
+  <div class="mkapi-section returns">
+      <div class="mkapi-section-name returns">
+          <span class="mkapi-section-name-body returns">Returns</span> 
+        </div>
+      <div class="mkapi-section-body returns"><p>immediately.</p></div>
+    </div>
+  </div>
+
+</div>
+    </div>
+  
+    <div class="mkapi-member">
+      <div class="mkapi-node" id="pylnlib.Interface.Interface.sendMessage">
+<div class='mkapi-object-container'>
+  <div class="mkapi-object method code">
+    <div class="mkapi-object-kind method">method</div>
+    <h3 id="pylnlibinterfaceinterfacesendmessage" class="mkapi-object-body method"><code class="mkapi-object-name">sendMessage</code><code class="mkapi-object-parenthesis">(</code><code class="mkapi-object-signature">msg</code><code class="mkapi-object-parenthesis">)</code></h3>
+  </div>
+  <div class="mkapi-src-link">
+    <a class="mkapi-src-link" href="../source/pylnlib.Interface/#pylnlib.Interface.Interface.sendMessage" title="Source for pylnlib.Interface.Interface.sendMessage">&lt;/&gt;</a>
+  </div>
+</div>
+<div class="mkapi-docstring">
+<div class="mkapi-section">
+      <div class="mkapi-section-body"><p>Put a message on the internal output queue.</p></div>
+    </div>
+  <div class="mkapi-section parameters">
+      <div class="mkapi-section-name parameters">
+          <span class="mkapi-section-name-body parameters">Parameters</span> 
+        </div>
+      <div class="mkapi-section-body parameters"><ul class="mkapi-items">
+<li><code class="mkapi-item-name">msg</code>
+<span class="mkapi-item-type">(Message)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">A LocoNet <a href="../pylnlib.Message/#pylnlib.Message.md">Message</a></span></li>
+
+
+</ul></div>
+    </div>
+  </div>
+
+</div>
+    </div>
+  
   </div>
 
 </div>
@@ -609,8 +854,30 @@
 </div>
 <div class="mkapi-docstring">
 <div class="mkapi-section">
-      <div class="mkapi-section-body"><p>return the total number of seconds between  a and b.</p>
+      <div class="mkapi-section-body"><p>Return the total number of seconds between  a and b.</p>
 <p>b MUST be later than a, so the difference between a = 23:55:49 and b = 00:05:49 will be correctly reported as 10 minutes.</p></div>
+    </div>
+  <div class="mkapi-section parameters">
+      <div class="mkapi-section-name parameters">
+          <span class="mkapi-section-name-body parameters">Parameters</span> 
+        </div>
+      <div class="mkapi-section-body parameters"><ul class="mkapi-items">
+<li><code class="mkapi-item-name">a</code>
+<span class="mkapi-item-type">(datetime)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">earlier timestamp</span></li>
+
+<li><code class="mkapi-item-name">b</code>
+<span class="mkapi-item-type">(datetime)</span>
+<span class="mkapi-item-dash">&mdash;</span> <span class="mkapi-item-description">later timestamp</span></li>
+
+
+</ul></div>
+    </div>
+  <div class="mkapi-section returns">
+      <div class="mkapi-section-name returns">
+          <span class="mkapi-section-name-body returns">Returns</span> <span class="mkapi-item-type">(float)</span>
+        </div>
+      <div class="mkapi-section-body returns"><p>the total number of seconds between  a and b</p></div>
     </div>
   </div>
 

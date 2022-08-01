@@ -412,6 +412,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../pylnlib.Switch/" class="md-nav__link">
+        pylnlib.Switch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../pylnlib.Webserver/" class="md-nav__link">
         pylnlib.Webserver
       </a>
@@ -479,7 +493,7 @@
 <span class="c1">#</span>
 <span class="c1"># License: GPL 3, see file LICENSE</span>
 <span class="c1">#</span>
-<span class="c1"># Version: 20220726144455</span>
+<span class="c1"># Version: 20220801144046</span>
 
 <span class="kn">import</span> <span class="nn">signal</span>
 <span class="kn">import</span> <span class="nn">sys</span>
@@ -488,9 +502,7 @@
 <span class="kn">from</span> <span class="nn">queue</span> <span class="kn">import</span> <span class="n">Queue</span>
 <span class="kn">from</span> <span class="nn">time</span> <span class="kn">import</span> <span class="n">sleep</span>
 
-<span class="kn">import</span> <span class="nn">serial</span>  <span class="c1"># type: ignore</span>
-
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">List</span><span class="p">,</span> <span class="n">Callable</span>
+<span class="kn">import</span> <span class="nn">serial</span>
 
 <span class="kn">from</span> <span class="nn">.Message</span> <span class="kn">import</span> <span class="n">CaptureTimeStamp</span><span class="p">,</span> <span class="n">Message</span>
 
@@ -499,47 +511,53 @@
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Handles thread safe sending and receiving LocoNet messages on a serial interface.</span>
 
-<span class="sd">    It will gracefully exit if it receives a SIGINT or SIGTERM signal.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        port (str): serial port, on Linux typically something like `/dev/ttyACM0`</span>
+<span class="sd">        baud (int, optional): the baudrate. Defaults to 57600.</span>
+<span class="sd">        fast (bool, optional): if false it uses timestamp message in the input data to replay a realistic speed. Defaults to False.</span>
+<span class="sd">        dummy (bool, optional): if true it will not write anyhting on the serial port. Defaults to False.</span>
+
+<span class="sd">    See Also:</span>
+<span class="sd">        [Capture and replay](capture_and_replay)</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        ```python</span>
+<span class="sd">        interface = Interface()</span>
+<span class="sd">        scrollkeeper = Scrollkeeper(interface)</span>
+<span class="sd">        interface.receiver_handler.append(scrollkeeper.messageListener)</span>
+<span class="sd">        Thread(target=interface.run, daemon=True).start()</span>
+<span class="sd">        ```</span>
+
+<span class="sd">    It will gracefully exit if it receives a SIGINT or SIGTERM signal,</span>
+<span class="sd">    i.e. terminate the thread that handle the input and output queues.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">baud</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">57600</span><span class="p">,</span> <span class="n">fast</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span> <span class="n">dummy</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Creates an Interface instance.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            port (str): seriall port, on Linux typically something like /dev/ttyACM0</span>
-<span class="sd">            baud (int, optional): the baudrate. Defaults to 57600.</span>
-<span class="sd">            fast (bool, optional): if false it uses timestamp message in the input data to replay a realistic speed. Defaults to False.</span>
-<span class="sd">            dummy (bool, optional): if true it will not write anyhting on the serial port. Defaults to False.</span>
-
-<span class="sd">        See Also:</span>
-<span class="sd">            [Capture and replay](capture_and_replay)</span>
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">fast</span> <span class="o">=</span> <span class="n">fast</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dummy</span> <span class="o">=</span> <span class="n">dummy</span>
 
-        <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_interrupt</span><span class="p">)</span>
-        <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">on_interrupt</span><span class="p">)</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGTERM</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_interrupt</span><span class="p">)</span>
+        <span class="n">signal</span><span class="o">.</span><span class="n">signal</span><span class="p">(</span><span class="n">signal</span><span class="o">.</span><span class="n">SIGINT</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_on_interrupt</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">exit</span> <span class="o">=</span> <span class="kc">False</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">capture_finished</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">inputThread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
-            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;receiver&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">receiver_thread</span>
+            <span class="n">name</span><span class="o">=</span><span class="s2">&quot;receiver&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_receiver_thread</span>
         <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">inputThread</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">receiver_handler</span><span class="p">:</span> <span class="n">List</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Message</span><span class="p">],</span> <span class="kc">None</span><span class="p">]]</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">receiver_handler</span> <span class="o">=</span> <span class="p">[]</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">rd_event</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">inputqueue</span><span class="p">:</span> <span class="n">Queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">outputThread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;sender&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">sender_thread</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">outputThread</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;sender&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_sender_thread</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outputThread</span><span class="o">.</span><span class="n">setDaemon</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outputqueue</span><span class="p">:</span> <span class="n">Queue</span> <span class="o">=</span> <span class="n">Queue</span><span class="p">()</span>
 
@@ -561,20 +579,56 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">input</span> <span class="o">=</span> <span class="s2">&quot;file&quot;</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">com</span> <span class="o">=</span> <span class="n">port</span>
 
-    <span class="k">def</span> <span class="nf">on_interrupt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signum</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_on_interrupt</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">signum</span><span class="p">,</span> <span class="n">frame</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Signal handler, sets self.exit to True.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            signum: not used</span>
+<span class="sd">            frame : not used</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">exit</span> <span class="o">=</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">on_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_on_receive</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Dispatch a message object to registered handlers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            msg (Message): A LocoNet [Message](pylnlib.Message.md)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver_handler</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">for</span> <span class="n">handler</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">receiver_handler</span><span class="p">:</span>
                 <span class="n">handler</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">processTimeStamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_processTimeStamp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Act on a [CaptureTimeStamp](pylnlib.Message.md#pylnlibmessagecapturetimestamp) messages.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            msg (CaptureTimeStamp): a LocoNet message representing a timestamp</span>
+
+<span class="sd">        If the `fast` attribute is False, this message will sleep to synchronize the replay of messages.</span>
+
+<span class="sd">        !!! note</span>
+<span class="sd">            CaptureTimeStamp is not defined in the LocoNet specification. It is defined in the pylnlib package</span>
+<span class="sd">            and these message are added to captured datastream to allow for realistic replay of messages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">fast</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">sleep</span><span class="p">(</span><span class="n">timeDiff</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">time</span><span class="p">,</span> <span class="n">msg</span><span class="o">.</span><span class="n">time</span><span class="p">))</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">time</span>
 
-    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span><span id="pylnlib.Interface.Interface.run"></span><a class="mkapi-docs-link" title="pylnlib.Interface.Interface.run" href="../../pylnlib.Interface/#pylnlib.Interface.Interface.run">DOCS</a>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Start processing input and output.</span>
+
+<span class="sd">        This will continue until an external SIGINT or SIGKILL signal is received.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            delay (float, optional): Time in seconds to wait between incoming messages. Defaults to 0.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            only returns upon receiving an external signal.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">True</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">time</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -591,9 +645,9 @@
                         <span class="n">sleep</span><span class="p">(</span><span class="n">delay</span><span class="p">)</span>
                     <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">inputqueue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
                     <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">CaptureTimeStamp</span><span class="p">):</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">processTimeStamp</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_processTimeStamp</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                     <span class="k">else</span><span class="p">:</span>
-                        <span class="bp">self</span><span class="o">.</span><span class="n">on_receive</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_on_receive</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">inputThread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outputThread</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
@@ -603,12 +657,26 @@
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Done...&quot;</span><span class="p">,</span> <span class="n">file</span><span class="o">=</span><span class="n">sys</span><span class="o">.</span><span class="n">stderr</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">running</span> <span class="o">=</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">run_in_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">run_in_background</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delay</span><span class="o">=</span><span class="mf">0.0</span><span class="p">):</span><span id="pylnlib.Interface.Interface.run_in_background"></span><a class="mkapi-docs-link" title="pylnlib.Interface.Interface.run_in_background" href="../../pylnlib.Interface/#pylnlib.Interface.Interface.run_in_background">DOCS</a>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Start processing input and output and return immediately.</span>
+
+<span class="sd">        Processing will continue until an external SIGINT or SIGKILL signal is received.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            delay (float, optional): Time in seconds to wait between incoming messages. Defaults to 0.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            immediately.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span>
             <span class="n">name</span><span class="o">=</span><span class="s2">&quot;interface&quot;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">,</span> <span class="n">daemon</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">args</span><span class="o">=</span><span class="p">(</span><span class="n">delay</span><span class="p">,)</span>
         <span class="p">)</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">receiver_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_receiver_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Read data from the interface and fill the internal input queue with messages.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dummy</span><span class="p">:</span>
                 <span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
@@ -646,7 +714,10 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">inputqueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
                     <span class="bp">self</span><span class="o">.</span><span class="n">rd_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
 
-    <span class="k">def</span> <span class="nf">sender_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_sender_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Retrieve messages in the internal output queue and send them to the serial interface.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">while</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">exit</span><span class="p">:</span>
             <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputqueue</span><span class="o">.</span><span class="n">empty</span><span class="p">():</span>
                 <span class="n">msg</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">outputqueue</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
@@ -657,15 +728,28 @@
                     <span class="bp">self</span><span class="o">.</span><span class="n">rd_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
                 <span class="n">sleep</span><span class="p">(</span><span class="mf">0.25</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">sendMessage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span><span id="pylnlib.Interface.Interface.sendMessage"></span><a class="mkapi-docs-link" title="pylnlib.Interface.Interface.sendMessage" href="../../pylnlib.Interface/#pylnlib.Interface.Interface.sendMessage">DOCS</a>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Put a message on the internal output queue.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            msg (Message): A LocoNet [Message](pylnlib.Message.md)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">outputqueue</span><span class="o">.</span><span class="n">put</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">timeDiff</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span><span id="pylnlib.Interface.timeDiff"></span><a class="mkapi-docs-link" title="pylnlib.Interface.timeDiff" href="../../pylnlib.Interface/#pylnlib.Interface.timeDiff">DOCS</a>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    return the total number of seconds between  a and b.</span>
+<span class="sd">    Return the total number of seconds between  a and b.</span>
 
 <span class="sd">    b MUST be later than a, so the difference between a = 23:55:49 and b = 00:05:49 will be correctly reported as 10 minutes.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        a (datetime) : earlier timestamp</span>
+<span class="sd">        b (datetime) : later timestamp</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        (float) : the total number of seconds between  a and b</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">T</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">today</span><span class="p">()</span>
     <span class="n">A</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">combine</span><span class="p">(</span><span class="n">T</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span>

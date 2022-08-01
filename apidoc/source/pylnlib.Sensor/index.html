@@ -412,6 +412,20 @@
   
   
     <li class="md-nav__item">
+      <a href="../../pylnlib.Switch/" class="md-nav__link">
+        pylnlib.Switch
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../../pylnlib.Webserver/" class="md-nav__link">
         pylnlib.Webserver
       </a>
@@ -479,11 +493,9 @@
 <span class="c1">#</span>
 <span class="c1"># License: GPL 3, see file LICENSE</span>
 <span class="c1">#</span>
-<span class="c1"># Version: 20220729113814</span>
+<span class="c1"># Version: 20220801132322</span>
 
 <span class="kn">from</span> <span class="nn">inspect</span> <span class="kn">import</span> <span class="n">signature</span>
-
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Dict</span><span class="p">,</span> <span class="n">Any</span>
 
 
 <span class="k">class</span> <span class="nc">Sensor</span><span class="p">:</span><span id="pylnlib.Sensor.Sensor"></span><a class="mkapi-docs-link" title="pylnlib.Sensor.Sensor" href="../../pylnlib.Sensor/#pylnlib.Sensor.Sensor">DOCS</a>
@@ -491,17 +503,16 @@
 <span class="sd">    Represents a sensor state.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        address: The sensor address.</span>
-<span class="sd">        state: The sensor state.</span>
+<span class="sd">        address: int The sensor address.</span>
+<span class="sd">        state: The sensor state, one of {None, &quot;ON&quot;, &quot;OFF&quot;}</span>
 
 <span class="sd">    Raises:</span>
 <span class="sd">        ValueError: if the state is an unknown literal and not None.</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">sensorstates</span> <span class="o">=</span> <span class="p">{</span><span class="kc">None</span><span class="p">,</span> <span class="s2">&quot;ON&quot;</span><span class="p">,</span> <span class="s2">&quot;OFF&quot;</span><span class="p">}</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">state</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Literal</span><span class="p">[</span><span class="s2">&quot;ON&quot;</span><span class="p">,</span> <span class="s2">&quot;OFF&quot;</span><span class="p">]]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">address</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">state</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">Sensor</span><span class="o">.</span><span class="n">sensorstates</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;unknown sensor state </span><span class="si">{</span><span class="n">state</span><span class="si">}</span><span class="s2">, not one of </span><span class="si">{</span><span class="n">Sensor</span><span class="o">.</span><span class="n">sensorstates</span><span class="si">}</span><span class="s2">&quot;</span>
@@ -509,23 +520,41 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">=</span> <span class="n">address</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">state</span>
 
-    <span class="k">def</span> <span class="nf">toJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span><span id="pylnlib.Sensor.Sensor.toJSON"></span><a class="mkapi-docs-link" title="pylnlib.Sensor.Sensor.toJSON" href="../../pylnlib.Sensor/#pylnlib.Sensor.Sensor.toJSON">DOCS</a>
+    <span class="k">def</span> <span class="nf">toJSON</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><span id="pylnlib.Sensor.Sensor.toJSON"></span><a class="mkapi-docs-link" title="pylnlib.Sensor.Sensor.toJSON" href="../../pylnlib.Sensor/#pylnlib.Sensor.Sensor.toJSON">DOCS</a>
         <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Returns an object suitable for serialiazing as JSON.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            Dict[str, Any]: a dictionary with the object attributes.</span>
+<span class="sd">            dict: A dictionary with the object attributes.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">{</span>
             <span class="n">p</span><span class="p">:</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
-            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span>  <span class="c1"># type: ignore</span>
+            <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="n">signature</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">)</span><span class="o">.</span><span class="n">parameters</span>
             <span class="k">if</span> <span class="n">p</span> <span class="o">!=</span> <span class="s2">&quot;self&quot;</span>
         <span class="p">}</span>
 
-    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__str__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span><span id="pylnlib.Sensor.Sensor.__str__"></span><a class="mkapi-docs-link" title="pylnlib.Sensor.Sensor.__str__" href="../../pylnlib.Sensor/#pylnlib.Sensor.Sensor.__str__">DOCS</a>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Returns a string representation of a Sensor object.</span>
+
+<span class="sd">        !!! note</span>
+<span class="sd">            The address shown is 1 larger than the actual address as is customary. (The address is indeed offset 0, but modellers are not accustomed to that)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the string representation of a Sensor object with its state and address.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;Sensor(</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">address</span><span class="o">+</span><span class="mi">1</span><span class="si">:</span><span class="s2">2d</span><span class="si">}</span><span class="s2">) = </span><span class="si">{</span><span class="s1">&#39;ON&#39;</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="k">else</span> <span class="s1">&#39;OFF&#39;</span><span class="si">}</span><span class="s2">&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">:</span> <span class="nb">object</span><span class="p">):</span><span id="pylnlib.Sensor.Sensor.__eq__"></span><a class="mkapi-docs-link" title="pylnlib.Sensor.Sensor.__eq__" href="../../pylnlib.Sensor/#pylnlib.Sensor.Sensor.__eq__">DOCS</a>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Compares a Sensor object to another object.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            other (object): any other object</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if sensor address and states are the same</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="p">(</span>
             <span class="nb">type</span><span class="p">(</span><span class="n">other</span><span class="p">)</span> <span class="o">==</span> <span class="n">Sensor</span>
             <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">address</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">address</span>
