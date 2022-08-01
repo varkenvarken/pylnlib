@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220725153132
+# Version: 20220801171020
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -31,12 +31,19 @@ from pylnlib.Message import (
     FunctionGroupSound,
     SlotSpeed,
 )
+from pylnlib.Throttle import Throttle
+
+
+class mock_interface:
+    def sendMessage(self, msg):
+        pass
 
 
 @pytest.fixture
 def scrollkeeper():
-    sc = Scrollkeeper(None)
+    sc = Scrollkeeper(mock_interface())
     sc.dummy = True
+    sc.slottrace = True
     return sc
 
 
@@ -283,6 +290,9 @@ class TestScrollkeeper:
         assert result == True
         assert delta == approx(waittime, abs=0.5)
 
+    def test_waitUntilLocAddressKnown2(self, scrollkeeper: Scrollkeeper):
+        assert not scrollkeeper.waitUntilLocAddressKnown(16, timeout=1.0)
+
     def test_waitUntilSensorAddressKnown(self, scrollkeeper: Scrollkeeper, sensorstate):
         waittime = 3.0
         Timer(waittime, lambda: scrollkeeper.messageListener(sensorstate)).start()
@@ -293,6 +303,9 @@ class TestScrollkeeper:
         assert result == True
         assert delta == approx(waittime, abs=0.5)
 
+    def test_waitUntilSensorAddressKnown2(self, scrollkeeper: Scrollkeeper):
+        assert not scrollkeeper.waitUntilSensorKnown(3, timeout=1.0)
+
     def test_waitUntilSwitchAddressKnown(self, scrollkeeper: Scrollkeeper, switchstate):
         waittime = 3.0
         Timer(waittime, lambda: scrollkeeper.messageListener(switchstate)).start()
@@ -302,3 +315,11 @@ class TestScrollkeeper:
         delta = end - start
         assert result == True
         assert delta == approx(waittime, abs=0.5)
+
+    def test_waitUntilSwitchAddressKnown2(self, scrollkeeper: Scrollkeeper):
+        assert not scrollkeeper.waitUntilSwitchKnown(3, timeout=1.0)
+
+    def test_getThrottle(self, scrollkeeper: Scrollkeeper):
+        scrollkeeper.updateSlot(3, f0=True, address=12)
+        t = scrollkeeper.getThrottle(12)
+        assert isinstance(t, Throttle)
