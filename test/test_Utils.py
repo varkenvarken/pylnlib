@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220802174236
+# Version: 20220803085016
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -12,12 +12,14 @@
 # See also: https://wiki.rocrail.net/doku.php?id=loconet:ln-pe-en
 
 from os import path
+
 import pytest
 from pytest import approx
 from unittest.mock import patch
 from pylnlib.Scrollkeeper import Scrollkeeper
-from pylnlib.Utils import Args, EnvArgs, createInterface, createScrollkeeper
+from pylnlib.Utils import Args, EnvArgs, createInterface, createScrollkeeper, dumper
 from pylnlib.Interface import Interface
+from pylnlib.Message import CaptureTimeStamp, PowerOn, Message
 
 thisdir = path.dirname(__file__)
 
@@ -72,3 +74,14 @@ class TestUtils:
     def test_createScrollkeeper(self, interface, args):
         scrollkeeper = createScrollkeeper(interface, args)
         assert type(scrollkeeper) is Scrollkeeper
+
+    def test_dumper(self, tmp_path):
+        filename = tmp_path / "outfile"
+        with open(filename, "wb") as f:
+            d = dumper(f, timestamp=True)
+            d(PowerOn())
+        with open(filename, "rb") as f:
+            b = f.read(1000)
+            assert len(b) == 8
+            assert type(Message.from_data(b[:6])) is CaptureTimeStamp
+            assert type(Message.from_data(b[6:])) is PowerOn
