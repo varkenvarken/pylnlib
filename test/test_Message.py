@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220725133417
+# Version: 20220803092941
 
 # Based on LocoNet® Personal Use Edition 1.0 SPECIFICATION
 # Which is © Digitrax Inc.
@@ -79,6 +79,19 @@ class TestMessage:
         )
         assert msg.data == TestMessage.FunctionGroup1_data
 
+    def test_FunctionGroup1_from_init_raise(self):
+        with pytest.raises(ValueError):
+            msg = FunctionGroup1(
+                TestMessage.FunctionGroup1_data,
+                slot=3,
+                dir=True,
+                f0=True,
+                f1=True,
+                f2=True,
+                f3=True,
+                f4=True,
+            )
+
     FunctionGroupSound_data = bytes([0xA2, 0x03, 0x0F, 0x51])
 
     def test_FunctionGroupSound_from_data(self):
@@ -94,6 +107,17 @@ class TestMessage:
         msg = FunctionGroupSound(slot=3, f5=True, f6=True, f7=True, f8=True)
         assert msg.data == TestMessage.FunctionGroupSound_data
 
+    def test_FunctionGroupSound_from_init_raise(self):
+        with pytest.raises(ValueError):
+            msg = FunctionGroupSound(
+                TestMessage.FunctionGroupSound_data,
+                slot=3,
+                f5=True,
+                f6=True,
+                f7=True,
+                f8=True,
+            )
+
     FunctionGroup2_data = bytes([0xA3, 0x03, 0x0F, 0x50])
 
     def test_FunctionGroup2_from_data(self):
@@ -108,6 +132,17 @@ class TestMessage:
     def test_FunctionGroup2_from_init(self):
         msg = FunctionGroup2(slot=3, f9=True, f10=True, f11=True, f12=True)
         assert msg.data == TestMessage.FunctionGroup2_data
+
+    def test_FunctionGroup2_from_init_raise(self):
+        with pytest.raises(ValueError):
+            msg = FunctionGroup2(
+                TestMessage.FunctionGroup2_data,
+                slot=3,
+                f9=True,
+                f10=True,
+                f11=True,
+                f12=True,
+            )
 
     FunctionGroup3_data_p13 = bytes([0xD4, 0x20, 0x03, 0x08, 0x7F, 0x7F])
     FunctionGroup3_data_p21 = bytes([0xD4, 0x20, 0x03, 0x09, 0x7F, 0x7E])
@@ -125,11 +160,17 @@ class TestMessage:
         assert msg.f18 == True
         assert msg.f19 == True
 
-    def test_FunctionGroup3_from_init_p13(self):
+    def test_FunctionGroup3_from_init_p13(self, capsys):
         msg = FunctionGroup3(
             slot=3, f13=True, f14=True, f15=True, f16=True, f17=True, f18=True, f19=True
         )
         assert msg.data == TestMessage.FunctionGroup3_data_p13
+        print(msg)
+        captured = capsys.readouterr()
+        assert (
+            captured.out
+            == "FunctionGroup3(slot = 3 f13: True  f14: True f15: True f16: True f17: True f18: True f19: True | op = 0xd4, self.length=6, data=['0xd4', '0x20', '0x3', '0x8', '0x7f', '0x7f'])\n"
+        )
 
     def test_FunctionGroup3_from_data_p21(self):
         msg = Message.from_data(TestMessage.FunctionGroup3_data_p21)
@@ -143,11 +184,17 @@ class TestMessage:
         assert msg.f26 == True
         assert msg.f27 == True
 
-    def test_FunctionGroup3_from_init_p21(self):
+    def test_FunctionGroup3_from_init_p21(self, capsys):
         msg = FunctionGroup3(
             slot=3, f21=True, f22=True, f23=True, f24=True, f25=True, f26=True, f27=True
         )
         assert msg.data == TestMessage.FunctionGroup3_data_p21
+        print(msg)
+        captured = capsys.readouterr()
+        assert (
+            captured.out
+            == "FunctionGroup3(slot = 3 f21: True  f22: True f23: True f24: True f25: True f26: True f27: True | op = 0xd4, self.length=6, data=['0xd4', '0x20', '0x3', '0x9', '0x7f', '0x7e'])\n"
+        )
 
     def test_FunctionGroup3_from_data_p12(self):
         msg = Message.from_data(TestMessage.FunctionGroup3_data_p12)
@@ -157,9 +204,15 @@ class TestMessage:
         assert msg.f20 == True
         assert msg.f28 == True
 
-    def test_FunctionGroup3_from_init_p12(self):
+    def test_FunctionGroup3_from_init_p12(self, capsys):
         msg = FunctionGroup3(slot=3, f12=True, f20=True, f28=True)
         assert msg.data == TestMessage.FunctionGroup3_data_p12
+        print(msg)
+        captured = capsys.readouterr()
+        assert (
+            captured.out
+            == "FunctionGroup3(slot = 3 f12: True  f20: True f28: True | op = 0xd4, self.length=6, data=['0xd4', '0x20', '0x3', '0x5', '0x70', '0x7d'])\n"
+        )
 
     def test_FunctionGroup3_from_init_punknown(self):
         with pytest.raises(ValueError):
@@ -168,6 +221,16 @@ class TestMessage:
     def test_FunctionGroup3_from_init_pmixed(self):
         with pytest.raises(ValueError):
             msg = FunctionGroup3(slot=3, f12=True, f13=True, f28=True)
+
+    def test_FunctionGroup3_from_init_pmixed2(self):
+        with pytest.raises(ValueError):
+            msg = FunctionGroup3(
+                TestMessage.FunctionGroup3_data_p13,
+                slot=3,
+                f12=True,
+                f13=True,
+                f28=True,
+            )
 
     RequestSwitchFunction_data = bytes([0xB0, 0x03, 0x10, 0x5C])
 
