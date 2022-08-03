@@ -4,7 +4,7 @@
 #
 # License: GPL 3, see file LICENSE
 #
-# Version: 20220707161307
+# Version: 20220803170325
 
 from threading import Timer
 
@@ -33,7 +33,7 @@ class Throttle:
         - Only if the direction is changed: a LocoNet direction message is generated for the slot that controls this loco.
         - Only if the speed is changed: a LocoNet speed message is generated for the slot that controls this loco.
         """
-        slot = self.scrollkeeper.getSlot(self.locaddress)
+        slot = self.scrollkeeper.getLocoSlot(self.locaddress)
         dirchanged = slot.dir != False
         slot.dir = False
         speedchanged = slot.speed
@@ -58,11 +58,9 @@ class Throttle:
         - Only if the direction is changed, a LocoNet direction message is generated for the slot that controls this loco.
         - Only if the speed is changed, a LocoNet speed message is generated for the slot that controls this loco.
         """
-        slot = self.scrollkeeper.getSlot(self.locaddress)
+        slot = self.scrollkeeper.getLocoSlot(self.locaddress)
         dirchanged = slot.dir != True
         slot.dir = True
-        slot.setSpeed(speed)
-        self.scrollkeeper.sendMessage(slot.slotWriteMessage())
         speedchanged = slot.speed
         slot.setSpeed(speed)
         speedchanged = (

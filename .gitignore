@@ -13,3 +13,4 @@ docs/*
 .coverage
 coverage.xml
 htmlcov/*
+TODO.md
